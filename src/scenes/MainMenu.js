@@ -4,10 +4,7 @@ class MainMenu extends Phaser.Scene {
         super( "MainMenu");
     }
 
-    preload(){
-        //this.load.spritesheet("test_buttons", "assets/buttons_test.png",{ frameWidth: 236, frameHeight: 65 });
-
-    }
+    
     create(){
         this.add.text(400, 100, "MAIN MENU" ,{font: "96px courier"});
         
