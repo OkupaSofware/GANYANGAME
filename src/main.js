@@ -1,5 +1,5 @@
 import Bootloader from './Bootloader.js';
-
+import mainMenu from './scenes/MainMenu.js';
 const config = {
     title: "GAN-YAN",
     version: "0.0.1",
@@ -22,6 +22,7 @@ const config = {
         }
     },
     scene: [
+        mainMenu,
         Bootloader
     ]
 };
