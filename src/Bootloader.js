@@ -10,6 +10,7 @@ class Bootloader extends Phaser.Scene {
 
     create() {
         //this.add.text(100, 100, "hola", {color: '#000'})
+        
     }
 }
 export default Bootloader;
