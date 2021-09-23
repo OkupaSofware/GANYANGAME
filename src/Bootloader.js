@@ -4,12 +4,12 @@ class Bootloader extends Phaser.Scene {
     }
 
     preload() {
+        
+        // MAIN MENU SPRITES
+        this.load.spritesheet("test_buttons", "assets/buttons_test.png",{ frameWidth: 236, frameHeight: 65 });
         this.load.on("complete", () =>{
             this.scene.start("MainMenu");
         });
-
-        // MAIN MENU SPRITES
-        this.load.spritesheet("test_buttons", "assets/buttons_test.png",{ frameWidth: 236, frameHeight: 65 });
         //this.scene.start("MainMenu");
 
         // SCENE PLAY SPRITES
