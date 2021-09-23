@@ -1,0 +1,68 @@
+{
+    "anims": [
+        {
+            "key": "die",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 20,
+            "frames": [
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_00"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_01"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_02"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_03"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_04"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_05"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_06"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_07"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_08"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_09"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_10"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_11"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_12"
+                },
+                {
+                    "key": "die",
+                    "frame": "spineboy-pro-lv1-die_13"
+                }
+            ]
+        }
+    ]
+}

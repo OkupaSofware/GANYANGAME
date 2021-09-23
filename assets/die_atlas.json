@@ -1,0 +1,190 @@
+{
+    "frames": [
+        {
+            "filename": "spineboy-pro-lv1-die_00",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_01",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 0,
+                "y": 167
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_02",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 189,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_03",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 189,
+                "y": 167
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_04",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 0,
+                "y": 334
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_05",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 189,
+                "y": 334
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_06",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 378,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_07",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 378,
+                "y": 167
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_08",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 378,
+                "y": 334
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_09",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 0,
+                "y": 501
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_10",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 189,
+                "y": 501
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_11",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 378,
+                "y": 501
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_12",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 567,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "spineboy-pro-lv1-die_13",
+            "frame": {
+                "w": 189,
+                "h": 167,
+                "x": 567,
+                "y": 167
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}
