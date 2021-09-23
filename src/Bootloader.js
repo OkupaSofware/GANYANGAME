@@ -20,20 +20,20 @@ class Bootloader extends Phaser.Scene {
         this.load.image("cloud", "./assets/cloud.png");
         
         // Player sprite
-        this.load.path = './assets/';
+        this.load.path = './assets/player/';
 
         //idle
-        this.load.json('idle_anim','idle_anim.json')
-        this.load.atlas('idle', 'idle.png', 'idle_atlas.json')
+        this.load.json('idle_anim','idle/idle_anim.json')
+        this.load.atlas('idle', 'idle/idle.png', 'idle/idle_atlas.json')
         //correr
-        this.load.json('run_anim','run_anim.json')
-        this.load.atlas('run', 'run.png', 'run_atlas.json')
+        this.load.json('run_anim','run/run_anim.json')
+        this.load.atlas('run', 'run/run.png', 'run/run_atlas.json')
         //morir
-        this.load.json('die_anim','die_anim.json')
-        this.load.atlas('die', 'die.png', 'die_atlas.json')
+        this.load.json('die_anim','die/die_anim.json')
+        this.load.atlas('die', 'die/die.png', 'die/die_atlas.json')
         //saltar
-        this.load.json('jump_anim','jump_anim.json')
-        this.load.atlas('jump', 'jump.png', 'jump_atlas.json')
+        this.load.json('jump_anim','jump/jump_anim.json')
+        this.load.atlas('jump', 'jump/jump.png', 'jump/jump_atlas.json')
     }
 
     create() {
