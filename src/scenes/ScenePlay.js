@@ -27,11 +27,13 @@ class ScenePlay extends Phaser.Scene {
 
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 568, "platform").setScale(3, 1);
-        this.platforms.create(700, 568, "platform").setScale(2, 2);
+        this.platforms.create(400, 200, "1p");
+        this.platforms.create(400, 400, "2p");
+        this.platforms.create(400, 600, "3p");
+        
         //this.platforms.setVelocity(0, 0);
 
-        this.p1 = this.physics.add.image(600, 400, "platform");
+        this.p1 = this.physics.add.image(800, 400, "platform");
         //p1.setVelocity(0, 20);
         
         //________________________________________________________

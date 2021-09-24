@@ -18,6 +18,9 @@ class Bootloader extends Phaser.Scene {
         this.load.image("background", "./assets/background.png");
         this.load.image("platform", "./assets/platform.png");
         this.load.image("cloud", "./assets/cloud.png");
+        this.load.image("1p", "assets/tileset/1p.png");
+        this.load.image("2p", "assets/tileset/2p.png");
+        this.load.image("3p", "assets/tileset/3p.png");
         
         // Player sprite
         this.load.path = './assets/player/';
