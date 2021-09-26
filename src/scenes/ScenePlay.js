@@ -39,7 +39,7 @@ class ScenePlay extends Phaser.Scene {
         //________________________________________________________
 
         //PLAYER
-        this.player = new Player(this, 50, 50, "idle");
+        this.player = new Player(this, 50, 650, "idle");
 
         //Weapon
         this.shotgun = this.add.image(this.player.x, this.player.y, "shotgun");
@@ -59,15 +59,19 @@ class ScenePlay extends Phaser.Scene {
 
     update(){
         this.player.body.setVelocityX(0)
-        this.shotgun.setPosition(this.player.x-10, this.player.y+30)
+        this.shotgun.setPosition(this.player.x, this.player.y+30)
         
         if(this.cD.isDown){
             this.player.flipX = true;
             this.player.body.setVelocityX(450)
+            this.shotgun.setOrigin(0.1833, 0.5625)
+            this.shotgun.flipX = false
         }
         if(this.cA.isDown){
             this.player.flipX = false;
             this.player.body.setVelocityX(-450)
+            this.shotgun.setOrigin(0.8166, 0.5625)
+            this.shotgun.flipX = true
         }
         if(this.cW.isDown && this.player.body.onFloor()){
             this.player.body.setVelocityY(-800)
