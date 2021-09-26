@@ -13,7 +13,7 @@ const config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     //backgroundColor: "#ffffff",
-    pixelArt: true,
+    pixelArt: false,
     physics: {
         default: "arcade",
         "arcade": {
