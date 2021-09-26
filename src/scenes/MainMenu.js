@@ -18,7 +18,7 @@ class MainMenu extends Phaser.Scene {
        
        this.title = this.add.sprite(640,150, "title_anim")
        this.title.setScale(0.2,0.2)
-       this.anims.create({key: "colorful_title",frames: this.anims.generateFrameNumbers("title_anim", {frames: [1,2,3,4,5]}), repeat: -1, frameRate: 3})
+       this.anims.create({key: "colorful_title",frames: this.anims.generateFrameNumbers("title_anim", {frames: [0,1,2,3,4]}), repeat: -1, frameRate: 5})
        this.title.anims.play("colorful_title")
 
 
@@ -72,6 +72,7 @@ class MainMenu extends Phaser.Scene {
     }
 
     update(time, delta){
+        //Nubes
         this.cloud.x++;
         this.cloud1.x--;
         //this.cloud.y++;
