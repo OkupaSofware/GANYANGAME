@@ -22,9 +22,10 @@ class Bootloader extends Phaser.Scene {
         this.load.image("2p", "assets/tileset/2p.png");
         this.load.image("3p", "assets/tileset/3p.png");
         
-        // Player sprite
+        // PLAYER SPRITES
         this.load.path = './assets/player/';
 
+        //Animations
         //idle
         this.load.json('idle_anim','idle/idle_anim.json')
         this.load.atlas('idle', 'idle/idle.png', 'idle/idle_atlas.json')
@@ -37,6 +38,9 @@ class Bootloader extends Phaser.Scene {
         //saltar
         this.load.json('jump_anim','jump/jump_anim.json')
         this.load.atlas('jump', 'jump/jump.png', 'jump/jump_atlas.json')
+
+        //Weapons
+        
     }
 
     create() {
