@@ -70,7 +70,7 @@ class ScenePlay extends Phaser.Scene {
             this.player.body.setVelocityX(-450)
         }
         if(this.cW.isDown && this.player.body.onFloor()){
-            this.player.body.setVelocityY(-1000)
+            this.player.body.setVelocityY(-800)
         }
         if((this.cA.isDown || this.cD.isDown) && this.player.body.onFloor()){
             this.player.anims.play('run',true)
