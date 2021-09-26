@@ -40,11 +40,11 @@ class Bootloader extends Phaser.Scene {
         this.load.atlas('jump', 'jump/jump.png', 'jump/jump_atlas.json')
 
         //Weapons
-        
+        this.load.image("shotgun", "/weapon/shotgun.png")
     }
 
     create() {
-        //this.add.text(100, 100, "hola", {color: '#000'})
+        
         this.player_anim_idle = this.cache.json.get('idle_anim')
         this.player_anim_run = this.cache.json.get('run_anim')
         this.player_anim_die = this.cache.json.get('die_anim')

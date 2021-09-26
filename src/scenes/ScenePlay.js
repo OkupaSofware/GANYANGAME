@@ -41,8 +41,9 @@ class ScenePlay extends Phaser.Scene {
         //PLAYER
         this.player = new Player(this, 50, 50, "idle");
 
-        //animations
-        
+        //Weapon
+        this.shotgun = this.add.image(this.player.x, this.player.y, "shotgun");
+        this.shotgun.setOrigin(0.1833, 0.5625)
 
         //controls
         this.input.on('pointerdown', function (pointer) {
@@ -58,6 +59,7 @@ class ScenePlay extends Phaser.Scene {
 
     update(){
         this.player.body.setVelocityX(0)
+        this.shotgun.setPosition(this.player.x-10, this.player.y+30)
         
         if(this.cD.isDown){
             this.player.flipX = true;
