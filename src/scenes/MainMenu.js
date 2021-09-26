@@ -6,19 +6,22 @@ class MainMenu extends Phaser.Scene {
     
     
     create(){
-        this.background = this.add.image(640, 360, "background_2");
-        this.add.image(640, 900, "FLOOR");
-        //Fondo animado
-        this.cloud = this.add.image(-200,0,"cloud");
-        this.cloud.setScale(0.3,0.3)
-        this.cloud1 = this.add.image(-200,300,"cloud");
-        this.cloud1.setScale(0.2,0.2)
-        
+       //Animated background
+
+       this.background = this.add.image(640, 360, "background_2");
+       this.add.image(640, 690, "FLOOR").setScale(0.3,0.3);
        
-        this.title = this.add.sprite(640,150, "title_anim")
-        this.title.setScale(0.2,0.2)
-        this.anims.create({key: "colorful_title",frames: this.anims.generateFrameNumbers("title_anim", {frames: [1,2,3,4,5]}), repeat: -1, frameRate: 3})
-        this.title.anims.play("colorful_title")
+       this.cloud = this.add.image(-200,0,"cloud");
+       this.cloud.setScale(0.3,0.3)
+       this.cloud1 = this.add.image(-200,300,"cloud");
+       this.cloud1.setScale(0.2,0.2)
+       
+       this.title = this.add.sprite(640,150, "title_anim")
+       this.title.setScale(0.2,0.2)
+       this.anims.create({key: "colorful_title",frames: this.anims.generateFrameNumbers("title_anim", {frames: [1,2,3,4,5]}), repeat: -1, frameRate: 3})
+       this.title.anims.play("colorful_title")
+
+
         //Buttons creation
         var play_button = new Button({
             'scene': this,
