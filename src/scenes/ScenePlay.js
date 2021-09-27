@@ -38,48 +38,61 @@ class ScenePlay extends Phaser.Scene {
         
         //________________________________________________________
 
-        //PLAYER
-        this.player = new Player(this, 50, 650, "idle");
+        //PLAYER 1
+        this.player1 = new Player(this, 50, 650, "idle");
 
-        //Weapon
-        this.shotgun = this.add.image(this.player.x, this.player.y, "shotgun");
+        //Weapon player 1
+        this.shotgun = this.add.image(this.player1.x, this.player1.y, "shotgun");
         this.shotgun.setOrigin(0.1833, 0.5625)
 
-        //controls
+        // bullets player 1
+        this.player1bullets = this.physics.add.staticGroup();
+
+        // plyer 1 shooting
         this.input.on('pointerdown', function (pointer) {
-            this.player.shootAt(this.player.x, this.player.y, pointer.x, pointer.y);
+        this.player1bullets.create(this.player1.shootAt(this.shotgun.x, this.shotgun.y, pointer.x, pointer.y));
         }, this);
         
-        this.cQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
-        this.cW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
-        this.cE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
-        this.cD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
-        this.cA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        //controls player 1
+        this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
     }
 
-    update(){
-        this.player.body.setVelocityX(0)
-        this.shotgun.setPosition(this.player.x, this.player.y+30)
+    update(time, delta){
+        this.player1.body.setVelocityX(0)
+        this.shotgun.setPosition(this.player1.x, this.player1.y+30)
         this.checkMousePosition();
         
-        if(this.cD.isDown){
-            this.player.body.setVelocityX(450)
+        // Player 1 controls
+        if(this.player1RightControl.isDown){
+            this.player1.body.setVelocityX(450)
         }
-        if(this.cA.isDown){
-            this.player.body.setVelocityX(-450)
+        if(this.player1LeftControl.isDown){
+            this.player1.body.setVelocityX(-450)
         }
-        if(this.cW.isDown && this.player.body.onFloor()){
-            this.player.body.setVelocityY(-800)
+        if(this.player1jump.isDown && this.player1.body.onFloor()){
+            this.player1.body.setVelocityY(-800)
         }
-        if((this.cA.isDown || this.cD.isDown) && this.player.body.onFloor()){
-            this.player.anims.play('run',true)
+        if((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()){
+            this.player1.anims.play('run',true)
         }
-        if(!this.player.body.onFloor()){
-            this.player.anims.play('jump',true)
+        if(!this.player1.body.onFloor()){
+            this.player1.anims.play('jump',true)
         }
-        if(!(this.cA.isDown || this.cD.isDown) && this.player.body.onFloor()){
-            this.player.anims.play('idle',true)
+        if(!(this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()){
+            this.player1.anims.play('idle',true)
         }
+
+        // Bullets 1 handling
+        this.player1bullets.children.iterate((child) => {
+            if(this.player1bullets.getLength() > 0){
+                child.x.updatePosition(time, delta);
+                //console.log(child.x.x);
+                //console.log(child.x.y);
+            }
+        }, this);
+
     }
 
     optionsOnPressed(){
@@ -87,12 +100,12 @@ class ScenePlay extends Phaser.Scene {
     }
 
     checkMousePosition(){
-        if(this.input.activePointer.x > this.player.getCenter().x){
-            this.player.flipX = true;
+        if(this.input.activePointer.x > this.player1.getCenter().x){
+            this.player1.flipX = true;
             this.shotgun.setOrigin(0.1833, 0.5625)
             this.shotgun.flipX = false
         }else{
-            this.player.flipX = false;
+            this.player1.flipX = false;
             this.shotgun.setOrigin(0.8166, 0.5625)
             this.shotgun.flipX = true
         }
