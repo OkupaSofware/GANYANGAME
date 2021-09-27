@@ -22,7 +22,7 @@ class Bullet extends Phaser.GameObjects.Image{
 };
 
 Bullet.prototype.updatePosition = function(time, delta){
-    this.body.x += this.xSpeed * delta * this.speed * (2/3);
+    this.body.x += this.xSpeed * delta * this.speed * (1/2);
     this.body.y -= this.ySpeed * delta * this.speed * (1/2);
 };
 
