@@ -9,7 +9,7 @@ class ScenePlay extends Phaser.Scene {
     create(){
         
         // Add background
-        this.background = this.add.image(1080, 720, "background");
+        this.background = this.add.image(640, 360, "background_2");
         //Options button
         var options_button = new Button({
             'scene': this,
@@ -27,9 +27,9 @@ class ScenePlay extends Phaser.Scene {
 
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 200, "1p");
-        this.platforms.create(400, 400, "2p");
-        this.platforms.create(400, 600, "3p");
+        this.platforms.create(400, 200, "1p").setScale(0.1,0.1);
+        this.platforms.create(400, 400, "2p").setScale(0.1,0.1);
+        this.platforms.create(400, 600, "2p").setScale(0.1,0.1);
         
         //this.platforms.setVelocity(0, 0);
 
@@ -39,11 +39,12 @@ class ScenePlay extends Phaser.Scene {
         //________________________________________________________
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle");
+        this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8);
 
         //Weapon player 1
         this.shotgun = this.add.image(this.player1.x, this.player1.y, "shotgun");
         this.shotgun.setOrigin(0.1833, 0.5625)
+        this.shotgun.setScale(0.5,0.5)
 
         // bullets player 1
         this.player1bullets = this.physics.add.staticGroup();

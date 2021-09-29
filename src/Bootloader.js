@@ -7,11 +7,12 @@ class Bootloader extends Phaser.Scene {
         
         // MAIN MENU SPRITES
         this.load.spritesheet("test_buttons", "assets/buttons_test.png",{ frameWidth: 236, frameHeight: 65 });
-        this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1100 });
+        this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
         //this.load.image("title", "./assets/TITLE_1.png");
         
         this.load.image("background_2", "./assets/BACKGROUND_SKY.png");
-        this.load.image("FLOOR", "./assets/FLOOR.png");
+        //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
+        this.load.image("FLOOR", "./assets/brick_floor.png");
         this.load.on("complete", () =>{
             this.scene.start("MainMenu");
         });
@@ -21,9 +22,9 @@ class Bootloader extends Phaser.Scene {
         // Environment sprites
         this.load.image("background", "./assets/background.png");
         this.load.image("platform", "./assets/platform.png");
-        this.load.image("cloud", "./assets/cloud.png");
-        this.load.image("1p", "assets/tileset/1p.png");
-        this.load.image("2p", "assets/tileset/2p.png");
+        this.load.image("cloud", "./assets/cloud_dark.png");
+        this.load.image("1p", "assets/tileset/1b.png");
+        this.load.image("2p", "assets/tileset/2b.png");
         this.load.image("3p", "assets/tileset/3p.png");
         
         // Bullet sprite
