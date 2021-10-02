@@ -53,6 +53,7 @@ class Bootloader extends Phaser.Scene {
 
         //Weapons
         this.load.image("shotgun", "/weapon/shotgun.png")
+        this.load.image("sniper", "/weapon/sniper.png")
     }
 
     create() {

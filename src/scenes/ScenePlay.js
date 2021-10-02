@@ -40,6 +40,7 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(1100, 315, "platform_4").setScale(0.3,0.3).refreshBody();
         this.platforms.create(850, 515, "platform_4").setScale(0.3,0.3).refreshBody();
         this.platforms.create(340, 650, "platform_4").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(340, 100, "platform_2").setScale(0.3,0.3).refreshBody();
         //________________________________________________________
 
         //PLAYER 1
