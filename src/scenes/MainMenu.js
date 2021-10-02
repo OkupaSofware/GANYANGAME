@@ -8,8 +8,8 @@ class MainMenu extends Phaser.Scene {
     create(){
        //Animated background
 
-       //this.background = this.add.image(640, 360, "background_2");
-       this.add.image(640, 690, "FLOOR").setScale(0.3,0.3);
+       this.background = this.add.image(640, 360, "background_2");
+       this.add.image(640, 540, "FLOOR").setScale(0.6,0.6);
        
        this.cloud = this.add.image(-200,0,"cloud");
        this.cloud.setScale(0.3,0.3)

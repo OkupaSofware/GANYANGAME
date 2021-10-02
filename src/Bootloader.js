@@ -10,9 +10,9 @@ class Bootloader extends Phaser.Scene {
         this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
         //this.load.image("title", "./assets/TITLE_1.png");
         
-        this.load.image("background_2", "./assets/BACKGROUND_SKY.png");
+        this.load.image("background_2", "./assets/Background_01.png");
         //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
-        this.load.image("FLOOR", "./assets/brick_floor.png");
+        this.load.image("FLOOR", "./assets/floor.png");
         this.load.on("complete", () =>{
             this.scene.start("MainMenu");
         });
