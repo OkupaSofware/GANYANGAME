@@ -6,11 +6,11 @@
 
 Si lo quieres es matarte a tiros en un mundo sin eje Z con tus compañeros de clase, empresa, amigos y/o desconocidos, ESTE ES TU JUEGO!
 
-Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas!.
+Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas y mejoras!.
 
 <H2>INTEGRANTES DEL GRUPO</H2>
 <p>-Alvaro Olvarria: https://github.com/Alvaroolav3D</p>
-<p>-Antonio Espinosa: https://github.com/AEspinosaDev</p>
+<p>-Antonio Espinosa: https://github.com/AEspinosaDev, a.espinosag.2019@alumnos.urjc.es.</p>
 <p>-Javier Serrano: https://github.com/Javinigadela</p>
 <p>-Alejandro Anton: https://github.com/aantonb2018</p>
 
