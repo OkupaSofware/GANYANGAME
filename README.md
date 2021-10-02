@@ -14,3 +14,4 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 <p>-Javier Serrano: https://github.com/Javinigadela</p>
 <p>-Alejandro Anton: https://github.com/aantonb2018</p>
 
+<p>TRELLO: https://trello.com/b/7AF4IbZy/ganyan</P>
