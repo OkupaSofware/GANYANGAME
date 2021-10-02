@@ -26,6 +26,10 @@ class Bootloader extends Phaser.Scene {
         this.load.image("1p", "assets/tileset/1b.png");
         this.load.image("2p", "assets/tileset/2b.png");
         this.load.image("3p", "assets/tileset/3p.png");
+        this.load.image("platform_1", "assets/tileset/platform_1.png");
+        this.load.image("platform_2", "assets/tileset/platform_2.png");
+        this.load.image("platform_3", "assets/tileset/platform_3.png");
+        this.load.image("platform_4", "assets/tileset/platform_4.png");
         
         // Bullet sprite
         this.load.image("bullet", "assets/bullet.png");
