@@ -13,7 +13,7 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 ![Screenshot (249)](https://user-images.githubusercontent.com/91082053/135757258-db76fbf4-4c10-4eb8-90ff-faea3ab8571e.png)
 
 <H2>INTEGRANTES DEL GRUPO</H2>
-<p>-Alvaro Olvarria: https://github.com/Alvaroolav3D</p>
+<p>-Alvaro Olvarria: https://github.com/Alvaroolav3D a.olavarria.2019@alumnos.urjc.es.</p>
 <p>-Antonio Espinosa: https://github.com/AEspinosaDev, a.espinosag.2019@alumnos.urjc.es.</p>
 <p>-Javier Serrano: https://github.com/Javinigadela, j.serranod.2019@alumnos.urjc.es.</p> 
 <p>-Alejandro Anton: https://github.com/aantonb2018</p>
