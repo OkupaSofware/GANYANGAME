@@ -16,6 +16,6 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 <p>-Alvaro Olvarria: https://github.com/Alvaroolav3D, a.olavarria.2019@alumnos.urjc.es.</p>
 <p>-Antonio Espinosa: https://github.com/AEspinosaDev, a.espinosag.2019@alumnos.urjc.es.</p>
 <p>-Javier Serrano: https://github.com/Javinigadela, j.serranod.2019@alumnos.urjc.es.</p> 
-<p>-Alejandro Anton: https://github.com/aantonb2018</p>
+<p>-Alejandro Anton: https://github.com/aantonb2018, a.antonb.2018@alumnos.urjc.es</p>
 
 <p>TRELLO: https://trello.com/b/7AF4IbZy/ganyan</P>
