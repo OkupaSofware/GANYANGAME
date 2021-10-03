@@ -6,9 +6,9 @@
 
 <H2>BIENVENIDOS A GAN-YAN</H2>
 
-Si lo quieres es matarte a tiros en un mundo sin eje Z con tus compañeros de clase, empresa, amigos y/o desconocidos, ESTE ES TU JUEGO!
+Si lo quieres es matarte a tiros en un mundo sin eje Z con tus compañeros de clase, empresa, amigos y/o desconocidos,¡ESTE ES TU JUEGO!
 
-Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas y mejoras!.
+Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas y mejoras!
 
 ![Screenshot (249)](https://user-images.githubusercontent.com/91082053/135757258-db76fbf4-4c10-4eb8-90ff-faea3ab8571e.png)
 
