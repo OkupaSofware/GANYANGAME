@@ -80,9 +80,25 @@ class ScenePlay extends Phaser.Scene {
         if(this.player1LeftControl.isDown){
             this.player1.body.setVelocityX(-400)
         }
-        if(this.player1jump.isDown && this.player1.body.onFloor()){
-            this.player1.body.setVelocityY(-800)
+        
+        if (this.player1jump.isDown && this.player1.body.onFloor())
+        {
+            this.player1.jumptimer = 1;
+            this.player1.body.setVelocityY(-600);
+        } 
+        else if (this.player1jump.isDown && (this.player1.jumptimer != 0)){
+            if (this.player1.jumptimer > 6) {
+                this.player1.jumptimer = 0;
+            }
+            else{
+                this.player1.jumptimer++;
+                this.player1.body.setVelocityY(-600);
+            }
         }
+        else if (this.player1.jumptimer != 0){
+            this.player1.jumptimer = 0;
+        }
+
         if((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()){
             this.player1.anims.play('run',true)
         }

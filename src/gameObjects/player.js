@@ -11,6 +11,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.ammo = 10;
         this.ammoSpeed = 2;
         this.alive = true;
+        this.jumptimer = 0;
         
         // example bullet
         this.bullets = [];
