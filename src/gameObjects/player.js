@@ -13,6 +13,10 @@ class Player extends Phaser.GameObjects.Sprite{
         this.alive = true;
         this.jumptimer = 0;
         
+        //Weapon
+        this.weapon = scene.add.image(this.x, this.y+2, "shotgun");
+        this.weapon.setOrigin(0.1, 0)
+        this.weapon.setScale(0.5,0.5)
         // example bullet
         this.bullets = [];
 
@@ -24,6 +28,9 @@ class Player extends Phaser.GameObjects.Sprite{
 Player.prototype.shootAt = function(xPlayer, yPlayer, xTarget, yTarget){
     this.bullet = new Bullet(this.scene, xPlayer, yPlayer, "bullet", xTarget, yTarget, this.getAmmoSpeed());
     return this.bullet;
+}
+Player.prototype.aim = function(xTarget, yTarget){
+    this.weapon.rotation = Math.atan((yTarget-this.weapon.y) / (xTarget-this.weapon.x));
 }
 
 
@@ -44,4 +51,10 @@ Player.prototype.increaseAmmoByOne = function(){this.ammo -= 1; };
 Player.prototype.decreaseAmmoByOne = function(){this.ammo += 1; };
 
 Player.prototype.isAlive = function(){return this.alive; };
+
+Player.prototype.update = function(){
+
+}
+
+
 export default Player;

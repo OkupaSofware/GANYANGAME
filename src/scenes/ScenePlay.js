@@ -47,18 +47,17 @@ class ScenePlay extends Phaser.Scene {
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8);
         
         //Weapon player 1
-        this.shotgun = this.add.image(this.player1.x, this.player1.y, "shotgun");
-        this.shotgun.setOrigin(0.1833, 1)
-        this.shotgun.setScale(0.5,0.5)
+        
 
         // bullets player 1
         this.player1bullets = this.physics.add.staticGroup();
 
         // plyer 1 shooting
         this.input.on('pointerdown', function (pointer) {
-        this.player1bullets.create(this.player1.shootAt(this.shotgun.x, this.shotgun.y, pointer.x, pointer.y));
+        this.player1bullets.create(this.player1.shootAt(this.player1.weapon.x, this.player1.weapon.y, pointer.x, pointer.y));
         }, this);
         
+       
         //controls player 1
         this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -70,9 +69,11 @@ class ScenePlay extends Phaser.Scene {
 
     update(time, delta){
         this.player1.body.setVelocityX(0)
-        this.shotgun.setPosition(this.player1.x, this.player1.y+30)
+        this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
         this.checkMousePosition();
-        
+
+        this.player1.aim(this.input.activePointer.x,this.input.activePointer.y );
+        //this.player1.weapon.rotation+=0.1
         // Player 1 controls
         if(this.player1RightControl.isDown){
             this.player1.body.setVelocityX(400)
@@ -87,7 +88,7 @@ class ScenePlay extends Phaser.Scene {
             this.player1.body.setVelocityY(-600);
         } 
         else if (this.player1jump.isDown && (this.player1.jumptimer != 0)){
-            if (this.player1.jumptimer > 6) {
+            if (this.player1.jumptimer > 8) {
                 this.player1.jumptimer = 0;
             }
             else{
@@ -125,16 +126,19 @@ class ScenePlay extends Phaser.Scene {
     }
 
     checkMousePosition(){
+        
         if(this.input.activePointer.x > this.player1.getCenter().x){
             this.player1.flipX = true;
-            this.shotgun.setOrigin(0.1833, 1)
-            this.shotgun.flipX = false
+            this.player1.weapon.setOrigin(0.1, 0)
+            this.player1.weapon.flipX = false
         }else{
             this.player1.flipX = false;
-            this.shotgun.setOrigin(0.8166, 1)
-            this.shotgun.flipX = true
+            this.player1.weapon.setOrigin(0.9, 0)
+            this.player1.weapon.flipX= true
         }
+        
     }
+    
 }
 
 export default ScenePlay;
