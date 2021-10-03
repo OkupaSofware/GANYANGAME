@@ -31,9 +31,12 @@ class MainMenu extends Phaser.Scene {
        this.character1.flipX = true
        this.shotgun = this.add.image(this.character1.x+30, this.character1.y+20, "shotgun");
        this.shotgun.setScale(0.8,0.8)
+       this.fog = this.add.sprite(640,600, "fog_anim")
+       this.anims.create({key: "fog",frames: this.anims.generateFrameNumbers("fog_anim", {frames: [0,1,2,3,4]}), repeat: -1, frameRate: 7})
+       this.fog.anims.play("fog")
        this.rights = this.add.text (640,700, "Okupa Software. All rights reserved. 2021.",{font: 'bold 12px Arial'}).setOrigin(0.5,0.5)
-
-
+       
+       
         //Buttons creation
         var play_button = new Button({
             'scene': this,
@@ -92,7 +95,6 @@ class MainMenu extends Phaser.Scene {
         this.character2.x+=0.8;
         this.sniper.x+=0.8;
       
-        //this.cloud.y++;
         if(this.cloud.x>1500){
             this.cloud.x=-100;
         }
@@ -107,6 +109,7 @@ class MainMenu extends Phaser.Scene {
             this.character2.x = -100
             this.sniper.x = this.character2.x+50
         }
+        
         
         /*
         if(Math.sin(time)>-0.5){
