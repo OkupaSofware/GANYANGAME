@@ -23,6 +23,7 @@ class Player extends Phaser.GameObjects.Sprite{
         // Holds the scene reference to pass it to the bullet constructor
         this.scene = scene;
     }
+    
 };
 
 Player.prototype.shootAt = function(xPlayer, yPlayer, xTarget, yTarget){
@@ -52,8 +53,21 @@ Player.prototype.decreaseAmmoByOne = function(){this.ammo += 1; };
 
 Player.prototype.isAlive = function(){return this.alive; };
 
-Player.prototype.update = function(){
-
+Player.prototype.update = function(time,delta){
+    this.weapon.setPosition(this.x, this.y+2)
+    
+        //Flip sprites
+        if(this.scene.input.activePointer.x > this.getCenter().x){
+            this.flipX = true;
+            this.weapon.setOrigin(0.1, 0)
+            this.weapon.flipX = false
+        }else{
+            this.flipX = false;
+            this.weapon.setOrigin(0.9, 0)
+            this.weapon.flipX= true
+        }
+        
+    
 }
 
 

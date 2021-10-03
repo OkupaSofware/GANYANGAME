@@ -69,9 +69,9 @@ class ScenePlay extends Phaser.Scene {
 
     update(time, delta){
         this.player1.body.setVelocityX(0)
-        this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
-        this.checkMousePosition();
-
+        //this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
+        //this.checkMousePosition();
+        this.player1.update(time,delta)
         this.player1.aim(this.input.activePointer.x,this.input.activePointer.y );
         //this.player1.weapon.rotation+=0.1
         // Player 1 controls
@@ -125,19 +125,7 @@ class ScenePlay extends Phaser.Scene {
         this.scene.start("MainMenu")
     }
 
-    checkMousePosition(){
-        
-        if(this.input.activePointer.x > this.player1.getCenter().x){
-            this.player1.flipX = true;
-            this.player1.weapon.setOrigin(0.1, 0)
-            this.player1.weapon.flipX = false
-        }else{
-            this.player1.flipX = false;
-            this.player1.weapon.setOrigin(0.9, 0)
-            this.player1.weapon.flipX= true
-        }
-        
-    }
+    
     
 }
 
