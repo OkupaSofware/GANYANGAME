@@ -28,19 +28,20 @@ class ScenePlay extends Phaser.Scene {
 
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(570, 300, "platform_1").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(64, 500, "platform_1").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(700, 350, "platform_1").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(1130, 500, "platform_1").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(150, 500, "platform_1").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(640, 500, "platform_1").setScale(0.3,0.3).refreshBody();
         
-        this.platforms.create(400, 450, "platform_3").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(128, 230, "platform_3").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(1128, 630, "platform_3").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(400, 600, "platform_3").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(880, 600, "platform_3").setScale(0.3,0.3).refreshBody();
+        //this.platforms.create(1128, 630, "platform_3").setScale(0.3,0.3).refreshBody();
         
-        this.platforms.create(1100, 315, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(1100, 315, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(850, 515, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(340, 650, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(340, 100, "platform_2").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(800, 350, "platform_4").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(480, 350, "platform_4").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(1050, 200, "platform_4").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(500, 100, "platform_2").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(780, 100, "platform_2").setScale(0.3,0.3).refreshBody();
         //________________________________________________________
 
         //PLAYER 1
@@ -54,7 +55,7 @@ class ScenePlay extends Phaser.Scene {
 
         // plyer 1 shooting
         this.input.on('pointerdown', function (pointer) {
-        this.player1bullets.create(this.player1.shootAt(this.player1.weapon.x, this.player1.weapon.y, pointer.x, pointer.y));
+        this.player1bullets.create(this.player1.shootAt(this.player1.weapon.x+20, this.player1.weapon.y, pointer.x, pointer.y));
         }, this);
         
        
