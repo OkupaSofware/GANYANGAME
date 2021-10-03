@@ -45,36 +45,36 @@ class MainMenu extends Phaser.Scene {
             'over':1,
             'down':2,
             'x': 780,
-            'y': 480
-        });
+            'y': 400
+        }).setScale(0.8,0.8);
         var settings_button = new Button({
             'scene': this,
-            'key':'test_buttons',
+            'key':'credits_button',
             'up': 0,
             'over':1,
             'down':2,
             'x': 780,
-            'y': 580
-        });
+            'y': 500
+        }).setScale(0.8,0.8);
         var code_button = new Button({
             'scene': this,
-            'key':'test_buttons',
+            'key':'help_button',
             'up': 0,
             'over':1,
             'down':2,
             'x': 500,
-            'y': 480
-        });
+            'y': 400
+        }).setScale(0.8,0.8);
         var tutorial_button = new Button({
             'scene': this,
-            'key':'test_buttons',
+            'key':'setting_button',
             'up': 0,
             'over':1,
             'down':2,
             'x': 500,
-            'y': 580
-        });
-        play_button.on('pointerdown',this.playOnPressed,this);
+            'y': 500
+        }).setScale(0.8,0.8);
+        play_button.on('pointerup',this.playOnPressed,this);
 
 
         
