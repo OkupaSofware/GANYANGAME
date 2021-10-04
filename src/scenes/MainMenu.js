@@ -40,7 +40,7 @@ class MainMenu extends Phaser.Scene {
         //Buttons creation
         var play_button = new Button({
             'scene': this,
-            'key':'test_buttons',
+            'key':'play_buttons',
             'up': 0,
             'over':1,
             'down':2,
