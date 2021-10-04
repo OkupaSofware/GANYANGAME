@@ -22,6 +22,10 @@ const config = {
             }
         }
     },
+    fps: {
+        target: 60,
+        forceSetTimeOut: true
+    },
     scene: [
         Bootloader,
         MainMenu,

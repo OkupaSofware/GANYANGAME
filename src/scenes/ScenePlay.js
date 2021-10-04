@@ -69,6 +69,7 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta){
+        console.log(delta)
         this.player1.body.setVelocityX(0)
         //this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
         //this.checkMousePosition();
@@ -89,7 +90,7 @@ class ScenePlay extends Phaser.Scene {
             this.player1.body.setVelocityY(-600);
         } 
         else if (this.player1jump.isDown && (this.player1.jumptimer != 0)){
-            if (this.player1.jumptimer > 8) {
+            if (this.player1.jumptimer > 16) {
                 this.player1.jumptimer = 0;
             }
             else{
