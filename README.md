@@ -19,3 +19,9 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 <p>-Alejandro Anton: https://github.com/aantonb2018, a.antonb.2018@alumnos.urjc.es</p>
 
 <p>TRELLO: https://trello.com/b/7AF4IbZy/ganyan</P>
+
+<H2>CREDITOS</H2>
+
+<P>https://www.pinterest.es/pin/596656650620052997/</P>
+<P>https://craftpix.net/freebies/free-medieval-ruins-cartoon-2d-tileset/</P>
+<P>https://www.gamedevmarket.net/asset/2d-simple-character-swordman-free/</P>
