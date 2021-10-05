@@ -7,7 +7,7 @@ class MainMenu extends Phaser.Scene {
     
     create(){
        //Animated background
-
+       this.cameras.main.fadeIn(1500, 0, 0, 0)
        this.background = this.add.image(640, 360, "background_2");
        this.cloud = this.add.image(-200,0,"cloud");
        this.cloud.setScale(0.3,0.3)
@@ -83,6 +83,7 @@ class MainMenu extends Phaser.Scene {
     playOnPressed()
     {
         //console.log("I am pressed!");
+        //this.cameras.main.fadeOut(3000, 0, 0, 0)
         this.scene.start("ScenePlay");
     }
 

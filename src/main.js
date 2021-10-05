@@ -1,6 +1,7 @@
 import Bootloader from './Bootloader.js';
 import MainMenu from './scenes/MainMenu.js';
 import ScenePlay from './scenes/ScenePlay.js';
+import Intro from './scenes/Intro.js';
 const config = {
     title: "GAN-YAN",
     version: "0.0.1",
@@ -12,7 +13,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    backgroundColor: "#27497C",
+    backgroundColor: "#00000",
     pixelArt: false,
     physics: {
         default: "arcade",
@@ -27,7 +28,7 @@ const config = {
         forceSetTimeOut: true
     },
     scene: [
-        Bootloader,
+        Bootloader,Intro,
         MainMenu,
         ScenePlay
     ]

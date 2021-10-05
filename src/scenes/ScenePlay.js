@@ -8,6 +8,7 @@ class ScenePlay extends Phaser.Scene {
 
 
     create(){
+        this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
@@ -176,7 +177,7 @@ class ScenePlay extends Phaser.Scene {
 
     // BULLETS
     createBullet(targetX, targetY, player, bulletsArray){
-        this.bullet = this.physics.add.image(player.x, player.y, "bullet").setCollideWorldBounds(true);
+        this.bullet = this.physics.add.image(player.x, player.y, "bullet").setCollideWorldBounds(false);
         this.activateBullet(this.bullet);
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
@@ -215,10 +216,10 @@ class ScenePlay extends Phaser.Scene {
                 this.physics.add.collider(this.platforms, this.bullet, this.hit);
                 
                 // Bullet world bounds collision
-                if(bulletsArray[i].x < 10 ||
-                   bulletsArray[i].y < 10 ||
-                   bulletsArray[i].x > this.sys.game.config.width - 10||
-                   bulletsArray[i].y > this.sys.game.config.height - 10){
+                if(bulletsArray[i].x < 0 ||
+                   bulletsArray[i].y < 0 ||
+                   bulletsArray[i].x > this.sys.game.config.width||
+                   bulletsArray[i].y > this.sys.game.config.height){
                         this.disableBullet(bulletsArray[i]);
                         bulletsArray.splice(i, 1);
                 }

@@ -4,7 +4,10 @@ class Bootloader extends Phaser.Scene {
     }
 
     preload() {
+        //Boot
+        this.load.image("developer", "assets/developer.png");
         
+
         // MAIN MENU SPRITES
         this.load.spritesheet("test_buttons", "assets/buttons_test_02.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("play_buttons", "assets/play_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
@@ -17,9 +20,11 @@ class Bootloader extends Phaser.Scene {
         this.load.image("background_2", "./assets/Background_03.png");
         //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
         this.load.image("FLOOR", "./assets/floor.png");
+        
         this.load.on("complete", () =>{
-            this.scene.start("MainMenu");
+            this.scene.start("Intro");
         });
+        
         //this.scene.start("MainMenu");
 
         // SCENE PLAY SPRITES
@@ -73,6 +78,10 @@ class Bootloader extends Phaser.Scene {
         this.anims.fromJSON(this.player_anim_run)
         this.anims.fromJSON(this.player_anim_die)
         this.anims.fromJSON(this.player_anim_jump)
+
+        
+
     }
+   
 }
 export default Bootloader;
