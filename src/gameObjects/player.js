@@ -8,7 +8,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.cursorsCreated = false;
         this.lives = 3;
         this.ammo = 10;
-        this.ammoSpeed = 2;
+        this.ammoSpeed = 30;
         this.alive = true;
         this.jumptimer = 0;
         
