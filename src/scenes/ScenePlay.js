@@ -69,7 +69,7 @@ class ScenePlay extends Phaser.Scene {
 
 
 
-
+/*
         //PLAYER 2
         this.player2 = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8);
         // bullets player 2
@@ -88,17 +88,17 @@ class ScenePlay extends Phaser.Scene {
         //Physics player 2
         this.physics.add.collider(this.player2, this.platforms);
   
-          
+          */
         // Players collisions
-        this.physics.add.collider(this.player1, this.player2);
+        //this.physics.add.collider(this.player1, this.player2);
         this.physics.add.collider(this.player1, this.ammoRecharge, this.recharge);
-        this.physics.add.collider(this.player2, this.ammoRecharge, this.recharge);
+        //this.physics.add.collider(this.player2, this.ammoRecharge, this.recharge);
     }
 
     update(time, delta){
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
-        this.updateBulletsPosition(this.bulletsPlayer2, this.player2);
+        //this.updateBulletsPosition(this.bulletsPlayer2, this.player2);
         
         // PLAYER 1
         this.player1.body.setVelocityX(0)
@@ -144,7 +144,7 @@ class ScenePlay extends Phaser.Scene {
         }
 
         
-        
+        /*
         // PLAYER 2
         this.player2.body.setVelocityX(0)
         this.player2.update(time,delta)
@@ -168,6 +168,7 @@ class ScenePlay extends Phaser.Scene {
         if(!(this.player2LeftControl.isDown || this.player2RightControl.isDown) && this.player2.body.onFloor()){
             this.player2.anims.play('idle',true)
         }
+        */
 
     }
 
@@ -205,17 +206,17 @@ class ScenePlay extends Phaser.Scene {
 
     updateBulletsPosition(bulletsArray, player){
         for(var i = 0; i < bulletsArray.length ; i++){
-                //checkBulletCollision(); // IMPLEMENTAR
                 let ammoSpeed = player.getAmmoSpeed();
                 bulletsArray[i].setVelocityX(bulletsArray[i].xSpeed * ammoSpeed);
                 bulletsArray[i].setVelocityY(-bulletsArray[i].ySpeed * ammoSpeed);
 
-                console.log(bulletsArray[i].bulletPos);
+                //console.log(bulletsArray[i].bulletPos);
             
                 // Add collisions
                 this.physics.add.collider(this.platforms, this.bullet, this.hit);
                 
                 // Bullet world bounds collision
+                
                 if(bulletsArray[i].x < 0 ||
                    bulletsArray[i].y < 0 ||
                    bulletsArray[i].x > this.sys.game.config.width||
@@ -223,6 +224,7 @@ class ScenePlay extends Phaser.Scene {
                         this.disableBullet(bulletsArray[i]);
                         bulletsArray.splice(i, 1);
                 }
+                
         }
     }
 
@@ -236,8 +238,9 @@ class ScenePlay extends Phaser.Scene {
         gBullet.setVisible(false);
     }
 
-    hit(platform, bullet){
-        //console.log(bullet.bulletPos); // not working
+    hit(gbullet){
+        gbullet.setActive(false);
+        gbullet.setVisible(false);
     }
 
     recharge(player, ammo){
