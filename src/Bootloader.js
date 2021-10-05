@@ -14,7 +14,6 @@ class Bootloader extends Phaser.Scene {
         this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
         this.load.spritesheet("fog_anim", "assets/fog.png",{ frameWidth: 1400, frameHeight: 750 });
         //this.load.image("title", "./assets/TITLE_1.png");
-        
         this.load.image("background_2", "./assets/Background_03.png");
         //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
         this.load.image("FLOOR", "./assets/floor.png");
@@ -62,7 +61,9 @@ class Bootloader extends Phaser.Scene {
     }
 
     create() {
-        
+        //change cursor
+        this.input.setDefaultCursor('url(assets/mirillaBlack.png), pointer');
+
         this.player_anim_idle = this.cache.json.get('idle_anim')
         this.player_anim_run = this.cache.json.get('run_anim')
         this.player_anim_die = this.cache.json.get('die_anim')

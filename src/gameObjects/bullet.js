@@ -7,8 +7,8 @@ class Bullet extends Phaser.GameObjects.Image{
         this.body.allowGravity = false;
 
         this.speed = bulletSpeed;
-        this.xTarget = xTarget;
-        this.yTarget = yTarget;
+        this.xTarget = xTarget + 8;
+        this.yTarget = yTarget + 8;
         this.xDirection = xTarget - xPos;
         this.yDirection = yTarget - yPos;
         this.direction = Math.atan((this.xTarget-this.body.x) / (this.yTarget-this.body.y));

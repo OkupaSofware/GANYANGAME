@@ -8,7 +8,6 @@ class ScenePlay extends Phaser.Scene {
 
 
     create(){
-        
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
@@ -45,7 +44,7 @@ class ScenePlay extends Phaser.Scene {
         //________________________________________________________
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8);
+        this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         
         //Weapon player 1
         
@@ -69,7 +68,6 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta){
-        console.log(delta)
         this.player1.body.setVelocityX(0)
         //this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
         //this.checkMousePosition();
