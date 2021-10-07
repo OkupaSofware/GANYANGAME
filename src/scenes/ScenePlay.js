@@ -189,7 +189,7 @@ class ScenePlay extends Phaser.Scene {
     };
 
     calculateBulletSpeed(bullet, targetX, targetY, player){
-        this.direction = Math.atan((targetX-player.x) / (targetY-player.y));
+        this.direction = Math.atan((targetX - player.x + 12) / (targetY - player.y + 12));
 
         // Set direction
         if (targetY >= player.y)
@@ -241,6 +241,8 @@ class ScenePlay extends Phaser.Scene {
     hit(gbullet){
         gbullet.setActive(false);
         gbullet.setVisible(false);
+        gbullet.body.destroy();
+
     }
 
     recharge(player, ammo){
