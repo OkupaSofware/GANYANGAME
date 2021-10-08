@@ -1,4 +1,7 @@
 import Button from "../gameObjects/Button.js";
+
+var inputText;
+
 class MainMenu extends Phaser.Scene {
     constructor(){
         super( "MainMenu");
@@ -80,7 +83,7 @@ class MainMenu extends Phaser.Scene {
 
         //Display text for player name
         var usernameText = this.add.text(500, 300, '', { color: 'white', fontSize: '30px '}); 
-        var inputText;
+
         //Input text for player name
         var element = this.add.dom(650,300).createFromCache('nameform');
         
@@ -104,6 +107,7 @@ class MainMenu extends Phaser.Scene {
 
                     //  Populate the text with whatever they typed in
                     usernameText.setText('Username: ' + inputText.value);
+                    inputText = inputText.value;
                     //usernameText.setText('Username: ' + this.registry.get('username'));
                 }
                 else
@@ -114,15 +118,14 @@ class MainMenu extends Phaser.Scene {
 
         });
         
-        //Saves the username in a phaser registry
-        this.registry.set('username', inputText);
-        
     }
 
     playOnPressed()
     {
         //console.log("I am pressed!");
         //this.cameras.main.fadeOut(3000, 0, 0, 0)
+        //Saves the username in a phaser registry
+        this.registry.set('username', inputText);
         this.scene.start("ScenePlay");
     }
 
