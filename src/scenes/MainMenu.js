@@ -12,12 +12,14 @@ class MainMenu extends Phaser.Scene {
        this.cloud = this.add.image(-200,0,"cloud");
        this.cloud.setScale(0.3,0.3)
        this.cloud1 = this.add.image(-200,0,"cloud");
+       this.neo = this.add.image(640,165,"new_title").setScale(0.7,0.7);
        this.cloud1.setScale(0.2,0.2)
        this.titleText=this.add.text(640,80, "WELCOME TO",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
-       this.title = this.add.sprite(640,165, "title_anim")
-       this.title.setScale(0.15,0.15)
+
+       //this.title = this.add.sprite(640,165, "title_anim")
+       //this.title.setScale(0.15,0.15)
        this.anims.create({key: "colorful_title",frames: this.anims.generateFrameNumbers("title_anim", {frames: [0,1,2,3]}), repeat: -1, frameRate: 8})
-       this.title.anims.play("colorful_title")
+       //this.title.anims.play("colorful_title")
        this.character2 = this.add.sprite(-100,600,"run") 
        this.character2.setScale(0.75,0.75)
        this.character2.anims.play('run',true)
