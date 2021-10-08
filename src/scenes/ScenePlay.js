@@ -28,19 +28,21 @@ class ScenePlay extends Phaser.Scene {
 
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(1130, 500, "platform_1").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(150, 500, "platform_1").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(640, 500, "platform_1").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(1130, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
+        this.platforms.create(150, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
+        this.platforms.create(640, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
         
-        this.platforms.create(400, 600, "platform_3").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(880, 600, "platform_3").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(400, 600, "platform_3").setScale(0.3,0.3).refreshBody().setSize(190,25,0,0);
+        this.platforms.create(880, 600, "platform_3").setScale(0.3,0.3).refreshBody().setSize(190,25,0,0);
         
-        this.platforms.create(800, 350, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(480, 350, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(1050, 200, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(500, 100, "platform_2").setScale(0.3,0.3).refreshBody();
-        this.platforms.create(780, 100, "platform_2").setScale(0.3,0.3).refreshBody();
+        this.platforms.create(800, 350, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
+        this.platforms.create(480, 350, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
+        this.platforms.create(1050, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
+        this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
+        this.platforms.create(500, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
+        this.platforms.create(780, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
+
+        //this.platforms.setSize(10,10,0,0)
         //________________________________________________________
 
         // TEST RECHARGE AMMO
