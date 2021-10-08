@@ -80,7 +80,7 @@ class MainMenu extends Phaser.Scene {
 
         //Display text for player name
         var usernameText = this.add.text(500, 300, '', { color: 'white', fontSize: '30px '}); 
-        
+        var inputText;
         //Input text for player name
         var element = this.add.dom(650,300).createFromCache('nameform');
         
@@ -91,7 +91,7 @@ class MainMenu extends Phaser.Scene {
             if (event.target.name === 'playButton')
             {
             
-                inputText = this.getChildByName('nameField');
+                 inputText = this.getChildByName('nameField');
 
                 //  Have they entered anything?
                 if (inputText.value !== '')

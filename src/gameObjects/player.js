@@ -1,10 +1,11 @@
+import PlayerHUD from '../gameObjects/HUD.js';
 class Player extends Phaser.GameObjects.Sprite{
     constructor(scene, x, y, type){
         super(scene, x, y, type);
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true);
-
+        this.hud = new PlayerHUD(scene,this);
         this.cursorsCreated = false;
         this.lives = 3;
         this.ammo = 100;
@@ -46,7 +47,7 @@ Player.prototype.isAlive = function(){return this.alive; };
 
 Player.prototype.update = function(time,delta){
     this.weapon.setPosition(this.x, this.y+2)
-    
+    this.hud.update(this.x,this.y)
         //Flip sprites
         if(this.scene.input.activePointer.x > this.getCenter().x){
             this.flipX = true;
