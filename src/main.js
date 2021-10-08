@@ -28,6 +28,9 @@ const config = {
         target: 60,
         forceSetTimeOut: true
     },
+    dom: {
+        createContainer: true
+    },
     scene: [
         Bootloader,Intro,
         MainMenu,
