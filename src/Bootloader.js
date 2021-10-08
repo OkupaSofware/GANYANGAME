@@ -20,7 +20,7 @@ class Bootloader extends Phaser.Scene {
         this.load.image("background_2", "./assets/Background_03.png");
         //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
         this.load.image("FLOOR", "./assets/floor.png");
-        this.load.image("new_title", "./assets/neo_title.png");
+        this.load.image("new_title", "./assets/neo_title_RUST.png");
         
         this.load.on("complete", () =>{
             this.scene.start("Intro");
@@ -30,6 +30,7 @@ class Bootloader extends Phaser.Scene {
 
         // SCENE PLAY SPRITES
         // Environment sprites
+
         this.load.image("background", "./assets/background.png");
         this.load.image("platform", "./assets/platform.png");
         this.load.image("cloud", "./assets/cloud_dark.png");
@@ -41,6 +42,10 @@ class Bootloader extends Phaser.Scene {
         this.load.image("platform_3", "assets/tileset/platform_3.png");
         this.load.image("platform_4", "assets/tileset/platform_4.png");
         
+        //Boosters sprites
+        this.load.image("ammo", "assets/boosters/ammo.png");
+        
+
         // Bullet sprite
         this.load.image("bullet", "assets/bullet.png");
         this.load.image("bala", "assets/bala.png");
