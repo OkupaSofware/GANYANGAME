@@ -7,8 +7,8 @@ class Player extends Phaser.GameObjects.Sprite{
 
         this.cursorsCreated = false;
         this.lives = 3;
-        this.ammo = 10;
-        this.ammoSpeed = 30;
+        this.ammo = 100;
+        this.ammoSpeed = 80;
         this.alive = true;
         this.jumptimer = 0;
         
@@ -16,6 +16,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.weapon = scene.add.image(this.x, this.y+2, "shotgun");
         this.weapon.setOrigin(0.1, 0)
         this.weapon.setScale(0.5,0.5)
+        this.weapon.setDepth(1)
     }
     
 };

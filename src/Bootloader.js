@@ -42,6 +42,7 @@ class Bootloader extends Phaser.Scene {
         
         // Bullet sprite
         this.load.image("bullet", "assets/bullet.png");
+        this.load.image("bala", "assets/bala.png");
         
         // PLAYER SPRITES
         this.load.path = './assets/player/';

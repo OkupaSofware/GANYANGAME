@@ -56,7 +56,7 @@ class ScenePlay extends Phaser.Scene {
         // plyer 1 shooting
         this.input.on('pointerdown', function (pointer) {
             if(this.player1.getAmmo() > 0){
-                this.createBullet(pointer.x, pointer.y, this.player1, this.bulletsPlayer1);
+                this.createBullet(pointer.x, pointer.y, this.player1.weapon, this.bulletsPlayer1);
                 this.player1.decreaseAmmoByOne();
             }
         }, this);
@@ -178,18 +178,27 @@ class ScenePlay extends Phaser.Scene {
 
     // BULLETS
     createBullet(targetX, targetY, player, bulletsArray){
-        this.bullet = this.physics.add.image(player.x, player.y, "bullet").setCollideWorldBounds(false);
+        this.bullet = this.physics.add.image(player.x, player.y+10, "bala").setScale(0.5);
         this.activateBullet(this.bullet);
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
         bulletsArray.push(this.bullet);
+
+        this.bullet.angle = -180/Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
+        if ((targetY >= player.y && targetX < player.x) || (targetY >= player.y && targetX >= player.x)) //cuadrante 1
+        {
+            this.bullet.flipY = true;
+        }
+        
+        
+        
         
         // Direction callculation
-        this.calculateBulletSpeed(this.bullet, targetX, targetY, player);
+        this.calculateBulletSpeed(this.bullet, targetX+8, targetY+8, player);
     };
 
     calculateBulletSpeed(bullet, targetX, targetY, player){
-        this.direction = Math.atan((targetX - player.x + 12) / (targetY - player.y + 12));
+        this.direction = Math.atan((targetX - player.x) / (targetY - player.y));
 
         // Set direction
         if (targetY >= player.y)
@@ -246,7 +255,7 @@ class ScenePlay extends Phaser.Scene {
     }
 
     recharge(player, ammo){
-        player.setAmmo(10);
+        player.setAmmo(100);
     }
     
 }
