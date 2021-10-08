@@ -1,6 +1,7 @@
 import Player from '../gameObjects/Player.js';
 import Button from '../gameObjects/Button.js';
 
+
 class ScenePlay extends Phaser.Scene {
     constructor() {
         super({key: "ScenePlay"});
