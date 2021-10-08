@@ -45,8 +45,8 @@ class ScenePlay extends Phaser.Scene {
 
         // TEST RECHARGE AMMO
         this.ammoRecharge = this.physics.add.staticGroup();
-        this.ammoRecharge.create(25, this.sys.game.config.height - 25, "bullet").setScale(3, 3).refreshBody();
-        this.ammoRecharge.create(this.sys.game.config.width - 25, this.sys.game.config.height - 25, "bullet").setScale(3, 3).refreshBody();
+        this.ammoRecharge.create(25, this.sys.game.config.height - 25, "ammo").setScale(0.15, 0.15).refreshBody();
+        this.ammoRecharge.create(890, 550, "ammo").setScale(0.15, 0.15).refreshBody();
         
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
@@ -122,6 +122,7 @@ class ScenePlay extends Phaser.Scene {
     createBullet(targetX, targetY, player, bulletsArray){
         this.bullet = this.physics.add.image(player.x, player.y+10, "bala").setScale(0.5).refreshBody();
         this.activateBullet(this.bullet);
+        this.bullet.body.setSize(5,5,0,0)
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
         bulletsArray.push(this.bullet);
