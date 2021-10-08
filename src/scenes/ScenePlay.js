@@ -34,7 +34,6 @@ class ScenePlay extends Phaser.Scene {
         
         this.platforms.create(400, 600, "platform_3").setScale(0.3,0.3).refreshBody();
         this.platforms.create(880, 600, "platform_3").setScale(0.3,0.3).refreshBody();
-        //this.platforms.create(1128, 630, "platform_3").setScale(0.3,0.3).refreshBody();
         
         this.platforms.create(800, 350, "platform_4").setScale(0.3,0.3).refreshBody();
         this.platforms.create(480, 350, "platform_4").setScale(0.3,0.3).refreshBody();
@@ -66,47 +65,18 @@ class ScenePlay extends Phaser.Scene {
         this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
-
-
-
-/*
-        //PLAYER 2
-        this.player2 = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8);
-        // bullets player 2
-        this.bulletsPlayer2 = new Array();
-        // plyer 2 shooting
-        this.input.on('pointerdown', function (pointer) {
-            if(this.player2.getAmmo() > 0){
-                this.createBullet(pointer.x, pointer.y, this.player2, this.bulletsPlayer2);
-                this.player2.decreaseAmmoByOne();
-            }
-        }, this);
-        //controls player 2
-        this.player2jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
-        this.player2RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-        this.player2LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-        //Physics player 2
-        this.physics.add.collider(this.player2, this.platforms);
-  
-          */
-        // Players collisions
-        //this.physics.add.collider(this.player1, this.player2);
         this.physics.add.collider(this.player1, this.ammoRecharge, this.recharge);
-        //this.physics.add.collider(this.player2, this.ammoRecharge, this.recharge);
     }
 
     update(time, delta){
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
-        //this.updateBulletsPosition(this.bulletsPlayer2, this.player2);
         
         // PLAYER 1
         this.player1.body.setVelocityX(0)
-        //this.player1.weapon.setPosition(this.player1.x, this.player1.y+2)
-        //this.checkMousePosition();
         this.player1.update(time,delta)
         this.player1.aim(this.input.activePointer.x,this.input.activePointer.y );
-        //this.player1.weapon.rotation+=0.1
+
         // Player 1 controls
         if(this.player1RightControl.isDown){
             this.player1.body.setVelocityX(400)
@@ -142,34 +112,6 @@ class ScenePlay extends Phaser.Scene {
         if(!(this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()){
             this.player1.anims.play('idle',true)
         }
-
-        
-        /*
-        // PLAYER 2
-        this.player2.body.setVelocityX(0)
-        this.player2.update(time,delta)
-        this.player2.aim(this.input.activePointer.x,this.input.activePointer.y );
-        // Player 2 basic controls
-        if(this.player2RightControl.isDown){
-            this.player2.body.setVelocityX(400)
-        }
-        if(this.player2LeftControl.isDown){
-            this.player2.body.setVelocityX(-400)
-        }
-        if(this.player2jump.isDown && this.player2.body.onFloor()){
-            this.player2.body.setVelocityY(-800)
-        }
-        if((this.player2LeftControl.isDown || this.player2RightControl.isDown) && this.player2.body.onFloor()){
-            this.player2.anims.play('run',true)
-        }
-        if(!this.player2.body.onFloor()){
-            this.player2.anims.play('jump',true)
-        }
-        if(!(this.player2LeftControl.isDown || this.player2RightControl.isDown) && this.player2.body.onFloor()){
-            this.player2.anims.play('idle',true)
-        }
-        */
-
     }
 
     optionsOnPressed(){
@@ -178,23 +120,21 @@ class ScenePlay extends Phaser.Scene {
 
     // BULLETS
     createBullet(targetX, targetY, player, bulletsArray){
-        this.bullet = this.physics.add.image(player.x, player.y+10, "bala").setScale(0.5);
+        this.bullet = this.physics.add.image(player.x, player.y+10, "bala").setScale(0.5).refreshBody();
         this.activateBullet(this.bullet);
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
         bulletsArray.push(this.bullet);
+        this.bullet.body.setSize(10,10,0.5,0.5)
 
         this.bullet.angle = -180/Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
         if ((targetY >= player.y && targetX < player.x) || (targetY >= player.y && targetX >= player.x)) //cuadrante 1
         {
             this.bullet.flipY = true;
         }
-        
-        
-        
-        
+
         // Direction callculation
-        this.calculateBulletSpeed(this.bullet, targetX+8, targetY+8, player);
+        this.calculateBulletSpeed(this.bullet, targetX+5, targetY, player);
     };
 
     calculateBulletSpeed(bullet, targetX, targetY, player){
