@@ -1,7 +1,6 @@
 <H1>GAN YAN</H1>
 
-![new_title](https://user-images.githubusercontent.com/91082053/135495072-80ab305e-0060-41f5-a4ae-28d3be5912a0.png)
-
+![neo_title_RUST](https://user-images.githubusercontent.com/91082053/136620736-d97a34ce-4869-40c9-9c0e-c1fc8e1b4e8d.png)
 
 
 <H2>BIENVENIDOS A GAN-YAN</H2>
@@ -10,7 +9,8 @@ Si lo quieres es matarte a tiros en un mundo sin eje Z con tus compañeros de cl
 
 Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas y mejoras!
 
-![Screenshot (249)](https://user-images.githubusercontent.com/91082053/135757258-db76fbf4-4c10-4eb8-90ff-faea3ab8571e.png)
+![Screenshot (260)](https://user-images.githubusercontent.com/91082053/136620835-a46912da-abf4-4e0d-8a26-b5b70adde92b.png)
+
 
 <H2>INTEGRANTES DEL GRUPO</H2>
 <p>-Alvaro Olvarria: https://github.com/Alvaroolav3D, a.olavarria.2019@alumnos.urjc.es.</p>
