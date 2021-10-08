@@ -78,7 +78,44 @@ class MainMenu extends Phaser.Scene {
         }).setScale(0.8,0.8);
         play_button.on('pointerup',this.playOnPressed,this);
 
+        //Display text for player name
+        var usernameText = this.add.text(500, 300, '', { color: 'white', fontSize: '30px '}); 
+        
+        //Input text for player name
+        var element = this.add.dom(650,300).createFromCache('nameform');
+        
+        element.addListener('click');
 
+        element.on('click', function (event) {
+
+            if (event.target.name === 'playButton')
+            {
+            
+                inputText = this.getChildByName('nameField');
+
+                //  Have they entered anything?
+                if (inputText.value !== '')
+                {
+                    //  Turn off the click events
+                    this.removeListener('click');
+
+                    //  Hide the login element
+                    this.setVisible(false);
+
+                    //  Populate the text with whatever they typed in
+                    usernameText.setText('Username: ' + inputText.value);
+                    //usernameText.setText('Username: ' + this.registry.get('username'));
+                }
+                else
+                {
+                    alert("Please introduce a username");
+                }
+            }
+
+        });
+        
+        //Saves the username in a phaser registry
+        this.registry.set('username', inputText);
         
     }
 
