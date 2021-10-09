@@ -7,7 +7,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.body.setCollideWorldBounds(true);
         this.hud = new PlayerHUD(scene,this);
         this.cursorsCreated = false;
-        this.lives = 100;
+        this.lives = 3;
         this.ammo = 100;
         this.ammoSpeed = 80;
         this.alive = true;
