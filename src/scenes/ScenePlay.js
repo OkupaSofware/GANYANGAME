@@ -51,10 +51,16 @@ class ScenePlay extends Phaser.Scene {
         this.ammoRecharge.create(25, this.sys.game.config.height - 25, "ammo").setScale(0.15, 0.15).refreshBody();
         this.ammoRecharge.create(890, 550, "ammo").setScale(0.15, 0.15).refreshBody();
         
+        // TEST RECOVER HP
+        this.live = this.physics.add.image(225, this.sys.game.config.height - 25, "live").setScale(0.3,0.3);
+        this.live.body.allowGravity = false;
+
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
+        
         // bullets player 1
         this.bulletsPlayer1 = new Array();
+
         // plyer 1 shooting
         this.input.on('pointerdown', function (pointer) {
             if(this.player1.getAmmo() > 0){
@@ -62,19 +68,22 @@ class ScenePlay extends Phaser.Scene {
                 this.player1.decreaseAmmoByOne();
             }
         }, this);
+
         //controls player 1
         this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.player1, this.ammoRecharge, this.recharge);
+        this.physics.add.collider(this.player1, this.live, this.recover)
     }
 
     update(time, delta){
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
-        
+        console.log(this.player1.getLives());
         // PLAYER 1
         this.player1.body.setVelocityX(0)
         this.player1.update(time,delta)
@@ -194,12 +203,19 @@ class ScenePlay extends Phaser.Scene {
     hit(gbullet){
         gbullet.setActive(false);
         gbullet.setVisible(false);
-        gbullet.body.destroy();
-
+        gbullet.x = 0;
+        gbullet.y = 0;
     }
 
     recharge(player, ammo){
         player.setAmmo(100);
+    }
+
+    recover(player,live){
+        player.setLives(50)
+        live.setActive(false);
+        live.setVisible(false);
+        live.body.destroy();
     }
     
 }

@@ -48,7 +48,8 @@ class Bootloader extends Phaser.Scene {
         
         //Boosters sprites
         this.load.image("ammo", "assets/boosters/ammo.png");
-        
+        this.load.image("live", "assets/boosters/Life.png")
+        this.load.image("bubble", "assets/boosters/Bubble.png") 
 
         // Bullet sprite
         this.load.image("bullet", "assets/bullet.png");
