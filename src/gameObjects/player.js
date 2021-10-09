@@ -5,8 +5,9 @@ class Player extends Phaser.GameObjects.Sprite{
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true);
-        this.hud = new PlayerHUD(scene,this);
         this.cursorsCreated = false;
+        this.name = new String("Paqui")
+        this.hud = new PlayerHUD(scene,this);
         this.lives = 3;
         this.ammo = 100;
         this.ammoSpeed = 80;
