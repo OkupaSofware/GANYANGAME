@@ -175,7 +175,7 @@ class ScenePlay extends Phaser.Scene {
                 //console.log(bulletsArray[i].bulletPos);
             
                 // Add collisions
-                this.physics.add.collider(this.platforms, this.bullet, this.hit);
+                this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
                 
                 // Bullet world bounds collision
                 
@@ -200,11 +200,16 @@ class ScenePlay extends Phaser.Scene {
         gBullet.setVisible(false);
     }
 
-    hit(gbullet){
-        gbullet.setActive(false);
-        gbullet.setVisible(false);
-        gbullet.x = 0;
-        gbullet.y = 0;
+    hit(gBullet, platform){
+        console.log("gBullet.x: " + gBullet.x + " gBullet.y: " + gBullet.y + " platform.x: " + platform.x + " platform.y: " + platform.y)
+
+        if(gBullet.y < platform.y + 10){
+            gBullet.y = this.height - 5;
+            gBullet.y = this.width - 5;
+        } else if(gBullet.y > platform.y){
+            gBullet.x = 5;
+            gBullet.y = 5;
+        }
     }
 
     recharge(player, ammo){
