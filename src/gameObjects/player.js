@@ -8,7 +8,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.cursorsCreated = false;
         this.name = new String("Paqui")
         this.hud = new PlayerHUD(scene,this);
-        this.lives = 3;
+        this.lives = 100;
         this.ammo = 100;
         this.ammoSpeed = 80;
         this.alive = true;

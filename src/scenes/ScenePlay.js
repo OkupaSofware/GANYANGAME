@@ -1,5 +1,6 @@
 import Player from '../gameObjects/Player.js';
 import Button from '../gameObjects/Button.js';
+import Boost from '../gameObjects/boost.js';
 
 
 class ScenePlay extends Phaser.Scene {
@@ -33,6 +34,9 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(150, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
         this.platforms.create(640, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
         
+        this.platforms.create(500, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
+        this.platforms.create(780, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
+
         this.platforms.create(400, 600, "platform_3").setScale(0.3,0.3).refreshBody().setSize(190,25,0,0);
         this.platforms.create(880, 600, "platform_3").setScale(0.3,0.3).refreshBody().setSize(190,25,0,0);
         
@@ -40,20 +44,14 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(480, 350, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
         this.platforms.create(1050, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
         this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
-        this.platforms.create(500, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
-        this.platforms.create(780, 100, "platform_2").setScale(0.3,0.3).refreshBody().setSize(150,25,0,0);
-
-        //this.platforms.setSize(10,10,0,0)
         //________________________________________________________
 
-        // TEST RECHARGE AMMO
-        this.ammoRecharge = this.physics.add.staticGroup();
-        this.ammoRecharge.create(25, this.sys.game.config.height - 25, "ammo").setScale(0.15, 0.15).refreshBody();
-        this.ammoRecharge.create(890, 550, "ammo").setScale(0.15, 0.15).refreshBody();
-        
-        // TEST RECOVER HP
-        this.live = this.physics.add.image(225, this.sys.game.config.height - 25, "live").setScale(0.3,0.3);
-        this.live.body.allowGravity = false;
+        this.boostArray = new Array();
+        this.boostArray[0] = new Boost(this, 640, 450, Math.floor(Math.random() * 3) + 1);
+        this.boostArray[1] = new Boost(this, 400, 550, Math.floor(Math.random() * 3) + 1);
+        this.boostArray[2] = new Boost(this, 880, 550, Math.floor(Math.random() * 3) + 1);
+        this.boostArray[3] = new Boost(this, 480, 300, Math.floor(Math.random() * 3) + 1);
+        this.boostArray[4] = new Boost(this, 800, 300, Math.floor(Math.random() * 3) + 1);
 
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
@@ -61,7 +59,7 @@ class ScenePlay extends Phaser.Scene {
         // bullets player 1
         this.bulletsPlayer1 = new Array();
 
-        // plyer 1 shooting
+        // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
             if(this.player1.getAmmo() > 0){
                 this.createBullet(pointer.x, pointer.y, this.player1.weapon, this.bulletsPlayer1);
@@ -76,14 +74,31 @@ class ScenePlay extends Phaser.Scene {
         
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
-        this.physics.add.collider(this.player1, this.ammoRecharge, this.recharge);
-        this.physics.add.collider(this.player1, this.live, this.recover)
+        
+
+        for(var i = 0; i < this.boostArray.length; i++){
+            this.physics.add.collider(this.player1, this.boostArray[i].live, this.boostArray[i].recover)
+            this.physics.add.collider(this.player1, this.boostArray[i].bubble, this.boostArray[i].shield)
+            this.physics.add.collider(this.player1, this.boostArray[i].ammo, this.boostArray[i].recharge)
+        }
     }
 
     update(time, delta){
+        console.log(this.boostArray[0].status)
+        /* Boosts creation
+            for(var i = 0; i < this.boostArray.length; i++){
+                if(this.boostArray[i].status == false){
+                    this.boostArray[i].counter++;
+                    if(this.boostArray[i].counter == 100){
+                        this.boostArray[i].counter = 0;
+                    }
+                }
+            }
+        */
+       
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
-        console.log(this.player1.getLives());
+
         // PLAYER 1
         this.player1.body.setVelocityX(0)
         this.player1.update(time,delta)
@@ -201,7 +216,7 @@ class ScenePlay extends Phaser.Scene {
     }
 
     hit(gBullet, platform){
-        console.log("gBullet.x: " + gBullet.x + " gBullet.y: " + gBullet.y + " platform.x: " + platform.x + " platform.y: " + platform.y)
+        //console.log("gBullet.x: " + gBullet.x + " gBullet.y: " + gBullet.y + " platform.x: " + platform.x + " platform.y: " + platform.y)
 
         if(gBullet.y < platform.y + 10){
             gBullet.y = this.height - 5;
@@ -211,18 +226,6 @@ class ScenePlay extends Phaser.Scene {
             gBullet.y = 5;
         }
     }
-
-    recharge(player, ammo){
-        player.setAmmo(100);
-    }
-
-    recover(player,live){
-        player.setLives(50)
-        live.setActive(false);
-        live.setVisible(false);
-        live.body.destroy();
-    }
-    
 }
 
 export default ScenePlay;
