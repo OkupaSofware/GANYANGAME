@@ -12,5 +12,11 @@ class PlayerHUD{
         this.life.setPosition(x-44,y-60)
         this.name.setPosition(x,y-82)
     }
+    decreaseLife(newScale){
+        this.life.setScale(newScale,1)
+    }
+    increaseLife(newScale){
+        this.life.setScale(newScale,1)
+    }
 }
 export default PlayerHUD;

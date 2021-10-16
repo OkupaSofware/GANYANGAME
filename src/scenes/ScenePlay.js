@@ -53,6 +53,10 @@ class ScenePlay extends Phaser.Scene {
         this.boostArray[3] = new Boost(this, 480, 300, Math.floor(Math.random() * 3) + 1);
         this.boostArray[4] = new Boost(this, 800, 300, Math.floor(Math.random() * 3) + 1);
 
+
+
+        this.targetsArray = new Array();
+        this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         
@@ -95,7 +99,8 @@ class ScenePlay extends Phaser.Scene {
                 }
             }
         */
-       
+
+            this.targetsArray[0].update(time,delta)
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
 
@@ -191,6 +196,7 @@ class ScenePlay extends Phaser.Scene {
             
                 // Add collisions
                 this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
+                this.physics.add.collider(bulletsArray[i], this.targetsArray[0], this.hitBody);
                 
                 // Bullet world bounds collision
                 
@@ -225,6 +231,12 @@ class ScenePlay extends Phaser.Scene {
             gBullet.x = 5;
             gBullet.y = 5;
         }
+    }
+    hitBody(gBullet, target){
+        gBullet.setActive(false);
+        gBullet.setVisible(false);
+        gBullet.body.destroy()
+        target.decreaseLife(5)
     }
 }
 

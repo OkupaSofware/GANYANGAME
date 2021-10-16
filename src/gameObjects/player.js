@@ -39,7 +39,7 @@ Player.prototype.increaseLife = function(life){
     var auxlife = life/100
     var scalef = scale0 + auxlife;
     this.life += life; 
-    this.hud.life.setScale(scalef,1)
+    this.hud.increaseLife(scalef);
     }
 };
 Player.prototype.decreaseLife = function(damage){
@@ -47,8 +47,8 @@ Player.prototype.decreaseLife = function(damage){
     var auxdamage = damage/100
     var scalef = scale0 - auxdamage;
     this.life -= damage;
-    this.hud.life.setScale(scalef,1)
- };
+    this.hud.decreaseLife(scalef);
+};
 
 Player.prototype.setAmmo = function(ammo){this.ammo = ammo; };
 Player.prototype.getAmmo = function(){return this.ammo; };
