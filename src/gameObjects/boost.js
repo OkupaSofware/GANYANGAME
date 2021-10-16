@@ -19,13 +19,13 @@ class Boost{
         }
     }
     recover(player, boost){
-        player.setLives(player.getLives()+25)
+        player.increaseLife(25)
         boost.setActive(false);
         boost.setVisible(false);
         boost.body.destroy();
     }
     shield(player, boost){
-        player.setLives(player.getLives()+50)
+        //player.setLives(player.getLife()+50)
         boost.setActive(false);
         boost.setVisible(false);
         boost.body.destroy();

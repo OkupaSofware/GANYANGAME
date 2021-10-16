@@ -8,7 +8,8 @@ class Player extends Phaser.GameObjects.Sprite{
         this.cursorsCreated = false;
         this.name = new String("Paqui")
         this.hud = new PlayerHUD(scene,this);
-        this.lives = 100;
+        this.life = 50;
+        this.hud.life.setScale(this.life/100,1)
         this.ammo = 100;
         this.ammoSpeed = 80;
         this.alive = true;
@@ -29,11 +30,25 @@ Player.prototype.aim = function(xTarget, yTarget){
 
 
 // Getters and setters
-Player.prototype.setLives = function(lives){this.lives = lives; };
-Player.prototype.getLives = function(){return this.lives; };
+Player.prototype.setLife = function(life){this.life = life; };
+Player.prototype.getLife = function(){return this.life; };
 
-Player.prototype.increaseLivesByOne = function(){this.lives += 1; };
-Player.prototype.decreaseLivesByOne = function(){this.lives -= 1; };
+Player.prototype.increaseLife = function(life){
+    if(this.life<100){
+    var scale0 = this.life/100
+    var auxlife = life/100
+    var scalef = scale0 + auxlife;
+    this.life += life; 
+    this.hud.life.setScale(scalef,1)
+    }
+};
+Player.prototype.decreaseLife = function(damage){
+    var scale0 = this.life/100
+    var auxdamage = damage/100
+    var scalef = scale0 - auxdamage;
+    this.life -= damage;
+    this.hud.life.setScale(scalef,1)
+ };
 
 Player.prototype.setAmmo = function(ammo){this.ammo = ammo; };
 Player.prototype.getAmmo = function(){return this.ammo; };
@@ -47,6 +62,7 @@ Player.prototype.decreaseAmmoByOne = function(){this.ammo -= 1; };
 Player.prototype.isAlive = function(){return this.alive; };
 
 Player.prototype.update = function(time,delta){
+
     this.weapon.setPosition(this.x, this.y+2)
     this.hud.update(this.x,this.y)
         //Flip sprites
