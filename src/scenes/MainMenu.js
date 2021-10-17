@@ -118,6 +118,26 @@ class MainMenu extends Phaser.Scene {
 
         });
         
+        
+        // Button "animation"
+        this.input.on('pointerdown', function (pointer) {
+            //frameWidth: 236, frameHeight: 95
+            // Play button. Center Coords: 780, 400. Dimensions: width:236, height: 95. Scale: 0.8
+            // Settings button. Center Coords: 780, 500. Dimensions: width:236, height: 95. Scale: 0.8
+            // Credits button. Center Coords: 500, 400. Dimensions: width:236, height: 95. Scale: 0.8
+            // Help button. Center Coords: 500, 500. Dimensions: width:236, height: 95. Scale: 0.8
+
+            if((pointer.x > 780-(236/2)*0.8 && pointer.x < 780+(236/2)*0.8 && pointer.y > 400-(95/2)*0.8 && pointer.y < 400+(95/2)*0.8)  || //play button
+                (pointer.x > 780-(236/2)*0.8 && pointer.x < 780+(236/2)*0.8 && pointer.y > 500-(95/2)*0.8 && pointer.y < 500+(95/2)*0.8) || //settings button
+                (pointer.x > 500-(236/2)*0.8 && pointer.x < 500+(236/2)*0.8 && pointer.y > 400-(95/2)*0.8 && pointer.y < 400+(95/2)*0.8) || //credits button
+                (pointer.x > 500-(236/2)*0.8 && pointer.x < 500+(236/2)*0.8 && pointer.y > 500-(95/2)*0.8 && pointer.y < 500+(95/2)*0.8))   //help button
+            {
+                
+                var bulletMenuSound = this.sound.add('shot');
+                bulletMenuSound.play();
+                this.trigger = this.add.image(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
+            }
+        }, this);
     }
 
     playOnPressed()
