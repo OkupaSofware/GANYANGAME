@@ -28,6 +28,11 @@ class ScenePlay extends Phaser.Scene {
 
         //________________________________________________________
 
+        //Sound effects
+        this.hitPlayer = this.sound.add('impact');
+        this.hitPlayer.play();
+        
+        
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(1130, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
@@ -70,6 +75,10 @@ class ScenePlay extends Phaser.Scene {
             if(this.player1.getAmmo() > 0){
                 this.createBullet(pointer.x, pointer.y, this.player1.weapon, this.bulletsPlayer1);
                 this.player1.decreaseAmmoByOne();
+                //sound effect
+                //Sounds variables. this.bulletMenuSound is created here and not outside the functions so it creates a new sound every time and is independent from the old ones.
+                this.bulletMenuSound = this.sound.add('shot');
+                this.bulletMenuSound.play();
             }
         }, this);
 
@@ -224,21 +233,29 @@ class ScenePlay extends Phaser.Scene {
     }
 
     hit(gBullet, platform){
-        //console.log("gBullet.x: " + gBullet.x + " gBullet.y: " + gBullet.y + " platform.x: " + platform.x + " platform.y: " + platform.y)
-        
-        if(gBullet.y < platform.y + 10){
-            gBullet.y = this.height - 5;
-            gBullet.y = this.width - 5;
+        if(gBullet.y < platform.y){
+            gBullet.x = 1280;
+            gBullet.y = 720;
         } else if(gBullet.y > platform.y){
             gBullet.x = 5;
             gBullet.y = 5;
         }
     }
     hitBody(gBullet, target){
-        gBullet.setActive(false);
-        gBullet.setVisible(false);
-        gBullet.body.destroy()
-        target.decreaseLife(5)
+        if(gBullet.x < target.x){
+            gBullet.x = 1280;
+        } else if(gBullet.x > target.x){
+            gBullet.x = 5;
+        }
+        
+        
+        //EN PRINCIPIO CON LO QUE YA HAY NO HACEN FALTA ESTAS 3 SIGUIENTES LINEAS DE CÓDIGO
+        //gBullet.setActive(false);
+        //gBullet.setVisible(false);
+        //gBullet.body.destroy()
+        target.decreaseLife(5);
+
+        
 
     }
 }
