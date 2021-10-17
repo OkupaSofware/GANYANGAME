@@ -25,7 +25,7 @@ class Boost{
         boost.body.destroy();
     }
     shield(player, boost){
-        //player.setLives(player.getLife()+50)
+        player.setShield(true);
         boost.setActive(false);
         boost.setVisible(false);
         boost.body.destroy();

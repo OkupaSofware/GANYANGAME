@@ -5,14 +5,19 @@ class Player extends Phaser.GameObjects.Sprite{
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true);
+        this.body.pushable = false
+        //this.body.setPushable(false)
+
         this.cursorsCreated = false;
         this.name = new String("Paqui")
         this.hud = new PlayerHUD(scene,this);
         this.life = 50;
-        this.hud.life.setScale(this.life/100,1)
+        this.hud.setLife(this.life)
         this.ammo = 100;
         this.ammoSpeed = 80;
         this.alive = true;
+        this.shieldOn = false;
+        this.shield = 100;
         this.jumptimer = 0;
         
         //Weapon
@@ -30,7 +35,10 @@ Player.prototype.aim = function(xTarget, yTarget){
 
 
 // Getters and setters
-Player.prototype.setLife = function(life){this.life = life; };
+Player.prototype.setLife = function(life){
+    this.life = life; 
+    this.hud.setLife(life);
+};
 Player.prototype.getLife = function(){return this.life; };
 
 Player.prototype.increaseLife = function(life){
@@ -43,11 +51,33 @@ Player.prototype.increaseLife = function(life){
     }
 };
 Player.prototype.decreaseLife = function(damage){
+    if(this.life>0){
+    if(this.shieldOn==true){
+        this.decreaseShield(damage);
+    }else{
     var scale0 = this.life/100
     var auxdamage = damage/100
     var scalef = scale0 - auxdamage;
     this.life -= damage;
     this.hud.decreaseLife(scalef);
+    }
+    }else{
+        this.alive = false;
+    }
+};
+Player.prototype.increaseShield = function(life){
+   
+};
+Player.prototype.decreaseShield = function(damage){
+    if(this.shield>0){
+    var scale0 = this.shield/100
+    var auxdamage = damage/100
+    var scalef = scale0 - auxdamage;
+    this.shield -= damage;
+    this.hud.decreaseShield(scalef);
+    }else{
+        this.setShield(false);
+    }
 };
 
 Player.prototype.setAmmo = function(ammo){this.ammo = ammo; };
@@ -60,9 +90,12 @@ Player.prototype.increaseAmmoByOne = function(){this.ammo += 1; };
 Player.prototype.decreaseAmmoByOne = function(){this.ammo -= 1; };
 
 Player.prototype.isAlive = function(){return this.alive; };
+Player.prototype.setShield = function(bool){
+    this.shieldOn=bool; 
+    this.hud.setShield(bool);
+};
 
 Player.prototype.update = function(time,delta){
-
     this.weapon.setPosition(this.x, this.y+2)
     this.hud.update(this.x,this.y)
         //Flip sprites
@@ -75,6 +108,7 @@ Player.prototype.update = function(time,delta){
             this.weapon.setOrigin(0.9, 0)
             this.weapon.flipX= true
         }
+        
         
     
 }

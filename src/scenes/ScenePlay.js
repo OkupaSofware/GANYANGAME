@@ -57,6 +57,7 @@ class ScenePlay extends Phaser.Scene {
 
         this.targetsArray = new Array();
         this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
+        this.targetsArray[0].setShield(true)
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         
@@ -223,7 +224,7 @@ class ScenePlay extends Phaser.Scene {
 
     hit(gBullet, platform){
         //console.log("gBullet.x: " + gBullet.x + " gBullet.y: " + gBullet.y + " platform.x: " + platform.x + " platform.y: " + platform.y)
-
+        
         if(gBullet.y < platform.y + 10){
             gBullet.y = this.height - 5;
             gBullet.y = this.width - 5;
@@ -237,6 +238,7 @@ class ScenePlay extends Phaser.Scene {
         gBullet.setVisible(false);
         gBullet.body.destroy()
         target.decreaseLife(5)
+
     }
 }
 
