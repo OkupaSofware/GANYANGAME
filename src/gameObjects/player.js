@@ -52,14 +52,14 @@ Player.prototype.increaseLife = function(life){
 };
 Player.prototype.decreaseLife = function(damage){
     if(this.life>0){
-    if(this.shieldOn==true){
-        this.decreaseShield(damage);
-    }else{
-    var scale0 = this.life/100
-    var auxdamage = damage/100
-    var scalef = scale0 - auxdamage;
-    this.life -= damage;
-    this.hud.decreaseLife(scalef);
+        if(this.shieldOn==true){
+            this.decreaseShield(damage);
+        }else{
+            var scale0 = this.life/100
+            var auxdamage = damage/100
+            var scalef = scale0 - auxdamage;
+            this.life -= damage;
+            this.hud.decreaseLife(scalef);
     }
     }else{
         this.alive = false;
@@ -90,7 +90,11 @@ Player.prototype.increaseAmmoByOne = function(){this.ammo += 1; };
 Player.prototype.decreaseAmmoByOne = function(){this.ammo -= 1; };
 
 Player.prototype.isAlive = function(){return this.alive; };
+Player.prototype.isShield = function(){return this.shieldOn; };
 Player.prototype.setShield = function(bool){
+    if(bool == true){
+        this.shield =100;
+    }
     this.shieldOn=bool; 
     this.hud.setShield(bool);
 };

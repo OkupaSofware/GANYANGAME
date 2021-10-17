@@ -31,6 +31,9 @@ class PlayerHUD{
     }
     setShield(bool){
         this.shieldOn = bool;
+        if(bool == true){
+            this.shield.setScale(1,1)
+        }
     }
     decreaseLife(newScale){
         this.life.setScale(newScale,1)
