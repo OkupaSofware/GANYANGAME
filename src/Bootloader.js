@@ -47,6 +47,7 @@ class Bootloader extends Phaser.Scene {
         this.load.image("bar", "assets/player/hud/lifeHUD.png");
         this.load.image("life", "assets/player/hud/life.png");
         this.load.image("shield", "assets/player/hud/shield.png");
+        this.load.image("bulletMenu", "./assets/bulletMenu.png");
         
         //Boosters sprites
         this.load.image("ammo", "assets/boosters/ammo.png");
@@ -77,6 +78,10 @@ class Bootloader extends Phaser.Scene {
         //Weapons
         this.load.image("shotgun", "/weapon/shotgun.png")
         this.load.image("sniper", "/weapon/sniper.png")
+        
+        //Audio
+        this.load.audio('shot', ['../audio/bullet.mp3']);
+        this.load.audio('impact', ['../audio/impact.mp3']);
     }
 
     create() {
