@@ -87,6 +87,8 @@ class MainMenu extends Phaser.Scene {
         //Input text for player name
         var element = this.add.dom(650,300).createFromCache('nameform');
         
+        inputText = "Player";
+        
         element.addListener('click');
 
         element.on('click', function (event) {
