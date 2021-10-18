@@ -64,7 +64,7 @@ class ScenePlay extends Phaser.Scene {
         this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         this.targetsArray[0].setShield(true)
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
+        this.player1 = new Player(this, 50, 650, "idle",this.registry.get("username")).setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         
         // bullets player 1
         this.bulletsPlayer1 = new Array();
