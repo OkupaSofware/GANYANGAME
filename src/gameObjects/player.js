@@ -1,6 +1,6 @@
 import PlayerHUD from '../gameObjects/HUD.js';
 class Player extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, type){
+    constructor(scene, x, y, type, username){
         super(scene, x, y, type);
         scene.add.existing(this);
         scene.physics.world.enable(this);
@@ -9,7 +9,7 @@ class Player extends Phaser.GameObjects.Sprite{
         //this.body.setPushable(false)
 
         this.cursorsCreated = false;
-        this.name = new String("Paqui")
+        this.name = username;
         this.hud = new PlayerHUD(scene,this);
         this.life = 50;
         this.hud.setLife(this.life)
