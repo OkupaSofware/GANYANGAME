@@ -1,2 +1,58 @@
-<input type="text" name="nameField" placeholder="Enter your username" style="font-size: 32px">
-<input type="button" name="playButton" value="Confirm" style="font-size: 32px"><br />
+<style>
+.button {
+  background-image: url("assets/accept_button_normal_resized.png");
+  border: none;
+  width: 99px;
+  height: 43px;
+  background-color: transparent;
+  color: transparent;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 10px;
+  cursor: url(assets/mirillaBlack.png), pointer;
+}
+    
+.button:hover {
+  background-image: url("assets/accept_button_hover_resized.png");
+  border: none;
+  width: 99px;
+  height: 43px;
+  background-color: transparent;
+  color: transparent;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 10px;
+  cursor: url(assets/mirillaBlack.png), pointer;
+}
+    
+.button:active {
+  background-image: url("assets/accept_button_click_resized.png");
+  border: none;
+  width: 99px;
+  height: 43px;
+  background-color: transparent;
+  color: transparent;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 10px;
+  cursor: url(assets/mirillaBlack.png), pointer;
+}
+    
+.namefield{
+    border: 3px solid gray;
+    border-radius: 15px;
+    
+}
+</style>
+
+<input type="text" class ="namefield" name="nameField" placeholder="Enter your username" style="font-size: 32px">
+<input type="button" class="button" name="playButton" value="Accept" style="font-size: 32px"><br />
