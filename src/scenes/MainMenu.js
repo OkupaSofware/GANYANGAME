@@ -82,7 +82,7 @@ class MainMenu extends Phaser.Scene {
         play_button.on('pointerup',this.playOnPressed,this);
 
         //Display text for player name
-        var usernameText = this.add.text(500, 300, '', { color: 'white', fontSize: '30px '}); 
+        var usernameText = this.add.text(500, 300, '', {font: 'bold 32px Arial', color: 'white', fontSize: '30px '});  
 
         //Input text for player name
         var element = this.add.dom(650,300).createFromCache('nameform');
