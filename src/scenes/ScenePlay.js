@@ -12,7 +12,7 @@ class ScenePlay extends Phaser.Scene {
 
     create(){
         //timer        
-        timeText = this.add.text(this.sys.game.config.width/2, 30, {font: "30px"}).setOrigin(0.5).setDepth(10).setScale(2) //Elapsed Time Text
+        timeText = this.add.text(this.sys.game.config.width/2, 30, {font: "30px"}).setOrigin(0.5).setDepth(10) //Elapsed Time Text
 
         this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
@@ -102,20 +102,22 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta){
-        var seconds = time * 0.001; //Converted to Seconds
+        var seconds = (time * 0.001); //Converted to Seconds
         var timer = 30 - Math.round(seconds);
+        var ttext = timer.toString();
+
         if(timer > 0){
             if(timer > 20){
                 timeText.setTint(0xFFFFFF);
-                timeText.setText(timer);
+                timeText.setText(ttext);
             }else{
                 if(timer % 2 == 0){
                     timeText.setTint(0xFFFFFF);
-                    timeText.setText(timer);
+                    timeText.setText(ttext);
                 }
                 if(timer % 2 == 1){
                     timeText.setTint(0xFF0000);
-                    timeText.setText(timer);
+                    timeText.setText(ttext);
                 }
             }
         }
