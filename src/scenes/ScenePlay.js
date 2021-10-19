@@ -2,6 +2,7 @@ import Player from '../gameObjects/Player.js';
 import Button from '../gameObjects/Button.js';
 import Boost from '../gameObjects/boost.js';
 
+var timeText;
 
 class ScenePlay extends Phaser.Scene {
     constructor() {
@@ -10,6 +11,9 @@ class ScenePlay extends Phaser.Scene {
 
 
     create(){
+        //timer        
+        timeText = this.add.text(this.sys.game.config.width/2, 30, {font: "30px"}).setOrigin(0.5).setDepth(10).setScale(2) //Elapsed Time Text
+
         this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
         this.background = this.add.image(640, 360, "background_2");
@@ -98,17 +102,26 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta){
-        console.log(this.boostArray[0].status)
-        /* Boosts creation
-            for(var i = 0; i < this.boostArray.length; i++){
-                if(this.boostArray[i].status == false){
-                    this.boostArray[i].counter++;
-                    if(this.boostArray[i].counter == 100){
-                        this.boostArray[i].counter = 0;
-                    }
+        var seconds = time * 0.001; //Converted to Seconds
+        var timer = 30 - Math.round(seconds);
+        if(timer > 0){
+            if(timer > 20){
+                timeText.setTint(0xFFFFFF);
+                timeText.setText(timer);
+            }else{
+                if(timer % 2 == 0){
+                    timeText.setTint(0xFFFFFF);
+                    timeText.setText(timer);
+                }
+                if(timer % 2 == 1){
+                    timeText.setTint(0xFF0000);
+                    timeText.setText(timer);
                 }
             }
-        */
+        }
+        else{
+            timeText.setText("FIN");
+        }
 
             this.targetsArray[0].update(time,delta)
         // Bullets
