@@ -5,6 +5,7 @@ class Tutorial extends Phaser.Scene {
     }
 
 create(){
+    this.cameras.main.fadeIn(250, 0, 0, 0)
     this.text=this.add.text(640,80, "TUTORIAL",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
 
     this.add.image(640, 360, "background").setScale(0.3,0.3);

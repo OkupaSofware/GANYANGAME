@@ -5,6 +5,7 @@ class MainMenu extends Phaser.Scene {
         super( "MainMenu");
     }
 create(){
+this.cameras.main.fadeIn(1500, 0, 0, 0)
 this.titleText=this.add.text(640,80, "WELCOME TO",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
 this.neo = this.add.image(640,165,"new_title").setScale(0.7,0.7);
 //Buttons creation
