@@ -23,7 +23,7 @@ class Player extends Phaser.GameObjects.Sprite{
         //Weapon
         this.weapon = scene.add.image(this.x, this.y+2, "rifle");
         this.weapon.setOrigin(0.1, 0)
-        this.weapon.setScale(0.22,0.22)
+        this.weapon.setScale(0.2,0.2)
         this.weapon.setDepth(1)
     }
     
