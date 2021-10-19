@@ -71,7 +71,6 @@ class ScenePlay extends Phaser.Scene {
 
         // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
-            this.player1.decreaseLife(10)
             if(this.player1.getAmmo() > 0){
                 this.createBullet(pointer.x, pointer.y, this.player1.weapon, this.bulletsPlayer1);
                 this.player1.decreaseAmmoByOne();

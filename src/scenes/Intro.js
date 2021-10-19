@@ -19,7 +19,7 @@ class Intro extends Phaser.Scene {
         
         if( time>5000){
             //this.cameras.main.fadeOut(2000, 0, 0, 0)
-            this.scene.start("MainMenu");
+            this.scene.start("MainMenuBackground");
         }
         
     }
