@@ -78,6 +78,7 @@ class Bootloader extends Phaser.Scene {
         //Weapons
         this.load.image("shotgun", "/weapon/shotgun.png")
         this.load.image("sniper", "/weapon/sniper.png")
+        this.load.image("rifle", "/weapon/rifle.png")
         
         //Audio
         this.load.audio('shot', ['../audio/bullet.mp3']);

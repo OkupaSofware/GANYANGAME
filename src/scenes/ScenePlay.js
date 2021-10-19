@@ -50,7 +50,7 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(1050, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
         this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
         //________________________________________________________
-
+        
         this.boostArray = new Array();
         this.boostArray[0] = new Boost(this, 640, 450, Math.floor(Math.random() * 3) + 1);
         this.boostArray[1] = new Boost(this, 400, 550, Math.floor(Math.random() * 3) + 1);

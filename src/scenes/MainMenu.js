@@ -89,7 +89,7 @@ element.on('click', function (event) {
 
 });
 
-
+this.holesTrigger = this.physics.add.staticGroup();
 // Button "animation"
 this.input.on('pointerdown', function (pointer) {
     //frameWidth: 236, frameHeight: 95
@@ -106,7 +106,7 @@ this.input.on('pointerdown', function (pointer) {
         
         var bulletMenuSound = this.sound.add('shot');
         bulletMenuSound.play();
-        this.trigger = this.add.image(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
+        this.holesTrigger.create(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
     }
 }, this);
 
@@ -122,6 +122,7 @@ playOnPressed()
         this.scene.stop("MainMenuBackground")
     }
     launchTutorialMenu(){
+        this.holesTrigger.destroy(true,true)
         this.scene.launch("Tutorial");
         //this.scene.moveAbove("Tutorial","MainMenu")
         this.scene.bringToTop("Tutorial")
