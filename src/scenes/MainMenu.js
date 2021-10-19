@@ -46,6 +46,8 @@ var settings_button = new Button({
 }).setScale(0.8,0.8);
 play_button.on('pointerup',this.playOnPressed,this);
 tutorial_button.on('pointerup',this.launchTutorialMenu,this);
+settings_button.on('pointerup',this.launchSettingsMenu,this);
+credits_buttom.on('pointerup',this.launchCreditsMenu,this);
 
 
 //Display text for player name
@@ -124,7 +126,16 @@ playOnPressed()
         //this.scene.moveAbove("Tutorial","MainMenu")
         this.scene.bringToTop("Tutorial")
         this.scene.sleep("MainMenu")
-        this.trigger.setVisible(false);
+    }
+    launchSettingsMenu(){
+        this.scene.launch("Settings");
+        this.scene.bringToTop("Settings")
+        this.scene.sleep("MainMenu")
+    }
+    launchCreditsMenu(){
+        this.scene.launch("Credits");
+        this.scene.bringToTop("Credits")
+        this.scene.sleep("MainMenu")
     }
 
 }
