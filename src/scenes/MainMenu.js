@@ -116,11 +116,13 @@ playOnPressed()
         //Saves the username in a phaser registry
         this.registry.set('username', inputText);
         this.scene.start("ScenePlay");
+        this.scene.stop("MainMenuBackground")
     }
     launchTutorialMenu(){
         this.scene.launch("Tutorial");
         //this.scene.moveAbove("Tutorial","MainMenu")
         this.scene.bringToTop("Tutorial")
+        this.scene.stop("MainMenu")
         console.log("launched")
     }
 

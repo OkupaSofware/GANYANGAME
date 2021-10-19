@@ -157,7 +157,7 @@ class ScenePlay extends Phaser.Scene {
     }
 
     optionsOnPressed(){
-        this.scene.start("MainMenu")
+        this.scene.start("MainMenuBackground");
     }
 
     // BULLETS
