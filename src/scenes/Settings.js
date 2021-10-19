@@ -14,7 +14,7 @@ create(){
         'x': 500,
         'y': 550
     }).setScale(1,1);
-    this.add.image(640, 360, "background").setScale(0.1,0.1);
+    //this.add.image(640, 360, "background").setScale(0.1,0.1);
 }
 
 
