@@ -3,6 +3,8 @@ import Button from '../gameObjects/Button.js';
 import Boost from '../gameObjects/boost.js';
 
 var timeText;
+var gap = 0;
+var tcount = 0;
 
 class ScenePlay extends Phaser.Scene {
     constructor() {
@@ -102,8 +104,13 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta){
+        // Time counter
+        if(tcount == 0){
+            gap = Math.round(time*0.001);
+            tcount++
+        }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 30 - Math.round(seconds);
+        var timer = 300 - Math.round(seconds) + gap;
         var ttext = timer.toString();
 
         if(timer > 0){
@@ -125,8 +132,8 @@ class ScenePlay extends Phaser.Scene {
             timeText.setText("FIN");
         }
 
-            this.targetsArray[0].update(time,delta)
         // Bullets
+        this.targetsArray[0].update(time,delta)
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
 
         // PLAYER 1
