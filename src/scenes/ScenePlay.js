@@ -57,18 +57,17 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(230, 200, "platform_4").setScale(0.3,0.3).refreshBody().setSize(230,25,0,0);
         //________________________________________________________
         
+        //boost
         this.boostArray = new Array();
-        this.boostArray[0] = new Boost(this, 640, 450, Math.floor(Math.random() * 3) + 1);
-        this.boostArray[1] = new Boost(this, 400, 550, Math.floor(Math.random() * 3) + 1);
-        this.boostArray[2] = new Boost(this, 880, 550, Math.floor(Math.random() * 3) + 1);
-        this.boostArray[3] = new Boost(this, 480, 300, Math.floor(Math.random() * 3) + 1);
-        this.boostArray[4] = new Boost(this, 800, 300, Math.floor(Math.random() * 3) + 1);
+        this.boostArray[0] = new Boost(this, 640, 450+10, "live").setScale(0.3,0.3);
+        this.boostArray[1] = new Boost(this, 230, 150+10, "bubble").setScale(0.3,0.3);
+        this.boostArray[2] = new Boost(this, 1050, 150+10, "ammo").setScale(0.15, 0.15);
 
-
-
+        //players
         this.targetsArray = new Array();
         this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         this.targetsArray[0].setShield(true)
+
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle",this.registry.get("username")).setScale(0.5,0.5).setOrigin(0.5,0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
         
@@ -95,15 +94,66 @@ class ScenePlay extends Phaser.Scene {
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
         
-
         for(var i = 0; i < this.boostArray.length; i++){
-            this.physics.add.collider(this.player1, this.boostArray[i].live, this.boostArray[i].recover)
-            this.physics.add.collider(this.player1, this.boostArray[i].bubble, this.boostArray[i].shield)
-            this.physics.add.collider(this.player1, this.boostArray[i].ammo, this.boostArray[i].recharge)
+            this.physics.add.collider(this.platforms, this.boostArray)
+            this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
         }
     }
 
     update(time, delta){
+        console.log(this.boostArray[1].counter)
+        var randBoost = Math.floor(Math.random() * 3) + 1;
+
+        // para el boost[0]
+        if(this.boostArray[0].status == false){
+            this.boostArray[0].counter++;
+        }
+        if(this.boostArray[0].counter == 800){
+            if(randBoost == 1){
+                this.boostArray[0] = new Boost(this, 640, 450+10, "live").setScale(0.3,0.3);
+            }
+            if(randBoost == 2){
+                this.boostArray[0] = new Boost(this, 640, 450+10, "bubble").setScale(0.3,0.3);
+            }
+            if(randBoost == 3){
+                this.boostArray[0] = new Boost(this, 640, 450+10, "ammo").setScale(0.15, 0.15);
+            }
+            this.physics.add.collider(this.player1, this.boostArray[0], this.boostArray[0].efect)
+        }
+        // para el boost[1]
+        if(this.boostArray[1].status == false){
+            this.boostArray[1].counter++;
+        }
+        if(this.boostArray[1].counter == 800){
+            if(randBoost == 1){
+                this.boostArray[1] = new Boost(this, 230, 150+10, "live").setScale(0.3,0.3);
+            }
+            if(randBoost == 2){
+                this.boostArray[1] = new Boost(this, 230, 150+10, "bubble").setScale(0.3,0.3);
+            }
+            if(randBoost == 3){
+                this.boostArray[1] = new Boost(this, 230, 150+10, "ammo").setScale(0.15, 0.15);
+            }
+            this.physics.add.collider(this.player1, this.boostArray[1], this.boostArray[1].efect)
+        }
+        // para el boost[2]
+        if(this.boostArray[2].status == false){
+            this.boostArray[2].counter++;
+        }
+        if(this.boostArray[2].counter == 800){
+            if(randBoost == 1){
+                this.boostArray[2] = new Boost(this, 1050, 150+10, "live").setScale(0.3,0.3);
+            }
+            if(randBoost == 2){
+                this.boostArray[2] = new Boost(this, 1050, 150+10, "bubble").setScale(0.3,0.3);
+            }
+            if(randBoost == 3){
+                this.boostArray[2] = new Boost(this, 1050, 150+10, "ammo").setScale(0.15, 0.15);
+            }
+            this.physics.add.collider(this.player1, this.boostArray[2], this.boostArray[2].efect)
+        }
+        
+
         // Time counter
         if(tcount == 0){
             gap = Math.round(time*0.001);

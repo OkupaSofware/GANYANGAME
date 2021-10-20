@@ -1,40 +1,37 @@
-class Boost{
-    constructor(scene, xpos, ypos, type){
+class Boost extends Phaser.GameObjects.Image{
+    constructor(scene, x, y, type){
+        super(scene, x, y, type);
         scene.add.existing(this);
-        this.type = type;
+        scene.physics.world.enable(this);
+
+        if(type == "live"){
+            this.mode = 1;
+        }
+        if(type == "bubble"){
+            this.mode = 2;
+        }
+        if(type == "ammo"){
+            this.mode = 3;
+        }
+
         this.status = true;
         this.counter = 0;
-        
-        if(type == 1){
-            this.live = scene.physics.add.image(xpos, ypos, "live").setScale(0.3,0.3);
-            this.live.body.allowGravity = false;
-        }
-        if(type == 2){
-            this.bubble = scene.physics.add.image(xpos, ypos, "bubble").setScale(0.3,0.3);
-            this.bubble.body.allowGravity = false;
-        }
-        if(type == 3){
-            this.ammo = scene.physics.add.image(xpos, ypos, "ammo").setScale(0.15, 0.15);
-            this.ammo.body.allowGravity = false;
-        }
     }
-    recover(player, boost){
-        player.increaseLife(25)
-        boost.setActive(false);
-        boost.setVisible(false);
-        boost.body.destroy();
-    }
-    shield(player, boost){
-        player.setShield(true);
-        boost.setActive(false);
-        boost.setVisible(false);
-        boost.body.destroy();
-    }
-    recharge(player, boost){
-        player.setAmmo(100);
-        boost.setActive(false);
-        boost.setVisible(false);
-        boost.body.destroy();
+    efect(player1, boost){
+
+        boost.status = false;
+
+        if(boost.mode == 1){
+            player1.increaseLife(25);
+        }
+        if(boost.mode == 2){
+            player1.setShield(true);
+        }
+        if(boost.mode == 3){
+            player1.setAmmo(100);
+        }
+
+        boost.destroy();
     }
 }
 
