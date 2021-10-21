@@ -14,7 +14,7 @@ class ScenePlay extends Phaser.Scene {
 
     create(){
         //timer        
-        timeText = this.add.text(this.sys.game.config.width/2, 30, {font: "30px"}).setOrigin(0.5).setDepth(10) //Elapsed Time Text
+        timeText = this.add.text(649, 30,"T", {font: 'Bold 32px Arial'}).setOrigin(0.5).setDepth(10) //Elapsed Time Text
 
         this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
@@ -168,7 +168,9 @@ class ScenePlay extends Phaser.Scene {
         }
         else{
             timeText.setText("FIN");
+            
         }
+        
 
         // Bullets
         this.targetsArray[0].update(time,delta)
