@@ -31,6 +31,7 @@ create(){
 goBack(){
     this.scene.start("MainMenuBackground");
     this.scene.stop("ScenePlay")
+    this.scene.get("ScenePlay").menuOn = false;
     
 }
 resume(){
