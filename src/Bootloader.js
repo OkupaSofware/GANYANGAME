@@ -14,6 +14,8 @@ class Bootloader extends Phaser.Scene {
         this.load.spritesheet("setting_button", "assets/setting_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("credits_button", "assets/credits_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("help_button", "assets/help_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("quit_button", "assets/quit_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("resume_button", "assets/resume_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
         this.load.spritesheet("fog_anim", "assets/fog.png",{ frameWidth: 1400, frameHeight: 750 });
         //this.load.image("title", "./assets/TITLE_1.png");

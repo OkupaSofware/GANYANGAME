@@ -55,7 +55,7 @@ credits_buttom.on('pointerup',this.launchCreditsMenu,this);
 var usernameText = this.add.text(500, 300, '', {font: 'bold 32px Arial', color: 'white', fontSize: '30px '});  
 
 //Input text for player name
-var element = this.add.dom(650,300).createFromCache('nameform');
+var element = this.add.dom(640,300).createFromCache('nameform');
 
 inputText = "Player";
 
@@ -107,7 +107,7 @@ this.input.on('pointerdown', function (pointer) {
         
         var bulletMenuSound = this.sound.add('shot');
         bulletMenuSound.play();
-        this.holesTrigger.create(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
+        //this.holesTrigger.create(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
     }
 }, this);
 
@@ -123,7 +123,7 @@ playOnPressed()
         this.scene.stop("MainMenuBackground")
     }
     launchTutorialMenu(){
-        this.holesTrigger.destroy(true,true)
+        //this.holesTrigger.destroy(true,true)
         this.scene.launch("Tutorial");
         //this.scene.moveAbove("Tutorial","MainMenu")
         this.scene.bringToTop("Tutorial")

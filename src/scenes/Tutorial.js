@@ -8,7 +8,7 @@ create(){
     this.cameras.main.fadeIn(250, 0, 0, 0)
     this.text=this.add.text(640,80, "TUTORIAL",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
 
-    this.add.image(640, 360, "background").setScale(0.3,0.3);
+    this.add.image(640, 308, "background").setScale(0.42,0.42);
     var back_button = new Button({
         'scene': this,
         'key':'setting_button',

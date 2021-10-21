@@ -20,17 +20,7 @@ class ScenePlay extends Phaser.Scene {
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
-        var options_button = new Button({
-            'scene': this,
-            'key':'test_buttons',
-            'up': 0,
-            'over':1,
-            'down':2,
-            'x': 120,
-            'y': 60
-        });   
-        options_button.setScale(0.65,0.65);
-        options_button.on('pointerdown',this.optionsOnPressed,this)
+       this.add.text(15,15,"Press ESC to open in game menu",{font: '24px Arial'}).setDepth(10)
 
         //________________________________________________________
 
@@ -38,7 +28,8 @@ class ScenePlay extends Phaser.Scene {
         this.hitPlayer = this.sound.add('impact');
         this.hitPlayer.play();
         
-        
+        this.input.keyboard.on('keydown-' + 'ESC',this.launchMenu,this);
+
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(1130, 500, "platform_1").setScale(0.3,0.3).refreshBody().setSize(115,25,0,0);
@@ -98,6 +89,9 @@ class ScenePlay extends Phaser.Scene {
             this.physics.add.collider(this.platforms, this.boostArray)
             this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
         }
+
+
+        
     }
 
     update(time, delta){
@@ -222,9 +216,13 @@ class ScenePlay extends Phaser.Scene {
         }
     }
 
-    optionsOnPressed(){
-        this.scene.start("MainMenuBackground");
+   
+    launchMenu(){
+        this.scene.launch("InGameMenu");
+        this.scene.bringToTop("InGameMenu")
+        console.log("TEST")
     }
+   
 
     // BULLETS
     createBullet(targetX, targetY, player, bulletsArray){
