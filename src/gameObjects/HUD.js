@@ -47,5 +47,12 @@ class PlayerHUD{
     increaseShield(newScale){
         this.shield.setScale(newScale,1)
     }
+    setVisible(bool){
+        this.name.setVisible(bool)
+        this.lifeBar.setVisible(bool) 
+        this.life.setVisible(bool) 
+        this.shieldBar.setVisible(bool) 
+        this.shield.setVisible(bool) 
+    }
 }
 export default PlayerHUD;

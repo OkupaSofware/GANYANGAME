@@ -23,6 +23,7 @@ class Bootloader extends Phaser.Scene {
         //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
         this.load.image("FLOOR", "./assets/floor.png");
         this.load.image("new_title", "./assets/neo_title_RUST.png");
+        this.load.image("ingamemenu", "./assets/inGameMenu.png");
         
         this.load.on("complete", () =>{
             this.scene.start("Intro");

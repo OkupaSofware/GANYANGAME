@@ -13,8 +13,8 @@ class Player extends Phaser.GameObjects.Sprite{
         this.hud = new PlayerHUD(scene,this);
         this.life = 50;
         this.hud.setLife(this.life)
-        this.ammo = 100;
-        this.ammoSpeed = 80;
+        this.ammo = 1000;
+        this.ammoSpeed = 100;
         this.alive = true;
         this.shieldOn = false;
         this.shield = 100;
@@ -25,6 +25,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.weapon.setOrigin(0.1, 0)
         this.weapon.setScale(0.2,0.2)
         this.weapon.setDepth(1)
+        
     }
     
 };
@@ -64,6 +65,8 @@ Player.prototype.decreaseLife = function(damage){
     }else{
         this.alive = false;
     }
+    console.log(this.life)
+    console.log(this.alive)
 };
 Player.prototype.increaseShield = function(life){
    
@@ -98,6 +101,26 @@ Player.prototype.setShield = function(bool){
     this.shieldOn=bool; 
     this.hud.setShield(bool);
 };
+Player.prototype.die = function(){
+    this.alive = false;
+    this.setVisible(false);
+    //this.setActive(false);
+    this.hud.setVisible(false)
+   
+    this.weapon.setVisible(false);
+}
+Player.prototype.respawn = function(x,y){
+    this.alive = true;
+    this.setVisible(true);
+    //this.setActive(true);
+    this.hud.setVisible(true)
+    this.weapon.setVisible(true);
+    this.setLife(100);
+    this.setAmmo(20);
+    this.setPosition(x,y)
+    }
+    
+
 
 Player.prototype.update = function(time,delta){
     this.weapon.setPosition(this.x, this.y+2)
@@ -112,10 +135,15 @@ Player.prototype.update = function(time,delta){
             this.weapon.setOrigin(0.9, 0)
             this.weapon.flipX= true
         }
+        if(this.shield<=0){
+            this.setShield(false);
+        }
         
-        
-    
-}
+        if(this.life<=0){
+           this.die();
+            
+        }
 
+    }
 
 export default Player;

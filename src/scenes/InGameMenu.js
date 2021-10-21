@@ -5,8 +5,8 @@ class InGameMenu extends Phaser.Scene {
     }
 
 create(){
-
-    this.add.image(640, 308, "background").setAlpha(0);
+    this.cameras.main.fadeIn(250, 0, 0, 0)
+    this.add.image(640, 308, "ingamemenu").setAlpha(0.5)
     var exit_button = new Button({
         'scene': this,
         'key':'quit_button',
@@ -31,9 +31,11 @@ create(){
 goBack(){
     this.scene.start("MainMenuBackground");
     this.scene.stop("ScenePlay")
+    
 }
 resume(){
     this.scene.stop("InGameMenu");
+    this.scene.get("ScenePlay").menuOn = false;
 }
 
 }

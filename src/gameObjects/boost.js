@@ -28,7 +28,7 @@ class Boost extends Phaser.GameObjects.Image{
             player1.setShield(true);
         }
         if(boost.mode == 3){
-            player1.setAmmo(100);
+            player1.setAmmo(20);
         }
 
         boost.destroy();
