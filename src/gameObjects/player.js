@@ -6,6 +6,7 @@ class Player extends Phaser.GameObjects.Sprite{
         scene.physics.world.enable(this);
         this.body.setCollideWorldBounds(true);
         this.body.pushable = false
+        this.body.setSize(50,116,1,1).setOffset(15,12)
         //this.body.setPushable(false)
 
         this.cursorsCreated = false;
@@ -14,7 +15,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.life = 50;
         this.hud.setLife(this.life)
         this.ammo = 1000;
-        this.ammoSpeed = 100;
+        this.ammoSpeed = 80;
         this.alive = true;
         this.shieldOn = false;
         this.shield = 100;

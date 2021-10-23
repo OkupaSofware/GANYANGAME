@@ -2,21 +2,23 @@ import Player from '../gameObjects/Player.js';
 import Button from '../gameObjects/Button.js';
 import Boost from '../gameObjects/boost.js';
 
-var timeText;
-var gap = 0;
-var tcount = 0;
+
 
 class ScenePlay extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
         this.menuOn = false;
-        this.respawnPlaces = [[490, 300], [850, 300], [450, 550], [930, 550]]
+        this.respawnPlaces = [[490, 300], [850, 300], [450, 550], [930, 550]];
+        this.timeText;
+        this.gap = 0;
+        this.tcount = 0;
+
     }
 
 
     create() {
         //timer        
-        timeText = this.add.text(649, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
+        this.timeText = this.add.text(649, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
 
         this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
@@ -27,8 +29,11 @@ class ScenePlay extends Phaser.Scene {
         //________________________________________________________
 
         //Sound effects
-        this.hitPlayer = this.sound.add('impact');
-        this.hitPlayer.play();
+        //this.hitPlayer = this.sound.add('impact');
+        this.funnyPlayer = this.sound.add('cry');
+        this.hitPlayer = this.sound.add('deathcry');
+        //this.hitPlayer.play();
+        this.funnyPlayer.play();
 
         this.input.keyboard.on('keydown-' + 'ESC', this.launchMenu, this);
 
@@ -78,7 +83,7 @@ class ScenePlay extends Phaser.Scene {
                     //Sounds variables. this.bulletMenuSound is created here and not outside the functions so it creates a new sound every time and is independent from the old ones.
                     this.bulletMenuSound = this.sound.add('shot');
                     this.bulletMenuSound.play();
-                   
+                    
                     //this.player1.decreaseLife(10);
                 }
             }
@@ -97,22 +102,28 @@ class ScenePlay extends Phaser.Scene {
             this.physics.add.collider(this.platforms, this.boostArray)
             this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
         }
-
+       
+           
+        
 
 
     }
 
     update(time, delta) {
-        console.log(this.boostArray[1].counter)
-        var randBoost = Math.floor(Math.random() * 3) + 1;
+        //if(this.bulletsPlayer1.length >0)
+        //console.log(this.bulletsPlayer1[0].x);
 
+        //Respawn
         if (this.targetsArray[0].alive == false) {
             this.hitPlayer.play();
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
             this.targetsArray[0].respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
             console.log("si")
         }
+        
         // Boost generator
+        //console.log(this.boostArray[1].counter)
+        var randBoost = Math.floor(Math.random() * 3) + 1;
         for (var i = 0; i < this.boostArray.length; i++) {
             if (this.boostArray[i].status == false) {
                 this.boostArray[i].counter++;
@@ -157,31 +168,31 @@ class ScenePlay extends Phaser.Scene {
 
 
         // Time counter
-        if (tcount == 0) {
-            gap = Math.round(time * 0.001);
-            tcount++
+        if (this.tcount == 0) {
+            this.gap = Math.round(time * 0.001);
+            this.tcount++
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 300 - Math.round(seconds) + gap;
+        var timer = 300 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
 
         if (timer > 0) {
             if (timer > 20) {
-                timeText.setTint(0xFFFFFF);
-                timeText.setText(ttext);
+                this.timeText.setTint(0xFFFFFF);
+                this.timeText.setText(ttext);
             } else {
                 if (timer % 2 == 0) {
-                    timeText.setTint(0xFFFFFF);
-                    timeText.setText(ttext);
+                    this.timeText.setTint(0xFFFFFF);
+                    this.timeText.setText(ttext);
                 }
                 if (timer % 2 == 1) {
-                    timeText.setTint(0xFF0000);
-                    timeText.setText(ttext);
+                    this.timeText.setTint(0xFF0000);
+                    this.timeText.setText(ttext);
                 }
             }
         }
         else {
-            timeText.setText("END");
+            this.timeText.setText("END");
 
         }
 
@@ -251,11 +262,15 @@ class ScenePlay extends Phaser.Scene {
     createBullet(targetX, targetY, player, bulletsArray) {
         this.bullet = this.physics.add.image(player.x, player.y + 10, "bala").setScale(0.5).refreshBody();
         this.activateBullet(this.bullet);
-        this.bullet.body.setSize(5, 5, 0, 0)
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
         bulletsArray.push(this.bullet);
         this.bullet.body.setSize(10, 10, 0.5, 0.5)
+        
+        //this.bullet.body.angle = -180 / Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
+        console.log(this.bullet.body.angle)
+        
+
 
         this.bullet.angle = -180 / Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
         if ((targetY >= player.y && targetX < player.x) || (targetY >= player.y && targetX >= player.x)) //cuadrante 1
@@ -332,7 +347,6 @@ class ScenePlay extends Phaser.Scene {
             gBullet.x = 5;
         }
 
-        
         //EN PRINCIPIO CON LO QUE YA HAY NO HACEN FALTA ESTAS 3 SIGUIENTES LINEAS DE CÓDIGO
         //gBullet.setActive(false);
         //gBullet.setVisible(false);
