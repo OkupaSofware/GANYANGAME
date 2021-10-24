@@ -13,6 +13,7 @@ class Bootloader extends Phaser.Scene {
         this.load.spritesheet("play_buttons", "assets/play_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("setting_button", "assets/setting_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("credits_button", "assets/credits_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("back_buttons", "assets/back_buttons.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("help_button", "assets/help_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("quit_button", "assets/quit_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
         this.load.spritesheet("resume_button", "assets/resume_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
@@ -24,6 +25,10 @@ class Bootloader extends Phaser.Scene {
         this.load.image("FLOOR", "./assets/floor.png");
         this.load.image("new_title", "./assets/neo_title_RUST.png");
         this.load.image("ingamemenu", "./assets/inGameMenu.png");
+        
+        // Setting menu buttons
+        this.load.spritesheet("plus_buttons", "assets/plusButton.png",{ frameWidth: 106, frameHeight: 95 });
+        this.load.spritesheet("minus_buttons", "assets/minusButton.png",{ frameWidth: 106, frameHeight: 95 });
         
         this.load.on("complete", () =>{
             this.scene.start("Intro");
@@ -88,6 +93,8 @@ class Bootloader extends Phaser.Scene {
         this.load.audio('impact', ['../audio/impact.mp3']);
         this.load.audio('cry', ['../audio/cry.mp3']);
         this.load.audio('deathcry', ['../audio/deathcry.mp3']);
+        this.load.audio('backgroundMusic', ['../audio/backgroundMusic.mp3']);
+        this.load.audio('sceneplayMusic', ['../audio/gameplayMusic.mp3']);
     }
 
     create() {
