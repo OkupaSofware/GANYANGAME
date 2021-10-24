@@ -23,12 +23,15 @@ class Boost extends Phaser.GameObjects.Image{
 
         if(boost.mode == 1){
             player1.increaseLife(25);
+            player1.increaseCountHearts();
         }
         if(boost.mode == 2){
             player1.setShield(true);
+            player1.increaseCountShields();
         }
         if(boost.mode == 3){
             player1.setAmmo(20);
+            player1.increaseCountAmmos();
         }
 
         boost.destroy();
