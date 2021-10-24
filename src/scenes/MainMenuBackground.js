@@ -1,6 +1,7 @@
 import Button from "../gameObjects/Button.js";
 
-
+var volumeEffectsFromMenu;
+var volumeBackgroundMusicFromMenu;
 
 class MainMenuBackground extends Phaser.Scene {
     constructor(){
@@ -44,6 +45,17 @@ class MainMenuBackground extends Phaser.Scene {
        this.scene.launch("MainMenu");
        this.scene.bringToTop("MainMenu");
 
+        
+        // Volume
+        // Global volume
+        volumeEffectsFromMenu = 0.5;
+        volumeBackgroundMusicFromMenu = 0.2;
+        this.registry.set('effectsVolumeFromMenu', volumeEffectsFromMenu);
+        this.registry.set('backgroundVolumeFromMenu', volumeBackgroundMusicFromMenu);
+        // Background music in menus
+        this.backgroundMusic = this.sound.add('backgroundMusic');
+        this.backgroundMusic.play({volume: volumeBackgroundMusicFromMenu});
+        this.backgroundMusic.loop = true;
     }
 
     update(time, delta){
