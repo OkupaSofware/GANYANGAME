@@ -197,7 +197,12 @@ class ScenePlay extends Phaser.Scene {
         }
         else {
             this.timeText.setText("END");
-
+            this.player1.setCountKills(this.targetsArray[0].getCountDeaths());
+            this.targetsArray[0].setCountKills(this.player1.getCountDeaths());
+            this.registry.set("player1", this.player1);
+            this.registry.set("player2", this.targetsArray[0]);
+            this.scene.start("StatsScene");
+            this.scene.stop("ScenePlay")
         }
 
 

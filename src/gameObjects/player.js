@@ -72,7 +72,6 @@ Player.prototype.decreaseLife = function(damage){
     }
     }else{
         this.alive = false;
-        this.countDeaths++;
     }
     console.log(this.life)
     console.log(this.alive)
@@ -113,6 +112,7 @@ Player.prototype.setShield = function(bool){
 Player.prototype.die = function(){
     this.alive = false;
     this.setVisible(false);
+    this.countDeaths++;
     //this.setActive(false);
     this.hud.setVisible(false)
    

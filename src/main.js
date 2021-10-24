@@ -7,6 +7,7 @@ import Tutorial from './scenes/Tutorial.js';
 import Settings from './scenes/Settings.js';
 import Credits from './scenes/Credits.js';
 import InGameMenu from './scenes/InGameMenu.js';
+import StatsScene from './scenes/StatsScene.js';
 const config = {
     title: "GAN-YAN",
     version: "0.0.1",
@@ -39,7 +40,7 @@ const config = {
     scene: [
         Bootloader,Intro,MainMenu,
         MainMenuBackground,
-        ScenePlay,Tutorial,Settings,Credits,InGameMenu
+        ScenePlay,Tutorial,Settings,Credits,InGameMenu,StatsScene
     ]
 };
 
