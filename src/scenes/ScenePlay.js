@@ -36,7 +36,11 @@ class ScenePlay extends Phaser.Scene {
         this.funnyPlayer.play();
 
         this.input.keyboard.on('keydown-' + 'ESC', this.launchMenu, this);
-
+        
+        //Ambiental music
+        this.sceneplayMusicBackground = this.sound.add('sceneplayMusic');
+        this.sceneplayMusicBackground.play({volume: this.registry.get("backgroundVolumeFromMenu")});
+        
         // Add platforms
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(1130, 500, "platform_1").setScale(0.3, 0.3).refreshBody().setSize(115, 25, 0, 0);
