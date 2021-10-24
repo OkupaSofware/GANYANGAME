@@ -18,7 +18,7 @@ var play_button = new Button({
     'x': 780,
     'y': 400
 }).setScale(0.8,0.8);
-var credits_buttom = new Button({
+var credits_button = new Button({
     'scene': this,
     'key':'credits_button',
     'up': 0,
@@ -48,7 +48,7 @@ var settings_button = new Button({
 play_button.on('pointerup',this.playOnPressed,this);
 tutorial_button.on('pointerup',this.launchTutorialMenu,this);
 settings_button.on('pointerup',this.launchSettingsMenu,this);
-credits_buttom.on('pointerup',this.launchCreditsMenu,this);
+credits_button.on('pointerup',this.launchCreditsMenu,this);
 
 
 //Display text for player name
@@ -120,7 +120,8 @@ playOnPressed()
         //Saves the username in a phaser registry
         this.registry.set('username', inputText);
         this.scene.start("ScenePlay");
-        this.scene.stop("MainMenuBackground")
+        this.scene.stop("MainMenuBackground");
+        this.scene.get("MainMenuBackground").backgroundMusic.stop();
     }
     launchTutorialMenu(){
         //this.holesTrigger.destroy(true,true)
