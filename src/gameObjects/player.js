@@ -25,7 +25,14 @@ class Player extends Phaser.GameObjects.Sprite{
         this.weapon = scene.add.image(this.x, this.y+2, "rifle");
         this.weapon.setOrigin(0.1, 0)
         this.weapon.setScale(0.2,0.2)
-        this.weapon.setDepth(1)
+        this.weapon.setDepth(1) 
+                
+        //Stats
+        this.countDeaths = 0;
+        this.countKills = 0;
+        this.countShields = 0;
+        this.countHearts = 0;
+        this.countAmmos = 0;
         
     }
     
@@ -65,6 +72,7 @@ Player.prototype.decreaseLife = function(damage){
     }
     }else{
         this.alive = false;
+        this.countDeaths++;
     }
     console.log(this.life)
     console.log(this.alive)
@@ -121,7 +129,19 @@ Player.prototype.respawn = function(x,y){
     this.setPosition(x,y)
     }
     
+//Stats setters
+Player.prototype.increaseCountDeaths = function(){this.countDeaths++;}
+Player.prototype.setCountKills = function(enemyDeaths){this.countKills = enemyDeaths;}
+Player.prototype.increaseCountShields = function(){this.countShields++;}
+Player.prototype.increaseCountHearts = function(){this.countHearts++;}
+Player.prototype.increaseCountAmmos = function(){this.countAmmos++;}
 
+//Stats getters
+Player.prototype.getCountDeaths = function(){return this.countDeaths;}
+Player.prototype.getCountKills = function(){return this.countKills;}
+Player.prototype.getCountShields = function(){return this.countShields;}
+Player.prototype.getCountHearts = function(){return this.countHearts;}
+Player.prototype.getCountAmmos = function(){return this.countAmmos;}
 
 Player.prototype.update = function(time,delta){
     this.weapon.setPosition(this.x, this.y+2)
