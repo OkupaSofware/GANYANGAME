@@ -86,7 +86,7 @@ class ScenePlay extends Phaser.Scene {
                     //sound effect
                     //Sounds variables. this.bulletMenuSound is created here and not outside the functions so it creates a new sound every time and is independent from the old ones.
                     this.bulletMenuSound = this.sound.add('shot');
-                    this.bulletMenuSound.play();
+                    this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu")});
                     
                     //this.player1.decreaseLife(10);
                 }
