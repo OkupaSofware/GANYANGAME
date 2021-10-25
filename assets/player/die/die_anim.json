@@ -3,7 +3,7 @@
         {
             "key": "die",
             "type": "frames",
-            "repeat": -1,
+            "repeat": 0,
             "frameRate": 20,
             "frames": [
                 {

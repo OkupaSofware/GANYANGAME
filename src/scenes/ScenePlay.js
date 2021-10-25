@@ -12,15 +12,14 @@ class ScenePlay extends Phaser.Scene {
         this.timeText;
         this.gap = 0;
         this.tcount = 0;
-
     }
 
 
     create() {
         //timer        
         this.timeText = this.add.text(649, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
+        this.cameras.main.fadeIn(500, 0, 0, 0);
 
-        this.cameras.main.fadeIn(500, 0, 0, 0)
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
@@ -41,7 +40,7 @@ class ScenePlay extends Phaser.Scene {
         this.sceneplayMusicBackground = this.sound.add('sceneplayMusic');
         this.sceneplayMusicBackground.play({volume: this.registry.get("backgroundVolumeFromMenu")});
         
-        // Add platforms
+        //#region Add platforms
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(1130, 500, "platform_1").setScale(0.3, 0.3).refreshBody().setSize(115, 25, 0, 0);
         this.platforms.create(150, 500, "platform_1").setScale(0.3, 0.3).refreshBody().setSize(115, 25, 0, 0);
@@ -57,7 +56,7 @@ class ScenePlay extends Phaser.Scene {
         this.platforms.create(480, 350, "platform_4").setScale(0.3, 0.3).refreshBody().setSize(230, 25, 0, 0);
         this.platforms.create(1050, 200, "platform_4").setScale(0.3, 0.3).refreshBody().setSize(230, 25, 0, 0);
         this.platforms.create(230, 200, "platform_4").setScale(0.3, 0.3).refreshBody().setSize(230, 25, 0, 0);
-        //________________________________________________________
+        //#endregion
 
         //boost
         this.boostArray = new Array();
@@ -67,17 +66,16 @@ class ScenePlay extends Phaser.Scene {
 
         //players
         this.targetsArray = new Array();
-        this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
+        this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
         this.targetsArray[0].setShield(true)
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' });
+        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
 
         // player 1 shooting
-
         this.input.on('pointerdown', function (pointer) {
             if (this.menuOn == false) {
                 if (this.player1.getAmmo() > 0) {
@@ -97,7 +95,7 @@ class ScenePlay extends Phaser.Scene {
         this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
-
+        this.player1die = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.targetsArray, this.platforms);
@@ -106,110 +104,31 @@ class ScenePlay extends Phaser.Scene {
             this.physics.add.collider(this.platforms, this.boostArray)
             this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
         }
-       
-           
-        
-
-
     }
 
     update(time, delta) {
-        //if(this.bulletsPlayer1.length >0)
-        //console.log(this.bulletsPlayer1[0].x);
-
         //Respawn
         if (this.targetsArray[0].alive == false) {
             this.hitPlayer.play();
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
             //this.targetsArray[0].body.setPosition(-200,-200);
             this.targetsArray[0].respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
+            this.tdie = 0;
+        }
+        //animacion de morir
+        if (this.targetsArray[0].life < 20){
+            this.targetsArray[0].anims.play('die', true)
         }
         
-        // Boost generator
-        //console.log(this.boostArray[1].counter)
-        var randBoost = Math.floor(Math.random() * 3) + 1;
-        for (var i = 0; i < this.boostArray.length; i++) {
-            if (this.boostArray[i].status == false) {
-                this.boostArray[i].counter++;
-            }
-            if (this.boostArray[i].counter == 700) {
-                if (i == 0) {
-                    if (randBoost == 1) {
-                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "live").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 2) {
-                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "bubble").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 3) {
-                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "ammo").setScale(0.15, 0.15);
-                    }
-                }
-                if (i == 1) {
-                    if (randBoost == 1) {
-                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "live").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 2) {
-                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "bubble").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 3) {
-                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "ammo").setScale(0.15, 0.15);
-                    }
-                }
-                if (i == 2) {
-                    if (randBoost == 1) {
-                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "live").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 2) {
-                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "bubble").setScale(0.3, 0.3);
-                    }
-                    if (randBoost == 3) {
-                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
-                    }
-                }
-                this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
-            }
-        }
-
-
-        // Time counter
-        if (this.tcount == 0) {
-            this.gap = Math.round(time * 0.001);
-            this.tcount++
-        }
-        var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 300 - Math.round(seconds) + this.gap;
-        var ttext = timer.toString();
-
-        if (timer > 0) {
-            if (timer > 20) {
-                this.timeText.setTint(0xFFFFFF);
-                this.timeText.setText(ttext);
-            } else {
-                if (timer % 2 == 0) {
-                    this.timeText.setTint(0xFFFFFF);
-                    this.timeText.setText(ttext);
-                }
-                if (timer % 2 == 1) {
-                    this.timeText.setTint(0xFF0000);
-                    this.timeText.setText(ttext);
-                }
-            }
-        }
-        else {
-            this.timeText.setText("END");
-            this.player1.setCountKills(this.targetsArray[0].getCountDeaths());
-            this.targetsArray[0].setCountKills(this.player1.getCountDeaths());
-            this.registry.set("player1", this.player1);
-            this.registry.set("player2", this.targetsArray[0]);
-            this.scene.start("StatsScene");
-            this.scene.stop("ScenePlay")
-        }
+        this.randBoostFunc();
+        this.cronoFunc(time);
 
 
         // Bullets
         this.targetsArray[0].update(time, delta)
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
 
+        //#region Player movement
         // PLAYER 1
         if (this.menuOn == false) {
             this.player1.body.setVelocityX(0)
@@ -239,7 +158,6 @@ class ScenePlay extends Phaser.Scene {
             else if (this.player1.jumptimer != 0) {
                 this.player1.jumptimer = 0;
             }
-
             if ((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()) {
                 this.player1.anims.play('run', true)
             }
@@ -250,6 +168,7 @@ class ScenePlay extends Phaser.Scene {
                 this.player1.anims.play('idle', true)
             }
         }
+        //#endregion
     }
 
     launchMenu() {
@@ -264,7 +183,6 @@ class ScenePlay extends Phaser.Scene {
         }
 
     }
-
 
 //#region Bullets
     // BULLETS
@@ -290,7 +208,7 @@ class ScenePlay extends Phaser.Scene {
         // Direction callculation
         this.calculateBulletSpeed(this.bullet, targetX + 5, targetY, player);
     };
-//#endregion
+
     calculateBulletSpeed(bullet, targetX, targetY, player) {
         this.direction = Math.atan((targetX - player.x) / (targetY - player.y));
 
@@ -345,12 +263,14 @@ class ScenePlay extends Phaser.Scene {
     }
 
     hit(gBullet, platform) {
+        gBullet.setVelocityX(0);
+        gBullet.setVelocityY(0);
         if (gBullet.y < platform.y) {
-            gBullet.x = 1280;
-            gBullet.y = 720;
+            gBullet.x = 1290;
+            gBullet.y = 730;
         } else if (gBullet.y > platform.y) {
-            gBullet.x = 5;
-            gBullet.y = 5;
+            gBullet.x = -5;
+            gBullet.y = -5;
         }
     }
     hitBody(gBullet, target) {
@@ -359,15 +279,89 @@ class ScenePlay extends Phaser.Scene {
         } else if (gBullet.x > target.x) {
             gBullet.x = 5;
         }
-
-        //EN PRINCIPIO CON LO QUE YA HAY NO HACEN FALTA ESTAS 3 SIGUIENTES LINEAS DE CÓDIGO
-        //gBullet.setActive(false);
-        //gBullet.setVisible(false);
-        //gBullet.body.destroy()
         target.decreaseLife(15);
+    }
+//#endregion
+    
+    cronoFunc(time){
+        // Time counter
+        if (this.tcount == 0) {
+            this.gap = Math.round(time * 0.001);
+            this.tcount++;
+        }
+        var seconds = (time * 0.001); //Converted to Seconds
+        var timer = 300 - Math.round(seconds) + this.gap;
+        var ttext = timer.toString();
 
-
-
+        if (timer > 0) {
+            if (timer > 20) {
+                this.timeText.setTint(0xFFFFFF);
+                this.timeText.setText(ttext);
+            } else {
+                if (timer % 2 == 0) {
+                    this.timeText.setTint(0xFFFFFF);
+                    this.timeText.setText(ttext);
+                }
+                if (timer % 2 == 1) {
+                    this.timeText.setTint(0xFF0000);
+                    this.timeText.setText(ttext);
+                }
+            }
+        }
+        else {
+            this.timeText.setText("END");
+            this.player1.setCountKills(this.targetsArray[0].getCountDeaths());
+            this.targetsArray[0].setCountKills(this.player1.getCountDeaths());
+            this.registry.set("player1", this.player1);
+            this.registry.set("player2", this.targetsArray[0]);
+            this.scene.start("StatsScene");
+            this.scene.stop("ScenePlay");
+        }
+    }
+    randBoostFunc(){
+        // Boost generator
+        var randBoost = Math.floor(Math.random() * 3) + 1;
+        for (var i = 0; i < this.boostArray.length; i++) {
+            if (this.boostArray[i].status == false) {
+                this.boostArray[i].counter++;
+            }
+            if (this.boostArray[i].counter == 700) {
+                if (i == 0) {
+                    if (randBoost == 1) {
+                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "live").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 2) {
+                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "bubble").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 3) {
+                        this.boostArray[i] = new Boost(this, 640, 450 + 10, "ammo").setScale(0.15, 0.15);
+                    }
+                }
+                if (i == 1) {
+                    if (randBoost == 1) {
+                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "live").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 2) {
+                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "bubble").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 3) {
+                        this.boostArray[i] = new Boost(this, 230, 150 + 10, "ammo").setScale(0.15, 0.15);
+                    }
+                }
+                if (i == 2) {
+                    if (randBoost == 1) {
+                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "live").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 2) {
+                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "bubble").setScale(0.3, 0.3);
+                    }
+                    if (randBoost == 3) {
+                        this.boostArray[i] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
+                    }
+                }
+                this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
+            }
+        }
     }
 }
 
