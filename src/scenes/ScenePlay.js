@@ -310,8 +310,9 @@ class ScenePlay extends Phaser.Scene {
             this.playersArray[0].setCountKills(this.player1.getCountDeaths());
             this.registry.set("player1", this.player1);
             this.registry.set("player2", this.playersArray[0]);
-            this.scene.start("StatsScene");
-            this.scene.stop("ScenePlay");
+            this.scene.launch("StatsScene");
+            this.scene.bringToTop("StatsScene");
+            this.scene.pause("ScenePlay");
         }
     }
     randBoostFunc(){

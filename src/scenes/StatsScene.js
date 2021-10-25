@@ -45,20 +45,25 @@ class StatsScene extends Phaser.Scene {
             this.draw2=this.add.text(840,180, "DRAW",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0x000000)
         }
         
-        var back_button = new Button({
+        this.idle1 = this.add.image(420, 315, "idle").setTint(0xCC6666);
+        this.idle1.flipX=true;
+        this.idle2 = this.add.image(840, 315, "idle").setTint(0x92C5FC);
+        
+        var exit_button = new Button({
             'scene': this,
-            'key':'setting_button',
+            'key':'quit_button',
             'up': 0,
             'over':1,
             'down':2,
-            'x': 200,
-            'y': 180
+            'x': 880,
+            'y': 100
         }).setScale(0.7,0.7);
-        back_button.on('pointerup',this.goBack,this)
+        exit_button.on('pointerup',this.goBack,this)
     }
     goBack(){
+        this.scene.start("MainMenuBackground");
         this.scene.stop("StatsScene");
-        this.scene.wake("MainMenu");
+        this.scene.stop("ScenePlay");
 
     }
 
