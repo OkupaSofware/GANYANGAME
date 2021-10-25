@@ -12,14 +12,15 @@ class Player extends Phaser.GameObjects.Sprite{
         this.cursorsCreated = false;
         this.name = username;
         this.hud = new PlayerHUD(scene,this);
-        this.life = 50;
+        this.life = 100;
         this.hud.setLife(this.life)
         this.ammo = 1000;
         this.ammoSpeed = 80;
         this.alive = true;
         this.shieldOn = false;
         this.shield = 100;
-        this.jumptimer = 0;
+        this.jumpTimer = 0;
+        this.dieTimer = 200;
         
         //Weapon
         this.weapon = scene.add.image(this.x, this.y+2, "rifle");
@@ -33,6 +34,9 @@ class Player extends Phaser.GameObjects.Sprite{
         this.countShields = 0;
         this.countHearts = 0;
         this.countAmmos = 0;
+
+        //Voices
+        this.cry = scene.hitPlayer;
         
     }
     
@@ -110,15 +114,24 @@ Player.prototype.setShield = function(bool){
     this.hud.setShield(bool);
 };
 Player.prototype.die = function(){
-    this.alive = false;
-    this.setVisible(false);
-    this.countDeaths++;
-    //this.setActive(false);
+    this.anims.play('die', true)
     this.hud.setVisible(false)
-   
+    this.cry.play();
+    this.alive = false;
+    this.body.setSize(5,5,1,1).setOffset(86,120)
+    this.on('animationcomplete',() => {
+        //this.setVisible(false);
+    this.countDeaths++;
+    this.life = 1;
+    //this.setActive(false);
     this.weapon.setVisible(false);
+    });
+    this.countDeaths++;
+    
 }
 Player.prototype.respawn = function(x,y){
+    this.body.setSize(50,116,1,1).setOffset(15,12)
+    this.anims.play('idle', true)
     this.alive = true;
     this.setVisible(true);
     //this.setActive(true);

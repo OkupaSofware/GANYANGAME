@@ -19,7 +19,7 @@ class ScenePlay extends Phaser.Scene {
         //timer        
         this.timeText = this.add.text(649, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.cameras.main.fadeIn(500, 0, 0, 0);
-
+        this.killText = this.add.text(640, 200, "+1 KILL", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
@@ -65,9 +65,10 @@ class ScenePlay extends Phaser.Scene {
         this.boostArray[2] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
 
         //players
-        this.targetsArray = new Array();
-        this.targetsArray[0] = new Player(this, 700, 650, "idle").setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
-        this.targetsArray[0].setShield(true)
+        this.playersArray = new Array();
+        this.playersArray[0] = new Player(this, 700, 650, "idle").setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
+        this.playersArray[0].name = "Enemy";
+        //this.playersArray[0].setShield(true)
 
         //PLAYER 1
         this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
@@ -92,13 +93,13 @@ class ScenePlay extends Phaser.Scene {
         }, this);
 
         //controls player 1
-        this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
-        this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
-        this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
-        this.player1die = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
+        this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
+        this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        this.player1die = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
-        this.physics.add.collider(this.targetsArray, this.platforms);
+        this.physics.add.collider(this.playersArray, this.platforms);
 
         for (var i = 0; i < this.boostArray.length; i++) {
             this.physics.add.collider(this.platforms, this.boostArray)
@@ -107,30 +108,25 @@ class ScenePlay extends Phaser.Scene {
     }
 
     update(time, delta) {
-        //Respawn
-        if (this.targetsArray[0].alive == false) {
-            this.hitPlayer.play();
-            var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
-            //this.targetsArray[0].body.setPosition(-200,-200);
-            this.targetsArray[0].respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
-            this.tdie = 0;
-        }
-        //animacion de morir
-        if (this.targetsArray[0].life < 20){
-            this.targetsArray[0].anims.play('die', true)
-        }
+        
+        this.checkRespawn();
         
         this.randBoostFunc();
+
         this.cronoFunc(time);
 
-
         // Bullets
-        this.targetsArray[0].update(time, delta)
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
+        
 
+        
         //#region Player movement
         // PLAYER 1
         if (this.menuOn == false) {
+            if(this.playersArray[0].alive == true){
+                
+                this.playersArray[0].update(time, delta)
+            }
             this.player1.body.setVelocityX(0)
             this.player1.update(time, delta)
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
@@ -143,20 +139,20 @@ class ScenePlay extends Phaser.Scene {
             }
 
             if (this.player1jump.isDown && this.player1.body.onFloor()){
-                this.player1.jumptimer = 1;
+                this.player1.jumpTimer = 1;
                 this.player1.body.setVelocityY(-600);
             }
-            else if (this.player1jump.isDown && (this.player1.jumptimer != 0)) {
-                if (this.player1.jumptimer > 16) {
-                    this.player1.jumptimer = 0;
+            else if (this.player1jump.isDown && (this.player1.jumpTimer != 0)) {
+                if (this.player1.jumpTimer > 16) {
+                    this.player1.jumpTimer = 0;
                 }
                 else {
-                    this.player1.jumptimer++;
+                    this.player1.jumpTimer++;
                     this.player1.body.setVelocityY(-600);
                 }
             }
-            else if (this.player1.jumptimer != 0) {
-                this.player1.jumptimer = 0;
+            else if (this.player1.jumpTimer != 0) {
+                this.player1.jumpTimer = 0;
             }
             if ((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()) {
                 this.player1.anims.play('run', true)
@@ -222,7 +218,7 @@ class ScenePlay extends Phaser.Scene {
             bullet.ySpeed = 20 * Math.cos(this.direction);
         }
         this.physics.add.collider(this.platforms, bullet, this.hit);
-        this.physics.add.collider(bullet, this.targetsArray[0], this.hitBody);
+        this.physics.add.collider(bullet, this.playersArray[0], this.hitBody);
         let ammoSpeed = 80;
         bullet.setVelocityX(bullet.xSpeed * ammoSpeed);
         bullet.setVelocityY(-bullet.ySpeed * ammoSpeed);
@@ -237,7 +233,7 @@ class ScenePlay extends Phaser.Scene {
 
             // Add collisions
             //this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
-            //this.physics.add.collider(bulletsArray[i], this.targetsArray[0], this.hitBody);
+            //this.physics.add.collider(bulletsArray[i], this.playersArray[0], this.hitBody);
 
             // Bullet world bounds collision
 
@@ -310,10 +306,10 @@ class ScenePlay extends Phaser.Scene {
         }
         else {
             this.timeText.setText("END");
-            this.player1.setCountKills(this.targetsArray[0].getCountDeaths());
-            this.targetsArray[0].setCountKills(this.player1.getCountDeaths());
+            this.player1.setCountKills(this.playersArray[0].getCountDeaths());
+            this.playersArray[0].setCountKills(this.player1.getCountDeaths());
             this.registry.set("player1", this.player1);
-            this.registry.set("player2", this.targetsArray[0]);
+            this.registry.set("player2", this.playersArray[0]);
             this.scene.start("StatsScene");
             this.scene.stop("ScenePlay");
         }
@@ -361,6 +357,23 @@ class ScenePlay extends Phaser.Scene {
                 }
                 this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
             }
+        }
+    }
+    checkRespawn(){
+        if (this.playersArray[0].alive == false) {
+            this.funnyPlayer.play();
+            this.killText.setAlpha(1);
+            this.killText.setPosition(this.killText.x,this.killText.y+5)
+            this.playersArray[0].dieTimer--;
+        }
+
+        if (this.playersArray[0].alive == false && this.playersArray[0].dieTimer == 0) {
+            var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
+            //this.playersArray[0].body.setPosition(-200,-200);
+            this.killText.setAlpha(0);
+            this.killText.setPosition(640,200)
+            this.playersArray[0].respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
+            this.playersArray[0].dieTimer = 200;
         }
     }
 }
