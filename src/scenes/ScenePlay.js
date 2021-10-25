@@ -121,8 +121,8 @@ class ScenePlay extends Phaser.Scene {
         if (this.targetsArray[0].alive == false) {
             this.hitPlayer.play();
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
+            //this.targetsArray[0].body.setPosition(-200,-200);
             this.targetsArray[0].respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
-            console.log("si")
         }
         
         // Boost generator
@@ -223,7 +223,7 @@ class ScenePlay extends Phaser.Scene {
                 this.player1.body.setVelocityX(-400)
             }
 
-            if (this.player1jump.isDown && this.player1.body.onFloor()) {
+            if (this.player1jump.isDown && this.player1.body.onFloor()){
                 this.player1.jumptimer = 1;
                 this.player1.body.setVelocityY(-600);
             }
@@ -266,15 +266,15 @@ class ScenePlay extends Phaser.Scene {
     }
 
 
-
+//#region Bullets
     // BULLETS
     createBullet(targetX, targetY, player, bulletsArray) {
         this.bullet = this.physics.add.image(player.x, player.y + 10, "bala").setScale(0.5).refreshBody();
         this.activateBullet(this.bullet);
         this.bullet.body.allowGravity = false;
         this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
-        bulletsArray.push(this.bullet);
         this.bullet.body.setSize(10, 10, 0.5, 0.5)
+        bulletsArray.push(this.bullet);
         
         //this.bullet.body.angle = -180 / Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
         console.log(this.bullet.body.angle)
@@ -290,7 +290,7 @@ class ScenePlay extends Phaser.Scene {
         // Direction callculation
         this.calculateBulletSpeed(this.bullet, targetX + 5, targetY, player);
     };
-
+//#endregion
     calculateBulletSpeed(bullet, targetX, targetY, player) {
         this.direction = Math.atan((targetX - player.x) / (targetY - player.y));
 
@@ -303,19 +303,23 @@ class ScenePlay extends Phaser.Scene {
             bullet.xSpeed = -20 * Math.sin(this.direction);
             bullet.ySpeed = 20 * Math.cos(this.direction);
         }
+        this.physics.add.collider(this.platforms, bullet, this.hit);
+        this.physics.add.collider(bullet, this.targetsArray[0], this.hitBody);
+        let ammoSpeed = 80;
+        bullet.setVelocityX(bullet.xSpeed * ammoSpeed);
+        bullet.setVelocityY(-bullet.ySpeed * ammoSpeed);
+        console.log(bullet.xSpeed)
     };
 
     updateBulletsPosition(bulletsArray, player) {
         for (var i = 0; i < bulletsArray.length; i++) {
-            let ammoSpeed = player.getAmmoSpeed();
-            bulletsArray[i].setVelocityX(bulletsArray[i].xSpeed * ammoSpeed);
-            bulletsArray[i].setVelocityY(-bulletsArray[i].ySpeed * ammoSpeed);
+           
 
             //console.log(bulletsArray[i].bulletPos);
 
             // Add collisions
-            this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
-            this.physics.add.collider(bulletsArray[i], this.targetsArray[0], this.hitBody);
+            //this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
+            //this.physics.add.collider(bulletsArray[i], this.targetsArray[0], this.hitBody);
 
             // Bullet world bounds collision
 
