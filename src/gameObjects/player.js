@@ -119,10 +119,10 @@ Player.prototype.die = function(){
     this.cry.play();
     this.alive = false;
     this.body.setSize(5,5,1,1).setOffset(86,120)
+    this.life = 1;
+    this.countDeaths++;
     this.on('animationcomplete',() => {
         //this.setVisible(false);
-    this.countDeaths++;
-    this.life = 1;
     //this.setActive(false);
     this.weapon.setVisible(false);
     });
