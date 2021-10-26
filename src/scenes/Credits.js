@@ -9,7 +9,6 @@ create(){
     this.text=this.add.text(640,80, "CREDITS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5);
     this.add.image(640, 320, "creditsBackground").setScale(0.4,0.4);
 
-    this.add.image(640, 308, "background").setScale(0.42,0.42);
     var back_button = new Button({
         'scene': this,
         'key':'back_buttons',
