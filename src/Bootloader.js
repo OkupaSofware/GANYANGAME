@@ -29,6 +29,8 @@ class Bootloader extends Phaser.Scene {
         // Setting menu buttons
         this.load.spritesheet("plus_buttons", "assets/plusButton.png",{ frameWidth: 106, frameHeight: 95 });
         this.load.spritesheet("minus_buttons", "assets/minusButton.png",{ frameWidth: 106, frameHeight: 95 });
+        this.load.image("bulletsAudioMusic", "./assets/audioSettingsMusic.png");
+        this.load.image("bulletsAudioEffects", "./assets/audioSettingsEffects.png");
         
         this.load.on("complete", () =>{
             this.scene.start("Intro");
