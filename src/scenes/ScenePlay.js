@@ -18,6 +18,8 @@ class ScenePlay extends Phaser.Scene {
     create() {
         //timer        
         this.timeText = this.add.text(640, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
+        this.gap = 0;
+        this.tcount = 0;
         
         this.cameras.main.fadeIn(500, 0, 0, 0);
         this.killText = this.add.text(640, 200, "+1 KILL", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
@@ -105,13 +107,10 @@ class ScenePlay extends Phaser.Scene {
         for (var i = 0; i < this.boostArray.length; i++) {
             this.physics.add.collider(this.platforms, this.boostArray)
             this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
-            
-            
         }
+        
         this.cameras.main.once('camerafadeoutcomplete', function() {
            
-
-
         });
     }
 
@@ -125,8 +124,6 @@ class ScenePlay extends Phaser.Scene {
 
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
-        
-
         
         //#region Player movement
         // PLAYER 1
@@ -294,7 +291,7 @@ class ScenePlay extends Phaser.Scene {
             this.tcount++;
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 10 - Math.round(seconds) + this.gap;
+        var timer = 30 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
 
         if (timer > 0) {
