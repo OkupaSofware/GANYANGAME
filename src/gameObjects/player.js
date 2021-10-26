@@ -126,7 +126,6 @@ Player.prototype.die = function(){
     //this.setActive(false);
     this.weapon.setVisible(false);
     });
-    this.countDeaths++;
     
 }
 Player.prototype.respawn = function(x,y){

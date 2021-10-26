@@ -7,7 +7,7 @@ class StatsScene extends Phaser.Scene {
     }
     
     create(){
-        this.cameras.main.fadeIn(250, 0, 0, 0)
+        this.cameras.main.fadeIn(2000, 0, 0, 0)
         this.text=this.add.text(640,80, "GAME RESULTS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
 
         this.add.image(640, 360, "ingamemenu").setScale(0.4,0.4);
@@ -55,8 +55,8 @@ class StatsScene extends Phaser.Scene {
             'up': 0,
             'over':1,
             'down':2,
-            'x': 880,
-            'y': 100
+            'x': 1010,
+            'y': 200
         }).setScale(0.7,0.7);
         exit_button.on('pointerup',this.goBack,this)
     }
