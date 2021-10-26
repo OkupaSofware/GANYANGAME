@@ -68,13 +68,35 @@ class ScenePlay extends Phaser.Scene {
         this.boostArray[2] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
 
         //players
+        //En este caso uno mas 
         this.playersArray = new Array();
-        this.playersArray[0] = new Player(this, 700, 650, "idle").setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
+        this.playersArray[0] = new Player(this, 700, 650, "idle","HEY",this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
         this.playersArray[0].name = "Enemy";
+        //Cambio de controles para local
+        this.playersArray[0].player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        this.playersArray[0].player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        this.playersArray[0].player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        this.playersArray[0].player1die = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
+        this.playersArray[0].weapon.setScale(0.4,0.4)
+        //Cambio de flipeo para local
+        this.playersArray[0].flipHorizontal = function(){
+            if (this.player1RightControl.isDown) {
+                this.flipX = true;
+                this.weapon.setOrigin(0.1, 0)
+                this.weapon.flipX=false;
+            }
+            if (this.player1LeftControl.isDown) {
+                this.flipX = false;
+                this.weapon.setOrigin(0.9, 0)
+                this.weapon.flipX=true;
+            }
+        
+
+        }
         //this.playersArray[0].setShield(true)
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
+        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
@@ -96,10 +118,7 @@ class ScenePlay extends Phaser.Scene {
         }, this);
 
         //controls player 1
-        this.player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
-        this.player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-        this.player1LeftControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-        this.player1die = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
+        
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
         this.physics.add.collider(this.playersArray, this.platforms);
@@ -125,53 +144,26 @@ class ScenePlay extends Phaser.Scene {
         // Bullets
         this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
         
-        //#region Player movement
-        // PLAYER 1
+        //#region Players movement
+        
         if (this.menuOn == false) {
             if(this.playersArray[0].alive == true){
+            this.playersArray[0].body.setVelocityX(0)
+            this.playersArray[0].update(time, delta)
                 
-                this.playersArray[0].update(time, delta)
             }
             this.player1.body.setVelocityX(0)
             this.player1.update(time, delta)
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
             // Player 1 controls
-            if (this.player1RightControl.isDown) {
-                this.player1.body.setVelocityX(400)
-            }
-            if (this.player1LeftControl.isDown) {
-                this.player1.body.setVelocityX(-400)
-            }
-
-            if (this.player1jump.isDown && this.player1.body.onFloor()){
-                this.player1.jumpTimer = 1;
-                this.player1.body.setVelocityY(-600);
-            }
-            else if (this.player1jump.isDown && (this.player1.jumpTimer != 0)) {
-                if (this.player1.jumpTimer > 16) {
-                    this.player1.jumpTimer = 0;
-                }
-                else {
-                    this.player1.jumpTimer++;
-                    this.player1.body.setVelocityY(-600);
-                }
-            }
-            else if (this.player1.jumpTimer != 0) {
-                this.player1.jumpTimer = 0;
-            }
-            if ((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()) {
-                this.player1.anims.play('run', true)
-            }
-            if (!this.player1.body.onFloor()) {
-                this.player1.anims.play('jump', true)
-            }
-            if (!(this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.player1.body.onFloor()) {
-                this.player1.anims.play('idle', true)
-            }
+            
+        }else{
+            this.player1.body.setVelocityX(0)
+            this.playersArray[0].body.setVelocityX(0)
         }
         //#endregion
     }
-
+    
     launchMenu() {
         if (this.menuOn == false) {
             this.menuOn = true;
@@ -275,6 +267,8 @@ class ScenePlay extends Phaser.Scene {
         }
     }
     hitBody(gBullet, target) {
+        gBullet.setVelocityX(0);
+        gBullet.setVelocityY(0);
         if (gBullet.x < target.x) {
             gBullet.x = 1280;
         } else if (gBullet.x > target.x) {

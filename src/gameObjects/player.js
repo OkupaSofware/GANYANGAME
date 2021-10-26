@@ -1,6 +1,6 @@
 import PlayerHUD from '../gameObjects/HUD.js';
 class Player extends Phaser.GameObjects.Sprite{
-    constructor(scene, x, y, type, username){
+    constructor(scene, x, y, type, username,wpn){
         super(scene, x, y, type);
         scene.add.existing(this);
         scene.physics.world.enable(this);
@@ -23,7 +23,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.dieTimer = 200;
         
         //Weapon
-        this.weapon = scene.add.image(this.x, this.y+2, "rifle");
+        this.weapon = wpn;
         this.weapon.setOrigin(0.1, 0)
         this.weapon.setScale(0.2,0.2)
         this.weapon.setDepth(1) 
@@ -37,7 +37,11 @@ class Player extends Phaser.GameObjects.Sprite{
 
         //Voices
         this.cry = scene.hitPlayer;
-        
+
+        this.player1jump = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
+        this.player1RightControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        this.player1LeftControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        this.player1die = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
     }
     
 };
@@ -120,7 +124,7 @@ Player.prototype.die = function(){
     this.alive = false;
     this.body.setSize(5,5,1,1).setOffset(86,120)
     this.life = 1;
-    this.countDeaths++;
+    this.increaseCountDeaths();
     this.on('animationcomplete',() => {
         //this.setVisible(false);
     //this.setActive(false);
@@ -155,27 +159,73 @@ Player.prototype.getCountShields = function(){return this.countShields;}
 Player.prototype.getCountHearts = function(){return this.countHearts;}
 Player.prototype.getCountAmmos = function(){return this.countAmmos;}
 
+Player.prototype.movement = function(){
+    if (this.player1RightControl.isDown) {
+        this.body.setVelocityX(400)
+    }
+    if (this.player1LeftControl.isDown) {
+        this.body.setVelocityX(-400)
+    }
+
+    if (this.player1jump.isDown && this.body.onFloor()){
+        this.jumpTimer = 1;
+        this.body.setVelocityY(-600);
+    }
+    else if (this.player1jump.isDown && (this.jumpTimer != 0)) {
+        if (this.jumpTimer > 16) {
+            this.jumpTimer = 0;
+        }
+        else {
+            this.jumpTimer++;
+            this.body.setVelocityY(-600);
+        }
+    }
+    else if (this.jumpTimer != 0) {
+        this.jumpTimer = 0;
+    }
+    if ((this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.body.onFloor()) {
+        this.anims.play('run', true)
+    }
+    if (!this.body.onFloor()) {
+        this.anims.play('jump', true)
+    }
+    if (!(this.player1LeftControl.isDown || this.player1RightControl.isDown) && this.body.onFloor()) {
+        this.anims.play('idle', true)
+    }
+}
+Player.prototype.flipHorizontal = function() {
+    if(this.scene.input.activePointer.x > this.getCenter().x){
+        this.flipX = true;
+        this.weapon.setOrigin(0.1, 0)
+        this.weapon.flipX = false
+    }else{
+        this.flipX = false;
+        this.weapon.setOrigin(0.9, 0)
+        this.weapon.flipX= true
+    }
+
+} 
+
 Player.prototype.update = function(time,delta){
+
+    this.movement();
+
     this.weapon.setPosition(this.x, this.y+2)
+
     this.hud.update(this.x,this.y)
         //Flip sprites
-        if(this.scene.input.activePointer.x > this.getCenter().x){
-            this.flipX = true;
-            this.weapon.setOrigin(0.1, 0)
-            this.weapon.flipX = false
-        }else{
-            this.flipX = false;
-            this.weapon.setOrigin(0.9, 0)
-            this.weapon.flipX= true
-        }
+        this.flipHorizontal();
+        
         if(this.shield<=0){
             this.setShield(false);
         }
         
         if(this.life<=0){
            this.die();
+           this.body.setVelocityX(0)
             
         }
+       
 
     }
 
