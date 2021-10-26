@@ -16,7 +16,7 @@ create(){
         'up': 0,
         'over':1,
         'down':2,
-        'x': 1030,
+        'x': 990,
         'y': 200
     }).setScale(0.7,0.7);
     back_button.on('pointerup',this.goBack,this);
