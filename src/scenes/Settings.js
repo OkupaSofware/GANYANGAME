@@ -28,7 +28,7 @@ create(){
         'up': 0,
         'over':1,
         'down':2,
-        'x': 280,
+        'x': 380,
         'y': 280
     }).setScale(0.8,0.8);
     increaseVolumeEffects.on('pointerup', this.increaseVolumeEffects, this);
@@ -38,7 +38,7 @@ create(){
         'up': 0,
         'over':1,
         'down':2,
-        'x': 380,
+        'x': 280,
         'y': 280
     }).setScale(0.8,0.8);
     decreaseVolumeEffects.on('pointerup', this.decreaseVolumeEffects, this);
@@ -51,7 +51,7 @@ create(){
         'up': 0,
         'over':1,
         'down':2,
-        'x': 280,
+        'x': 380,
         'y': 400
     }).setScale(0.8,0.8);
     increaseVolumeBackground.on('pointerup', this.increaseVolumeBackground, this);
@@ -61,7 +61,7 @@ create(){
         'up': 0,
         'over':1,
         'down':2,
-        'x': 380,
+        'x': 280,
         'y': 400
     }).setScale(0.8,0.8);
     decreaseVolumeBackground.on('pointerup', this.decreaseVolumeBackground, this);
@@ -90,7 +90,7 @@ increaseVolumeEffects(){
     if(this.previousVolumeEffects >= 1){
         this.newVolume = 1;
     }else{
-        this.newVolume = this.previousVolumeEffects += 0.1;
+        this.newVolume = this.previousVolumeEffects + 0.1;
         this.previousVolumeEffects = this.newVolume;
         this.registry.set('effectsVolumeFromMenu', this.newVolume);
     }
@@ -103,7 +103,7 @@ decreaseVolumeEffects(){
     if(this.previousVolumeEffects <= 0){
         this.newVolume = 0;
     }else{
-        this.newVolume = this.previousVolumeEffects -= 0.1;
+        this.newVolume = this.previousVolumeEffects - 0.1;
         this.previousVolumeEffects = this.newVolume;
         this.registry.set('effectsVolumeFromMenu', this.newVolume);
     }
@@ -116,7 +116,7 @@ increaseVolumeBackground(){
     if(this.previousVolumeBackground >= 1){
         this.newVolume = 1;
     }else{
-        this.newVolume = this.previousVolumeBackground += 0.1;
+        this.newVolume = this.previousVolumeBackground + 0.1;
         this.previousVolumeBackground = this.newVolume;
         this.registry.set('backgroundVolumeFromMenu', this.newVolume);
     }
@@ -129,7 +129,7 @@ decreaseVolumeBackground(){
     if(this.previousVolumeBackground <= 0){
         this.newVolume = 0;
     }else{
-        this.newVolume = this.previousVolumeBackground -= 0.1;
+        this.newVolume = this.previousVolumeBackground - 0.1;
         this.previousVolumeBackground = this.newVolume;
         this.registry.set('backgroundVolumeFromMenu', this.newVolume);
     }
@@ -138,17 +138,21 @@ decreaseVolumeBackground(){
 }
 
 paintBulletsAudioEffect(){
-    this.numBullets = this.registry.get("effectsVolumeFromMenu") * 10;
+    this.add.image(640, 320, "bulletsAudioEffects").setScale(0.4,0.4);
+    
+    this.numBullets = this.registry.get("effectsVolumeFromMenu") * 10 - 1;
     for(var i = 0; i < this.numBullets; i++){
-        this.newSpriteBullet = this.add.image(450+i*60, 270, "bulletMenu").setScale(0.25);
+        this.newSpriteBullet = this.add.image(517+i*52, 272, "bulletMenu").setScale(0.25);
     }
 
 }
 
 paintBulletsAudioBackground(){
-    this.numBullets = this.registry.get("backgroundVolumeFromMenu") * 10;
+    this.add.image(640, 320, "bulletsAudioMusic").setScale(0.4,0.4);
+    
+    this.numBullets = this.registry.get("backgroundVolumeFromMenu") * 10 - 1;
     for(var i = 0; i < this.numBullets; i++){
-        this.newSpriteBullet = this.add.image(450+i*60, 390, "bulletMenu").setScale(0.25);
+        this.newSpriteBullet = this.add.image(517+i*52, 390, "bulletMenu").setScale(0.25);
     }
 
 }
