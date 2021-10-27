@@ -34,6 +34,9 @@ class ScenePlay extends Phaser.Scene {
         //this.hitPlayer = this.sound.add('impact');
         this.funnyPlayer = this.sound.add('cry');
         this.hitPlayer = this.sound.add('deathcry');
+        this.shieldEffect = this.sound.add('shieldEffect');
+        this.extraLife = this.sound.add('extraLife');
+        this.reload = this.sound.add('reload');
         //this.hitPlayer.play();
         this.funnyPlayer.play();
 
@@ -113,6 +116,9 @@ class ScenePlay extends Phaser.Scene {
                     this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu")});
                     
                     //this.player1.decreaseLife(10);
+                }else{
+                    this.noAmmo = this.sound.add('noAmmo');
+                    this.noAmmo.play();
                 }
             }
         }, this);
