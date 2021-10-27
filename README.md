@@ -20,6 +20,15 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 
 <p>TRELLO: https://trello.com/b/7AF4IbZy/ganyan</P>
 
+<H2>REDES</H2>
+
+<p align="center"> 
+<img src="https://user-images.githubusercontent.com/91082053/139128420-6aacebe9-463a-4ec6-bc36-d7395abd2db0.jpeg" width="400">
+<img src="https://user-images.githubusercontent.com/91082053/139128442-ac6820d5-2e85-493c-b9a8-44ed8d210b85.jpeg" width="400">
+</p>
+
+
+
 <H2>CREDITOS</H2>
 
 <P>https://www.pinterest.es/pin/596656650620052997/</P>
