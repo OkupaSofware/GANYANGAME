@@ -57,7 +57,8 @@ var usernameText = this.add.text(640, 300, '', {font: 'bold 32px Arial', color: 
 //Input text for player name
 var element = this.add.dom(640,300).createFromCache('nameform');
 
-inputText1 = "Player";
+inputText1 = "Player 1";
+inputText2 = "Player 2";
 
 element.addListener('click');
 
