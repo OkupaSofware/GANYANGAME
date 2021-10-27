@@ -126,6 +126,7 @@ class ScenePlay extends Phaser.Scene {
         for (var i = 0; i < this.boostArray.length; i++) {
             this.physics.add.collider(this.platforms, this.boostArray)
             this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
+            this.physics.add.collider(this.playersArray[0], this.boostArray[i], this.boostArray[i].efect)
         }
         
         this.cameras.main.once('camerafadeoutcomplete', function() {
@@ -356,7 +357,8 @@ class ScenePlay extends Phaser.Scene {
                         this.boostArray[i] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
                     }
                 }
-                this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
+                this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect);
+                this.physics.add.collider(this.playersArray[0], this.boostArray[i], this.boostArray[i].efect);
             }
         }
     }
