@@ -16,20 +16,28 @@ class Boost extends Phaser.GameObjects.Image{
 
         this.status = true;
         this.counter = 0;
+        
+        // Audio sounds
+        this.shieldEffect = scene.shieldEffect;
+        this.extraLifeEffect = scene.extraLife;
+        this.reloadEffect = scene.reload;
     }
     efect(player1, boost){
 
         boost.status = false;
 
         if(boost.mode == 1){
+            boost.extraLifeEffect.play();
             player1.increaseLife(25);
             player1.increaseCountHearts();
         }
         if(boost.mode == 2){
+            boost.shieldEffect.play();
             player1.setShield(true);
             player1.increaseCountShields();
         }
         if(boost.mode == 3){
+            boost.reloadEffect.play();
             player1.setAmmo(20);
             player1.increaseCountAmmos();
         }
