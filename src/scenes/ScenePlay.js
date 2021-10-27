@@ -73,8 +73,7 @@ class ScenePlay extends Phaser.Scene {
         //players
         //En este caso uno mas 
         this.playersArray = new Array();
-        this.playersArray[0] = new Player(this, 700, 650, "idle","HEY",this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
-        this.playersArray[0].name = "Enemy";
+        this.playersArray[0] = new Player(this, 700, 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0x92C5FC);
         //Cambio de controles para local
         this.playersArray[0].player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         this.playersArray[0].player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -99,7 +98,7 @@ class ScenePlay extends Phaser.Scene {
         //this.playersArray[0].setShield(true)
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
+        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/mirillaRed.png), pointer' }).setTint(0xCC6666);
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
