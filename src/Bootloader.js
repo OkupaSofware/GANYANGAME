@@ -99,6 +99,10 @@ class Bootloader extends Phaser.Scene {
         this.load.audio('deathcry', ['../audio/deathcry.mp3']);
         this.load.audio('backgroundMusic', ['../audio/backgroundMusic.mp3']);
         this.load.audio('sceneplayMusic', ['../audio/gameplayMusic.mp3']);
+        this.load.audio('shieldEffect', ['../audio/shield.mp3']);
+        this.load.audio('extraLife', ['../audio/extraLife.mp3']);
+        this.load.audio('reload', ['../audio/reload.mp3']);
+        this.load.audio('noAmmo', ['../audio/noAmmo.mp3']);
     }
 
     create() {
