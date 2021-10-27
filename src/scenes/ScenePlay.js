@@ -319,7 +319,7 @@ class ScenePlay extends Phaser.Scene {
             this.scene.launch("StatsScene");
             this.scene.bringToTop("StatsScene");
             this.scene.pause("ScenePlay");
-           
+            this.scene.stop("InGameMenu");
         }
     }
     randBoostFunc(){
