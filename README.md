@@ -41,8 +41,10 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 
 <h4>DISEÑO VISUAL</H4>
 <P>Diseño de armas - https://www.pinterest.es/pin/596656650620052997/</P>
-<P>Diseño de sprites de escenario - https://craftpix.net/freebies/free-medieval-ruins-cartoon-2d-tileset/</P>
+<P>Diseño de sprites de escenario y algunos boosters - https://craftpix.net/freebies/free-medieval-ruins-cartoon-2d-tileset/</P>
 <P>Diseño de personaje - https://www.gamedevmarket.net/asset/2d-simple-character-swordman-free/</P>
+<p>Diseño grafico https://www.flaticon.com/free-icon/bullet_224679?term=bullet&page=1&position=5&page=1&position=5&related_id=224679&origin=search</p>
+
 <H4>EFECTOS DE SONIDO</H4>
 <P>Grito de Goofy - Walt Disney </P>
 <P>Efecto escudo - https://www.youtube.com/watch?v=Kd10K-v5LCQ&ab_channel=SoundLibrary </P>
