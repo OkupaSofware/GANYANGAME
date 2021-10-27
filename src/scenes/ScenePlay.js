@@ -280,7 +280,7 @@ class ScenePlay extends Phaser.Scene {
         } else if (gBullet.x > target.x) {
             gBullet.x = 5;
         }
-        target.decreaseLife(15);
+        target.decreaseLife(20);
     }
 //#endregion
     
@@ -291,7 +291,7 @@ class ScenePlay extends Phaser.Scene {
             this.tcount++;
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 30 - Math.round(seconds) + this.gap;
+        var timer = 90 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
 
         if (timer > 0) {
