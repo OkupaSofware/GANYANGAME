@@ -54,9 +54,4 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 <p>Sonido ambiente - https://www.youtube.com/watch?v=gCpRwGwZOGo&t=2s&ab_channel=OShark</p>
 <p>Sonido ambiente 2 - https://www.youtube.com/watch?v=2Mr8YYtmje0&t=3s&ab_channel=EstudiosTalkback-Topic</p>
 
-<H4>PR0GRAMACIÓN</H4>
 
-<p>-Alvaro Olvarria</p>
-<p>-Antonio Espinosa</p>
-<p>-Javier Serrano</p> 
-<p>-Alejandro Anton</p>
