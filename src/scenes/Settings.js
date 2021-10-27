@@ -72,7 +72,7 @@ create(){
     // Button "animation"
     this.input.on('pointerdown', function (pointer) {
         //image back_button: width:236, height: 95. Scale: 0.7 both axes
-        if((pointer.x > 1030-(236/2)*0.7 && pointer.x < 1030+(236/2)*0.7 && pointer.y > 200-(95/2)*0.7 && pointer.y < 200+(95/2)*0.7)) //back button
+        if((pointer.x > 1010-(236/2)*0.7 && pointer.x < 1010+(236/2)*0.7 && pointer.y > 186-(95/2)*0.7 && pointer.y < 186+(95/2)*0.7)) //back button
         {
             var bulletMenuSound = this.sound.add('shot');
             bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
@@ -96,7 +96,10 @@ increaseVolumeEffects(){
         this.registry.set('effectsVolumeFromMenu', this.newVolume);
     }
     this.paintBulletsAudioEffect();
-    //this.scene.get("MainMenuBackground").backgroundMusic.setVolume(this.newVolume);
+    
+    // Play audio
+    var bulletMenuSound = this.sound.add('shot');
+    bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
 }
 
 decreaseVolumeEffects(){
@@ -109,7 +112,10 @@ decreaseVolumeEffects(){
         this.registry.set('effectsVolumeFromMenu', this.newVolume);
     }
     this.paintBulletsAudioEffect();
-    //this.scene.get("MainMenuBackground").backgroundMusic.setVolume(this.newVolume);
+    
+    // Play audio
+    var bulletMenuSound = this.sound.add('shot');
+    bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
 }
 
 increaseVolumeBackground(){
@@ -123,6 +129,10 @@ increaseVolumeBackground(){
     }
     this.scene.get("MainMenuBackground").backgroundMusic.setVolume(this.newVolume);
     this.paintBulletsAudioBackground();
+    
+    // Play audio
+    var bulletMenuSound = this.sound.add('shot');
+    bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
 }
 
 decreaseVolumeBackground(){
@@ -136,6 +146,10 @@ decreaseVolumeBackground(){
     }
     this.scene.get("MainMenuBackground").backgroundMusic.setVolume(this.newVolume);
     this.paintBulletsAudioBackground();
+    
+    // Play audio
+    var bulletMenuSound = this.sound.add('shot');
+    bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
 }
 
 paintBulletsAudioEffect(){
