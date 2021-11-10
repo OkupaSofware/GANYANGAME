@@ -143,7 +143,7 @@ Player.prototype.respawn = function(x,y){
     this.hud.setVisible(true)
     this.weapon.setVisible(true);
     this.setLife(100);
-    this.setAmmo(20);
+    this.setCurrentAmmo(20);
     this.setPosition(x,y)
     }
     
