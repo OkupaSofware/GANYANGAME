@@ -1,6 +1,6 @@
 import Player from '../gameObjects/Player.js';
-import Button from '../gameObjects/Button.js';
 import Boost from '../gameObjects/boost.js';
+import Bullet from '../gameObjects/bullet.js';
 
 
 
