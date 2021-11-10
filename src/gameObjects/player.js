@@ -14,7 +14,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.hud = new PlayerHUD(scene,this);
         this.life = 100;
         this.hud.setLife(this.life)
-        this.ammo = 20;
+        this.totalAmmo = 20;
         this.currentAmmo = this.totalAmmo;
         this.ammoSpeed = 80;
         this.alive = true;
