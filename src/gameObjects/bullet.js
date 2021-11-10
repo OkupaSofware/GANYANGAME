@@ -1,55 +1,88 @@
 class Bullet extends Phaser.GameObjects.Image{
-    constructor(scene, xPos, yPos, type, xTarget, yTarget, bulletSpeed){
+    constructor(scene, xPos, yPos, type){
         super(scene, xPos, yPos, type);
-        scene.add.existing(this);
+
         scene.physics.world.enable(this);
-        this.body.setCollideWorldBounds(false);
+        this.body.setCollideWorldBounds(true);
         this.body.allowGravity = false;
+        this.scene.add.existing(this);
 
-        this.speed = bulletSpeed;
-        this.xTarget = xTarget + 8;
-        this.yTarget = yTarget + 8;
-        this.xDirection = xTarget - xPos;
-        this.yDirection = yTarget - yPos;
-        this.direction = Math.atan((this.xTarget-this.body.x) / (this.yTarget-this.body.y));
-        this.xSpeed = 0;
-        this.ySpeed = 0;
-        this.setSize(10, 10);
+        this.sizeX = 20;
+        this.sizeY = 10;
+        this.body.setSize(this.sizeX, this.sizeY, 0.5, 0.5);
 
 
-        this.setInitialDirection();
+        this.active = false;
+        this.visible = false;
+
+
+        this.initialPosXY = -50;
+        this.xVel = 0;
+        this.yVel = 0;
+        this.angle = 0;
+        this.direction = 0;
     }
 };
 
-Bullet.prototype.updatePosition = function(time, delta){
-    this.body.x += this.xSpeed * delta * this.speed * (1/2);
-    this.body.y -= this.ySpeed * delta * this.speed * (1/2);
+Bullet.prototype.shot = function(target, player){
+    this.setActive(true);
+    this.setVisible(true);
+    this.changeToPlayerRelativePosition(player);
+    this.calculateAngle(target, player);
+    this.calculateBulletSpeed(target, player);
+    console.log("shot");
 };
 
-Bullet.prototype.setInitialDirection = function(){
+Bullet.prototype.changeToPlayerRelativePosition = function(player){
+    this.setPosition(player.x, player.y);
+}
+
+Bullet.prototype.calculateAngle = function(target, player){
+    this.angle = -180 / Math.PI * Math.atan((target.x - player.x) / (target.y - player.y));
+    if ((target.y >= player.y && target.x < player.x) || (target.y >= player.y && target.x >= player.x)) //cuadrante 1
+    {
+        this.flipY = true;
+    }
+}
+
+Bullet.prototype.calculateBulletSpeed = function(target, player){
+    this.direction = Math.atan((target.x - player.x) / (target.y - player.y));
+
     // Set direction
-    if (this.yTarget >= this.body.y)
-    {
-        this.xSpeed = this.speed * Math.sin(this.direction);
-        this.ySpeed = -this.speed * Math.cos(this.direction);
+    if (target.y >= player.y) {
+        this.xVel = 20 * Math.sin(this.direction);
+        this.yVel = -20 * Math.cos(this.direction);
     }
-    else
-    {
-        this.xSpeed = -this.speed * Math.sin(this.direction);
-        this.ySpeed = this.speed * Math.cos(this.direction);
+    else {
+        this.xVel = -20 * Math.sin(this.direction);
+        this.yVel = 20 * Math.cos(this.direction);
     }
-};
+    
+    this.body.setVelocityX(this.xVel * player.getAmmoSpeed());
+    this.body.setVelocityY(-this.yVel * player.getAmmoSpeed());
+}
+
+Bullet.prototype.checkOutOfBounds = function (width, heigth){
+    this.rightBound = width - (this.sizeX/4);
+    this.leftBound = this.sizeX/4;
+    this.upBound = this.sizeY/4;
+    this.downBound = heigth - (this.sizeY/4);
+
+    if((this.x === this.rightBound) || 
+       (this.x === this.leftBound)  || 
+       (this.y === this.upBound)    || 
+       (this.y === this.downBound)){
+            this.setPosition(this.initialPosXY);
+            this.body.setVelocityX(0);
+            this.body.setVelocityY(0);
+            this.setVisible(false);
+            this.setActive(false);
+       }
+}
 
 // Getters and setters
-Bullet.prototype.setSpeed = function(s){this.speed = s; };
-Bullet.prototype.getSpeed = function(){return this.speed; };
 
-Bullet.prototype.setDirection = function(d){this.direction = d; };
-Bullet.prototype.getDirection = function(){return this.direction; };
 
-Bullet.prototype.setXSpeed = function(xs){this.xSpeed = xs; };
-Bullet.prototype.getXSpeed = function(){return this.xSpeed; };
 
-Bullet.prototype.setYSpeed = function(ys){this.ySpeed = ys; };
-Bullet.prototype.getYSpeed = function(){return this.ySpeed; };
+
 export default Bullet;
