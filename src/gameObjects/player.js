@@ -14,7 +14,8 @@ class Player extends Phaser.GameObjects.Sprite{
         this.hud = new PlayerHUD(scene,this);
         this.life = 100;
         this.hud.setLife(this.life)
-        this.ammo = 50;
+        this.ammo = 20;
+        this.currentAmmo = this.totalAmmo;
         this.ammoSpeed = 80;
         this.alive = true;
         this.shieldOn = false;
@@ -99,14 +100,15 @@ Player.prototype.decreaseShield = function(damage){
     }
 };
 
-Player.prototype.setAmmo = function(ammo){this.ammo = ammo; };
-Player.prototype.getAmmo = function(){return this.ammo; };
+Player.prototype.setTotalAmmo = function(ammo){this.totalAmmo = ammo; };
+Player.prototype.getTotalAmmo = function(){return this.totalAmmo; };
+
+Player.prototype.setCurrentAmmo = function(ammo){this.currentAmmo = ammo; };
+Player.prototype.getCurrentAmmo = function(){return this.currentAmmo; };
+Player.prototype.decreaseCurrentAmmo = function(){this.currentAmmo--; };
 
 Player.prototype.setAmmoSpeed = function(speed){this.ammoSpeed = speed; };
 Player.prototype.getAmmoSpeed = function(){return this.ammoSpeed; };
-
-Player.prototype.increaseAmmoByOne = function(){this.ammo += 1; };
-Player.prototype.decreaseAmmoByOne = function(){this.ammo -= 1; };
 
 Player.prototype.isAlive = function(){return this.alive; };
 Player.prototype.isShield = function(){return this.shieldOn; };
