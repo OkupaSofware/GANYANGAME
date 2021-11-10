@@ -38,7 +38,7 @@ class Boost extends Phaser.GameObjects.Image{
         }
         if(boost.mode == 3){
             boost.reloadEffect.play();
-            player1.setAmmo(50);
+            player1.setCurrentAmmo(20 + player1.getCurrentAmmo());
             player1.increaseCountAmmos();
         }
 
