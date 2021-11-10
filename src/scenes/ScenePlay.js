@@ -102,13 +102,30 @@ class ScenePlay extends Phaser.Scene {
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
+        for(var i = 0; i < this.player1.getTotalAmmo(); i++){
+            let bullet = new Bullet(this, -50, -50, "bala").setScale(0.5);
+            this.bulletsPlayer1.push(bullet);
+            this.physics.add.collider(this.platforms, this.bulletsPlayer1[i], this.hit);
+            this.physics.add.collider(this.bulletsPlayer1[i], this.playersArray[0], this.hitBody); // Collision with only one enemy
+        }
+        
 
         // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
             if (this.menuOn == false) {
-                if (this.player1.getAmmo() > 0) {
-                    this.createBullet(pointer.x, pointer.y, this.player1.weapon, this.bulletsPlayer1);
-                    this.player1.decreaseAmmoByOne();
+                if (this.player1.getCurrentAmmo() > 0) {
+                    let foundBullet = false;
+                    for(var i = 0; i < this.player1.getTotalAmmo();i++){
+                        if(!this.bulletsPlayer1[i].active){
+                            this.bulletsPlayer1[i].shot(pointer, this.player1);
+                            foundBullet = true;
+                        }
+                        if(foundBullet)
+                            i = this.player1.getTotalAmmo() - 1; // ends finding bullet
+                    }
+
+                    this.player1.decreaseCurrentAmmo();
+
                     //sound effect
                     //Sounds variables. this.bulletMenuSound is created here and not outside the functions so it creates a new sound every time and is independent from the old ones.
                     this.bulletMenuSound = this.sound.add('shot');
@@ -168,6 +185,28 @@ class ScenePlay extends Phaser.Scene {
             this.playersArray[0].body.setVelocityX(0)
         }
         //#endregion
+        
+        
+        // Bullets position out of bounds. Need to be modularized.
+        for(var i = 0; i < this.player1.getTotalAmmo() ;i++){
+            if(this.bulletsPlayer1[i].active){
+                //Code that we want
+                //this.bulletsPlayer1[i].checkOutOfBounds(1280, 720);
+
+                //Code that works by now
+                if(this.bulletsPlayer1[i].x >= 1275 ||
+                   this.bulletsPlayer1[i].x <= 5    ||
+                   this.bulletsPlayer1[i].y <= 5    ||
+                   this.bulletsPlayer1[i].y >= 715)
+                {
+                    this.bulletsPlayer1[i].setPosition(-50);
+                    this.bulletsPlayer1[i].body.setVelocityX(0);
+                    this.bulletsPlayer1[i].body.setVelocityY(0);
+                    this.bulletsPlayer1[i].setVisible(false);
+                    this.bulletsPlayer1[i].setActive(false);
+                }
+            }
+        }
     }
     
     launchMenu() {
@@ -184,102 +223,21 @@ class ScenePlay extends Phaser.Scene {
     }
 
 //#region Bullets
-    // BULLETS
-    createBullet(targetX, targetY, player, bulletsArray) {
-        this.bullet = this.physics.add.image(player.x, player.y + 10, "bala").setScale(0.5).refreshBody();
-        this.activateBullet(this.bullet);
-        this.bullet.body.allowGravity = false;
-        this.bullet.bulletPos = bulletsArray.length; //Used to splice it from array
-        this.bullet.body.setSize(10, 10, 0.5, 0.5)
-        bulletsArray.push(this.bullet);
-        
-        //this.bullet.body.angle = -180 / Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
-        console.log(this.bullet.body.angle)
-        
-
-
-        this.bullet.angle = -180 / Math.PI * Math.atan((targetX - player.x) / (targetY - player.y));
-        if ((targetY >= player.y && targetX < player.x) || (targetY >= player.y && targetX >= player.x)) //cuadrante 1
-        {
-            this.bullet.flipY = true;
-        }
-
-        // Direction callculation
-        this.calculateBulletSpeed(this.bullet, targetX + 5, targetY, player);
-    };
-
-    calculateBulletSpeed(bullet, targetX, targetY, player) {
-        this.direction = Math.atan((targetX - player.x) / (targetY - player.y));
-
-        // Set direction
-        if (targetY >= player.y) {
-            bullet.xSpeed = 20 * Math.sin(this.direction);
-            bullet.ySpeed = -20 * Math.cos(this.direction);
-        }
-        else {
-            bullet.xSpeed = -20 * Math.sin(this.direction);
-            bullet.ySpeed = 20 * Math.cos(this.direction);
-        }
-        this.physics.add.collider(this.platforms, bullet, this.hit);
-        this.physics.add.collider(bullet, this.playersArray[0], this.hitBody);
-        let ammoSpeed = 80;
-        bullet.setVelocityX(bullet.xSpeed * ammoSpeed);
-        bullet.setVelocityY(-bullet.ySpeed * ammoSpeed);
-        console.log(bullet.xSpeed)
-    };
-
-    updateBulletsPosition(bulletsArray, player) {
-        for (var i = 0; i < bulletsArray.length; i++) {
-           
-
-            //console.log(bulletsArray[i].bulletPos);
-
-            // Add collisions
-            //this.physics.add.collider(this.platforms, bulletsArray[i], this.hit);
-            //this.physics.add.collider(bulletsArray[i], this.playersArray[0], this.hitBody);
-
-            // Bullet world bounds collision
-
-            if (bulletsArray[i].x < 0 ||
-                bulletsArray[i].y < 0 ||
-                bulletsArray[i].x > this.sys.game.config.width ||
-                bulletsArray[i].y > this.sys.game.config.height) {
-                this.disableBullet(bulletsArray[i]);
-                bulletsArray.splice(i, 1);
-            }
-
-        }
-    }
-
-    activateBullet(gBullet) {
-        gBullet.setActive(true);
-        gBullet.setVisible(true);
-    }
-
-    disableBullet(gBullet) {
-        gBullet.setActive(false);
-        gBullet.setVisible(false);
-    }
-
     hit(gBullet, platform) {
-        gBullet.setVelocityX(0);
-        gBullet.setVelocityY(0);
-        if (gBullet.y < platform.y) {
-            gBullet.x = 1290;
-            gBullet.y = 730;
-        } else if (gBullet.y > platform.y) {
-            gBullet.x = -5;
-            gBullet.y = -5;
-        }
+        gBullet.setPosition(-50);
+        gBullet.body.setVelocityX(0);
+        gBullet.body.setVelocityY(0);
+        gBullet.setVisible(false);
+        gBullet.setActive(false);
+        
     }
     hitBody(gBullet, target) {
-        gBullet.setVelocityX(0);
-        gBullet.setVelocityY(0);
-        if (gBullet.x < target.x) {
-            gBullet.x = 1280;
-        } else if (gBullet.x > target.x) {
-            gBullet.x = 5;
-        }
+        gBullet.setPosition(-50);
+        gBullet.body.setVelocityX(0);
+        gBullet.body.setVelocityY(0);
+        gBullet.setVisible(false);
+        gBullet.setActive(false);
+
         target.decreaseLife(20);
     }
 //#endregion
