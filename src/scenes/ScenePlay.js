@@ -163,9 +163,6 @@ class ScenePlay extends Phaser.Scene {
         this.randBoostFunc();
 
         this.cronoFunc(time);
-
-        // Bullets
-        this.updateBulletsPosition(this.bulletsPlayer1, this.player1);
         
         //#region Players movement
         
