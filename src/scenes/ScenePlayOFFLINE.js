@@ -4,7 +4,7 @@ import Bullet from '../gameObjects/bullet.js';
 
 
 
-class ScenePlay extends Phaser.Scene {
+class ScenePlayOFFLINE extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
         this.menuOn = false;
@@ -341,4 +341,4 @@ class ScenePlay extends Phaser.Scene {
     }
 }
 
-export default ScenePlay;
+export default ScenePlayOFFLINE;

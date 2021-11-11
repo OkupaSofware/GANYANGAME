@@ -1,13 +1,15 @@
 import Bootloader from './Bootloader.js';
 import MainMenuBackground from './scenes/MainMenuBackground.js';
 import MainMenu from './scenes/MainMenu.js';
-import ScenePlay from './scenes/ScenePlay.js';
+//import ScenePlayOFFLINE from './scenes/ScenePlayOFFLINE.js';
+//import ScenePlayONLINE from './scenes/ScenePlayONLINE.js';
 import Intro from './scenes/Intro.js';
 import Tutorial from './scenes/Tutorial.js';
 import Settings from './scenes/Settings.js';
 import Credits from './scenes/Credits.js';
 import InGameMenu from './scenes/InGameMenu.js';
 import StatsScene from './scenes/StatsScene.js';
+import GameMode from './scenes/GameMode.js';
 const config = {
     title: "GAN-YAN",
     version: "0.0.1",
@@ -39,8 +41,8 @@ const config = {
     },
     scene: [
         Bootloader,Intro,MainMenu,
-        MainMenuBackground,
-        ScenePlay,Tutorial,Settings,Credits,InGameMenu,StatsScene
+        MainMenuBackground,GameMode,
+        Tutorial,Settings,Credits,InGameMenu,StatsScene
     ]
 };
 

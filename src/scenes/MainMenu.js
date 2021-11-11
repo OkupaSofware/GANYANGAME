@@ -122,16 +122,21 @@ this.input.on('pointerdown', function (pointer) {
 
 
 }
-playOnPressed()
+    playOnPressed()
     {
         //console.log("I am pressed!");
         //this.cameras.main.fadeOut(3000, 0, 0, 0)
         //Saves the username in a phaser registry
         this.registry.set('username1', inputText1);
         this.registry.set('username2', inputText2);
-        this.scene.start("ScenePlay");
-        this.scene.stop("MainMenuBackground");
-        this.scene.get("MainMenuBackground").backgroundMusic.stop();
+        this.scene.launch("GameMode");
+        //this.scene.moveAbove("Tutorial","MainMenu")
+        this.scene.bringToTop("GameMode")
+        this.scene.sleep("MainMenu")
+
+        //this.scene.start("GameMode");
+        //this.scene.stop("MainMenuBackground");
+        //this.scene.get("MainMenuBackground").backgroundMusic.stop();
     }
     launchTutorialMenu(){
         //this.holesTrigger.destroy(true,true)

@@ -6,6 +6,7 @@ class Settings extends Phaser.Scene {
     }
 
 create(){
+    this.cameras.main.fadeIn(250, 0, 0, 0)
     this.text=this.add.text(640,80, "SETTINGS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5);
     this.add.image(640, 320, "settingsBackground").setScale(0.4,0.4);
     this.paintBulletsAudioEffect();
