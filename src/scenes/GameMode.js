@@ -1,6 +1,7 @@
 import Button from "../gameObjects/Button.js";
-import ScenePlayOFFLINE from "./ScenePlayOFFLINE.js";
-import ScenePlayONLINE from "./ScenePlayONLINE.js";
+import LobbyOFFLINE from "./LobbyOFFLINE.js";
+import LobbyONLINE from "./LobbyONLINE.js";
+
 
 
 class GameMode extends Phaser.Scene {
@@ -12,8 +13,9 @@ create(){
     this.text=this.add.text(640,80, "CHOOSE GAME MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
     
     this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
-    this.add.text(480,280,"OFFLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0XFFA500)
-    this.add.text(800,280,"ONLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0XFFA500)
+    this.add.text(480,280,"OFFLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)//.setTint(0XFFA500)
+    this.add.text(800,280,"ONLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)//.setTint(0XFFA500)
+
     var offlineButton = new Button({
         'scene': this,
         'key':'play_buttons',
@@ -52,22 +54,20 @@ goBack(){
 }
 playOffline(){
         //this.scene.start("GameMode");
-        this.scene.add("ScenePlay",ScenePlayOFFLINE,true);
+        //this.scene.add("ScenePlay",ScenePlayOFFLINE,true);
+        this.scene.add("Lobby",LobbyOFFLINE,true);
         this.scene.stop("GameMode")
-        this.scene.stop("MainMenuBackground");
-        this.scene.get("MainMenuBackground").backgroundMusic.stop();
+        //this.scene.stop("MainMenuBackground");
+        //this.scene.get("MainMenuBackground").backgroundMusic.stop();
     }
 playOnline(){
         //this.scene.start("GameMode");
-        this.scene.add("ScenePlay", ScenePlayONLINE,true);
+        this.scene.add("Lobby", LobbyONLINE,true);
         this.scene.stop("GameMode")
-        this.scene.stop("MainMenuBackground");
-        this.scene.get("MainMenuBackground").backgroundMusic.stop();
+        //this.scene.stop("MainMenuBackground");
+        //this.scene.get("MainMenuBackground").backgroundMusic.stop();
 }
-update(){
 
-
-}
 
 
 }

@@ -84,9 +84,9 @@ class StatsScene extends Phaser.Scene {
         exit_button.on('pointerup',this.goBack,this)
     }
     goBack(){
+        this.scene.stop("StatsScene")
         this.scene.start("MainMenuBackground");
-        this.scene.stop("StatsScene");
-        this.scene.stop("ScenePlay");
+        this.scene.remove("ScenePlay")
 
     }
 
