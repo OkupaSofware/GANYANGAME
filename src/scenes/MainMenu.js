@@ -1,5 +1,5 @@
 import Button from "../gameObjects/Button.js";
-var arrayInputText,inputText1, inputText2;
+
 class MainMenu extends Phaser.Scene {
     constructor(){
         super( "MainMenu");
@@ -50,55 +50,6 @@ tutorial_button.on('pointerup',this.launchTutorialMenu,this);
 settings_button.on('pointerup',this.launchSettingsMenu,this);
 credits_button.on('pointerup',this.launchCreditsMenu,this);
 
-
-//Display text for player name
-var usernameText = this.add.text(640, 300, '', {font: 'bold 32px Arial', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);  
-
-//Input text for player name
-var element = this.add.dom(640,300).createFromCache('nameform');
-
-inputText1 = "Player 1";
-inputText2 = "Player 2";
-
-element.addListener('click');
-
-element.on('click', function (event) {
-
-    if (event.target.name === 'playButton')
-    {
-    
-         inputText1 = this.getChildByName('nameField');
-
-        //  Have they entered anything?
-        if (inputText1.value !== '')
-        {
-            //  Turn off the click events
-            this.removeListener('click');
-
-            //  Hide the login element
-            this.setVisible(false);
-
-            //  Populate the text with whatever they typed in
-            arrayInputText = inputText1.value.split(";");
-            inputText1 = arrayInputText[0];
-            inputText2 = arrayInputText[1];
-            
-            if(inputText2 == null){inputText2 = "El Innombrable"}
-            
-            console.log("Soy " + inputText1);
-            console.log("Y yo soy " + inputText2);
-            usernameText.setText('P1: ' + inputText1 + ' - P2: ' + inputText2);
-            
-            //usernameText.setText('Username: ' + this.registry.get('username'));
-        }
-        else
-        {
-            alert("Please introduce a username");
-        }
-    }
-
-});
-
 this.holesTrigger = this.physics.add.staticGroup();
 // Button "animation"
 this.input.on('pointerdown', function (pointer) {
@@ -126,9 +77,6 @@ this.input.on('pointerdown', function (pointer) {
     {
         //console.log("I am pressed!");
         //this.cameras.main.fadeOut(3000, 0, 0, 0)
-        //Saves the username in a phaser registry
-        this.registry.set('username1', inputText1);
-        this.registry.set('username2', inputText2);
         this.scene.launch("GameMode");
         //this.scene.moveAbove("Tutorial","MainMenu")
         this.scene.bringToTop("GameMode")

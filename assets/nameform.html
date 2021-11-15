@@ -52,7 +52,28 @@
     border-radius: 15px;
     
 }
+
+.container { 
+  height: 60px;
+  position: relative;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 </style>
 
-<input type="text" class ="namefield" name="nameField" placeholder="P1 Name;P2 Name" style="font-size: 32px">
-<input type="button" class="button" name="playButton" value="Accept" style="font-size: 32px"><br />
+<input autocomplete="off" type="text" class ="namefield" name="nameField" placeholder="Enter your name" style="font-size: 32px"><br />
+<div class="container">
+  <div class="center">
+    <input type="button" class="button" name="playButton" value="Accept" style="font-size: 32px">
+  </div>
+</div>
+<br />
+
