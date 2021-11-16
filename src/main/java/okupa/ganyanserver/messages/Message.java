@@ -1,4 +1,4 @@
-package com.example.demo.messages;
+package com.example.okupa.ganyanserver.messages;
 
 public class Message {
 
