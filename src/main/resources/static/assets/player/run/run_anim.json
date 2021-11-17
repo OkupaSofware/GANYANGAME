@@ -1,0 +1,72 @@
+{
+    "anims": [
+        {
+            "key": "run",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_00"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_01"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_02"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_03"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_04"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_05"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_06"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_07"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_08"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_09"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_10"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_11"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_12"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_13"
+                },
+                {
+                    "key": "run",
+                    "frame": "spineboy-pro-lv1-run_14"
+                }
+            ]
+        }
+    ]
+}

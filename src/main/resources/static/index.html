@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>GAN YAN</title>
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            body {
+                /*background-color: #030303;*/
+                background-color: #ffffff;
+            }
+        </style>
+    </head>
+    <body>
+       
+		<div id="chat" class="chat__container">
+			<h1>GANCHAT</h1>
+			<div class="chat__wrap">
+				<section class="info__container">
+					<!--caja en la que salen los conectados-->
+					<div id="users" class="info_players">Offline</div>
+
+					<div>
+						<!--caja para meter el nombre de usuario-->
+						<input class="info__nickname" id='username' type='text' placeholder="Nombre de usuario">
+
+						<!--botones conectarse y desconectarse-->
+						<div class="info__button-wrap">
+							<button class="info__button" id='connect'>Connect</button>
+							<button class="info__button" id='disconnect'>Disconnect</button>
+						</div>
+					</div>
+				</section>
+
+				<section class="chat__container">
+
+					<!--donde salen los mensajes-->
+					<div class="chat__messages">
+						<div id='inbox'></div>
+					</div>
+
+					<div>
+						<div class="chat__inputs">
+							<!--caja para escribir-->
+							<input id='messageInput' type='text' placeholder="Message..."></input>
+							<!--boton enviar-->
+							<button class="chat__button" id='send'>Send</button>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		
+        <div id="phaser_container">
+            
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./src/chat.js"></script>
+        <script src="./node_modules/phaser/dist/phaser.min.js"></script>
+        <script src="./src/main.js" type="module"></script>
+    </body>
+    </html>
