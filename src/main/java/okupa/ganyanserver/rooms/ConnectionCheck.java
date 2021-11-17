@@ -1,8 +1,8 @@
-package com.example.okupa.ganyanserver.rooms;
+package okupa.ganyanserver.rooms;
 
 import java.util.List;
 
-import com.example.okupa.ganyanserver.messages.Message;
+import okupa.ganyanserver.messages.Message;
 
 public class ConnectionCheck {
 	

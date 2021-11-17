@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Built-By: tonye
-Build-Jdk: 11.0.12
+Built-By: vicentea.antonmarin
+Build-Jdk: 17
 Implementation-Title: GANYAN
 Implementation-Version: 0.0.1-SNAPSHOT
 Implementation-Vendor-Id: okupaSoftware

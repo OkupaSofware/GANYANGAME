@@ -1,8 +1,8 @@
-package com.example.okupa.ganyanserver.rooms;
+package okupa.ganyanserver.rooms;
 
 import org.springframework.stereotype.Component;
 
-import com.example.okupa.ganyanserver.Message;
+import okupa.ganyanserver.messages.Message;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package com.example.okupa.ganyanserver.rooms;
+package okupa.ganyanserver.rooms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.example.demo.messages.MessagesDB;
+import okupa.ganyanserver.messages.MessagesDB;
 
 @Controller
 public class ChatRoom {

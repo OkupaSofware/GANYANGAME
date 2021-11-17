@@ -1,4 +1,4 @@
-package com.example.okupa.ganyanserver.rooms;
+package okupa.ganyanserver.rooms;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.okupa.ganyanserver.messages.Message;
+import okupa.ganyanserver.messages.Message;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

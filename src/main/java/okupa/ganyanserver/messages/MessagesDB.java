@@ -1,4 +1,4 @@
-package com.example.okupa.ganyanserver.messages;
+package okupa.ganyanserver.messages;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

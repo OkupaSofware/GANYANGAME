@@ -1,4 +1,4 @@
-package com.example.okupa.ganyanserver.rooms;
+package okupa.ganyanserver.rooms;
 
 public class User {
 	
