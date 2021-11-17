@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Built-By: tonye
-Build-Jdk: 11.0.12
-Implementation-Title: GANYAN
-Implementation-Version: 0.0.1-SNAPSHOT
-Implementation-Vendor-Id: okupaSoftware
-Implementation-URL: http://www.example.com
-Created-By: Maven Integration for Eclipse
-
