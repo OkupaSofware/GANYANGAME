@@ -4,7 +4,7 @@ public class Message {
 
 	String date; //La fecha/hora en la que se creo el mensaje
 	String username; //El autor del mensaje
-	String textMessage; //El autor del mensaje
+	String textMessage; //El cuerpo del mensaje
 	
 	//Constructores
 	public Message() {}

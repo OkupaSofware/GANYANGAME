@@ -7,13 +7,13 @@ import okupa.ganyanserver.messages.Message;
 public class ConnectionCheck {
 	
 	private List<Message> messages; //Lista de mensajes
-	private List<String> users; //Lista de usuarios
+	private List<User> users; //Lista de usuarios
 	
 	//Constructores
 	public ConnectionCheck() {};
 	
 	
-	public ConnectionCheck(List<Message> messages, List<String> users) {
+	public ConnectionCheck(List<Message> messages, List<User> users) {
 		this.messages = messages;
 		this.users = users;
 	}
@@ -25,10 +25,10 @@ public class ConnectionCheck {
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}
-	public List<String> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
-	public void setUsers(List<String> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 }
