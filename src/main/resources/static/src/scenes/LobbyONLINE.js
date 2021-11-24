@@ -8,7 +8,9 @@ var clock;
 var online = false;
 var server = false;
 var chat = ["","",""]
+var textUserName = "";
 var textUsersOnline = "";
+var sendText = "";
 
 class LobbyONLINE extends Phaser.Scene {
     constructor() {
@@ -23,9 +25,10 @@ class LobbyONLINE extends Phaser.Scene {
 
         
         this.serverStatus = this.add.text(640,160, "Disconnected",{font: 'bold 24px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
-        checkConnection()
-        this.userName=this.add.text(20,50, userId,{font: 'bold 20px Arial', fontSize: "20px"});
-        this.numberOnline=this.add.text(20,75, textUsersOnline,{font: 'bold 20px Arial', fontSize: "20px"});
+        // Comprueba si el servidor está conectado de primeras
+        checkConnection();
+        this.titleText4=this.add.text(20,50, textUserName,{font: 'bold 20px Arial', fontSize: "20px"});
+        this.titleText5=this.add.text(20,75, textUsersOnline,{font: 'bold 20px Arial', fontSize: "20px"});
 
         
         this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
@@ -41,7 +44,7 @@ class LobbyONLINE extends Phaser.Scene {
             'x': 1010,
             'y': 186
         }).setScale(0.7,0.7);
-        exit_button.on('pointerup',this.goBack,this)
+        exit_button.on('pointerup',this.goBack,this);
         var offlineButton = new Button({
             'scene': this,
             'key':'play_buttons',
@@ -51,17 +54,7 @@ class LobbyONLINE extends Phaser.Scene {
             'x': 640,
             'y': 490
         }).setScale(0.9,0.9);
-        offlineButton.on('pointerup',this.playOnline,this)
-        var sendButton = new Button({
-            'scene': this,
-            'key':'play_buttons',
-            'up': 0,
-            'over':1,
-            'down':2,
-            'x': 50,
-            'y': 700
-        }).setScale(0.3,0.3);
-        sendButton.on('pointerup', send,this);
+        offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
         usernameText1 = this.add.text(420, 400, '', {font: 'bold 32px Arial', color: 'white', fontSize: '15px '}).setOrigin(0.5,0.5);  
@@ -77,13 +70,13 @@ class LobbyONLINE extends Phaser.Scene {
         //this.chat5 = this.add.text(20, 690, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
 
         //Input text for player name
-        var element1 = this.add.dom(420,425).createFromCache('nameform');
+        var elementHTML1 = this.add.dom(420, 425).createFromCache('nameform');
+        var elementHTML2 = this.add.dom(1050, 670).createFromCache('sendMessage');
+        inputText1 = "Player 1";
 
-        inputText1 = "Player X";
+        elementHTML1.addListener('click');
 
-        element1.addListener('click');
-
-        element1.on('click', function (event) {
+        elementHTML1.on('click', function (event) {
 
             if (event.target.name === 'playButton')
             {
@@ -114,6 +107,19 @@ class LobbyONLINE extends Phaser.Scene {
             }
             
         });
+
+        elementHTML2.addListener('click');
+        elementHTML2.on('click', function (event) {
+            if (event.target.name === 'sendButton')
+            {
+                sendText = this.getChildByName('sendMessage');
+                if (sendText.value !== ''){
+                    send();
+                    sendText.value = "";
+                }
+            }
+            
+        });
     }
     
     goBack(){
@@ -140,10 +146,14 @@ class LobbyONLINE extends Phaser.Scene {
         
         
         if(online === true){
+            textUserName = $("#nickname").text();
             textUsersOnline = $("#onlineUsers").text();
         }else{
+            textUserName = "";
             textUsersOnline = "";
         }
+
+        
         if(server === true){
             this.serverStatus.setTint(0x00ff00);
         }else{
@@ -154,9 +164,8 @@ class LobbyONLINE extends Phaser.Scene {
         this.chat1.setText(chat[0])
         this.chat2.setText(chat[1])
         this.chat3.setText(chat[2])
-        //this.chat4.setText(chat[3])
-        //this.chat5.setText(chat[4])
-        this.numberOnline.setText(textUsersOnline);
+        this.titleText4.setText(textUserName);
+        this.titleText5.setText(textUsersOnline);
 
     }
     
@@ -256,9 +265,8 @@ function send() {
     var currentDate = new Date();
     var localDate = currentDate.toLocaleTimeString();
     if (online) {
-        var textMessage = $("#messageInput").val();
-        $("#messageInput").val("");
-        $("#messageInput").val("");
+        console.log("Sendtext: " + sendText.value);
+        var textMessage = sendText.value;
         var message = {
 	        date: localDate,
             username: "" + userId + "",
@@ -266,7 +274,7 @@ function send() {
         }
         $.ajax({
             method: "POST",
-            url: baseUrl +""+ chatRoomId,
+            url: "http://localhost:8080/get/" + chatRoomId,
             data: JSON.stringify(message),
             processData: false,
             headers: {
