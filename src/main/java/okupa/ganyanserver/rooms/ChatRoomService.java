@@ -116,7 +116,7 @@ public class ChatRoomService {
 		for(int r = 0; r<maxDefaultRooms; r++) {
 			if(rooms.get(r).getId()==chatRoomId) {
 		User tempUser = rooms.get(r).getUser(userId);
-		if(tempUser!=null) { //Si el usuario no esta ya en al sala...
+		if(tempUser!=null) { //Si el usuario  esta ya en al sala...
 			tempUser.setOnline(true); //...se le marca como conectado
 		}
 		break;

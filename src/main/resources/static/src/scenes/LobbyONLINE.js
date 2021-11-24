@@ -161,6 +161,7 @@ class LobbyONLINE extends Phaser.Scene {
     }
     
 }
+//Manejo de peticiones rest
 function connect() {
     if (!online) {
         var usernameId = inputText1;
@@ -203,7 +204,6 @@ function checkConnection() {
     }).done(function (data) {
         if(server == true){
         //ACTUALIZA MENSAJES
-        //var value = data.messages[i];
         if(data.messages.length >= 3){
             chat[0] = data.messages[data.messages.length-3].username + ": " + data.messages[data.messages.length-3].textMessage;
             chat[1] = data.messages[data.messages.length-2].username + ": " + data.messages[data.messages.length-2].textMessage;
@@ -234,6 +234,9 @@ function checkConnection() {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         serverStatus = "Server disconnected"
         server = false;
+        chat[0]=chat[1]
+        chat[1]=chat[2]
+        chat[2]= "GANCHAT [ERROR] Server disconnected"
         clearInterval(clock);
     });
 
@@ -243,6 +246,9 @@ function disconnect() {
         clearInterval(clock);
         online = false;
         //player2Status = "disconnected"
+        chat[0]=chat[1]
+        chat[1]=chat[2]
+        chat[2]= "GANCHAT "+userId+"has disconnected"
     }
 
 }
