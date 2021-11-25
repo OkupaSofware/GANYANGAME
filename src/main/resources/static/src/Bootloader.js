@@ -5,33 +5,33 @@ class Bootloader extends Phaser.Scene {
 
     preload() {
         //Boot
-        this.load.image("developer", "assets/developer.png");
+        this.load.image("developer", "assets/scenes/developer.png");
         
 
         // MAIN MENU SPRITES
-        //this.load.spritesheet("test_buttons", "assets/buttons_test_02.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("play_buttons", "assets/play_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("setting_button", "assets/setting_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("credits_button", "assets/credits_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("back_buttons", "assets/back_buttons.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("help_button", "assets/help_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("quit_button", "assets/quit_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("resume_button", "assets/resume_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
-        this.load.spritesheet("title_anim", "assets/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
-        this.load.spritesheet("fog_anim", "assets/fog.png",{ frameWidth: 1400, frameHeight: 750 });
+        //this.load.spritesheet("test_buttons", "assets/buttons/buttons_test_02.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("play_buttons", "assets/buttons/play_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("setting_button", "assets/buttons/setting_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("credits_button", "assets/buttons/credits_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("back_buttons", "assets/buttons/back_buttons.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("help_button", "assets/buttons/help_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("quit_button", "assets/buttons/quit_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("resume_button", "assets/buttons/resume_button_holes.png",{ frameWidth: 236, frameHeight: 95 });
+        this.load.spritesheet("title_anim", "assets/scenes/new_title_sheet.png",{ frameWidth: 3170, frameHeight: 1400 });
+        this.load.spritesheet("fog_anim", "assets/scenes/fog.png",{ frameWidth: 1400, frameHeight: 750 });
         //this.load.image("title", "./assets/TITLE_1.png");
-        this.load.image("background_2", "./assets/Background_03.png");
-        //this.load.image("backg", "./assets/BACKGROUND_SKY.png");
-        this.load.image("FLOOR", "./assets/floor.png");
-        this.load.image("new_title", "./assets/neo_title_RUST.png");
-        this.load.image("ingamemenu", "./assets/inGameMenu.png");
-        this.load.image("gamemode", "./assets/gamemode.png");
+        this.load.image("background_2", "./assets/scenes/Background_03.png");
+        //this.load.image("backg", "./assets/scenes/BACKGROUND_SKY.png");
+        this.load.image("FLOOR", "./assets/scenes/floor.png");
+        this.load.image("new_title", "./assets/scenes/neo_title_RUST.png");
+        this.load.image("ingamemenu", "./assets/scenes/inGameMenu.png");
+        this.load.image("gamemode", "./assets/scenes/gamemode.png");
         
         // Setting menu buttons
-        this.load.spritesheet("plus_buttons", "assets/plusButton.png",{ frameWidth: 106, frameHeight: 95 });
-        this.load.spritesheet("minus_buttons", "assets/minusButton.png",{ frameWidth: 106, frameHeight: 95 });
-        this.load.image("bulletsAudioMusic", "./assets/audioSettingsMusic.png");
-        this.load.image("bulletsAudioEffects", "./assets/audioSettingsEffects.png");
+        this.load.spritesheet("plus_buttons", "assets/buttons/plusButton.png",{ frameWidth: 106, frameHeight: 95 });
+        this.load.spritesheet("minus_buttons", "assets/buttons/minusButton.png",{ frameWidth: 106, frameHeight: 95 });
+        this.load.image("bulletsAudioMusic", "./assets/audio/audioSettingsMusic.png");
+        this.load.image("bulletsAudioEffects", "./assets/audio/audioSettingsEffects.png");
         
         this.load.on("complete", () =>{
             this.scene.start("Intro");
@@ -40,17 +40,17 @@ class Bootloader extends Phaser.Scene {
         //this.scene.start("MainMenu");
 
         //Dom elements
-        this.load.html('nameform', 'assets/nameform.html');
-        this.load.html('sendMessage', 'assets/sendMessage.html');
+        this.load.html('nameform', 'assets/html/nameform.html');
+        this.load.html('sendMessage', 'assets/html/sendMessage.html');
         
         // SCENE PLAY SPRITES
         // Environment sprites
 
-        this.load.image("tutorialBackground", "./assets/background.png");
-        this.load.image("creditsBackground", "./assets/credits.png");
-        this.load.image("settingsBackground", "./assets/settings.png");
-        this.load.image("platform", "./assets/platform.png");
-        this.load.image("cloud", "./assets/cloud_dark.png");
+        this.load.image("tutorialBackground", "./assets/scenes/background.png");
+        this.load.image("creditsBackground", "./assets/scenes/credits.png");
+        this.load.image("settingsBackground", "./assets/scenes/settings.png");
+        this.load.image("platform", "./assets/tileset/platform.png");
+        this.load.image("cloud", "./assets/scenes/cloud_dark.png");
         this.load.image("1p", "assets/tileset/1b.png");
         this.load.image("2p", "assets/tileset/2b.png");
         this.load.image("3p", "assets/tileset/3p.png");
@@ -61,7 +61,7 @@ class Bootloader extends Phaser.Scene {
         this.load.image("bar", "assets/player/hud/lifeHUD.png");
         this.load.image("life", "assets/player/hud/life.png");
         this.load.image("shield", "assets/player/hud/shield.png");
-        this.load.image("bulletMenu", "./assets/bulletMenu.png");
+        this.load.image("bulletMenu", "./assets/scenes/bulletMenu.png");
         
         //Boosters sprites
         this.load.image("ammo", "assets/boosters/ammo.png");
@@ -69,8 +69,8 @@ class Bootloader extends Phaser.Scene {
         this.load.image("bubble", "assets/boosters/Bubble.png") 
 
         // Bullet sprite
-        this.load.image("bullet", "assets/bullet.png");
-        this.load.image("bala", "assets/bala.png");
+        this.load.image("bullet", "assets/player/weapon/bullet.png");
+        this.load.image("bala", "assets/player/weapon/bala.png");
         
         // PLAYER SPRITES
         this.load.path = './assets/player/';
@@ -109,7 +109,7 @@ class Bootloader extends Phaser.Scene {
 
     create() {
         //change cursor
-        this.input.setDefaultCursor('url(assets/mirillaBlack.png), pointer');
+        this.input.setDefaultCursor('url(assets/player/weapon/mirillaBlack.png), pointer');
 
         this.player_anim_idle = this.cache.json.get('idle_anim')
         this.player_anim_run = this.cache.json.get('run_anim')
