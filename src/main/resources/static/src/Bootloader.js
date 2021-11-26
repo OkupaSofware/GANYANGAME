@@ -42,6 +42,7 @@ class Bootloader extends Phaser.Scene {
         //Dom elements
         this.load.html('nameform', 'assets/html/nameform.html');
         this.load.html('sendMessage', 'assets/html/sendMessage.html');
+        this.load.html('connection', 'assets/html/connectform.html');
         
         // SCENE PLAY SPRITES
         // Environment sprites

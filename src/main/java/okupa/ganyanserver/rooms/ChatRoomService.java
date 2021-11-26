@@ -80,45 +80,44 @@ public class ChatRoomService {
 
 	public User addUser(String userId) {
 		
-		for(int i = 0; i<rooms.get(lastRoom).getUsersList().size();i++) {
-			if(rooms.get(lastRoom).getUser(userId)!=null) {
-				return null;
+		
+		
+		for(int i =0; i<rooms.size();i++) {
+			if(rooms.get(i).getUsersList().size()<rooms.get(i).getMaxUsers()) {
+				for(int j = 0; j<rooms.get(i).getUsersList().size();j++) {
+					if(rooms.get(i).getUser(userId)!=null) {
+						return null;
+					}
+				}
+				User newUser = new User(); //Se crea el nuevo usuario
+				newUser.setId(userId); //Se establece su id
+				newUser.setChatRoomId(rooms.get(i).getId()); //Se establece el id de su sala
+				newUser.setOnline(true); //Se le marca como conectado
+				rooms.get(i).getUsersList().add(newUser); //Se anade el usuario a la lista de usuarios activos de la sala
+				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");//Nota -> Cambiar formato fecha para que coincida con el de javascript
+				Date currentDate = new Date(); //Establece y marca la fecha de desconexion del usuario
+				rooms.get(i).getDatabase().setMessage(new Message(formatter.format(currentDate),"GANCHAT", userId + " has connected")); //Escribe por chat que el usuario se ha unido mediante un mensaje
+				return newUser;
+				
 			}
+			
 		}
+		return null;
 		
 
-		if(rooms.get(lastRoom).getUsersList().size()<rooms.get(lastRoom).getMaxUsers()) {
-		User newUser = new User(); //Se crea el nuevo usuario
-		newUser.setId(userId); //Se establece su id
-		newUser.setChatRoomId(rooms.get(lastRoom).getId()); //Se establece el id de su sala
-		newUser.setOnline(true); //Se le marca como conectado
-		rooms.get(lastRoom).getUsersList().add(newUser); //Se anade el usuario a la lista de usuarios activos de la sala
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");//Nota -> Cambiar formato fecha para que coincida con el de javascript
-		Date currentDate = new Date(); //Establece y marca la fecha de desconexion del usuario
-		rooms.get(lastRoom).getDatabase().setMessage(new Message(formatter.format(currentDate),"GANCHAT", userId + " has connected")); //Escribe por chat que el usuario se ha unido mediante un mensaje
-		return newUser;
-		} else {
-			lastRoom++;
-			User newUser = new User(); //Se crea el nuevo usuario
-			newUser.setId(userId); //Se establece su id
-			newUser.setChatRoomId(rooms.get(lastRoom).getId()); //Se establece el id de su sala
-			newUser.setOnline(true); //Se le marca como conectado
-			rooms.get(lastRoom).getUsersList().add(newUser); //Se anade el usuario a la lista de usuarios activos de la sala
-			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");//Nota -> Cambiar formato fecha para que coincida con el de javascript
-			Date currentDate = new Date(); //Establece y marca la fecha de desconexion del usuario
-			rooms.get(lastRoom).getDatabase().setMessage(new Message(formatter.format(currentDate),"GANCHAT", userId + " has connected")); //Escribe por chat que el usuario se ha unido mediante un mensaje
-			return newUser;
-		}
+		
 		
 	}
 	
 	public void markOnlineUser(String chatRoomId, String userId) {
 		for(int r = 0; r<maxDefaultRooms; r++) {
 			if(rooms.get(r).getId()==chatRoomId) {
+				//if(rooms.get(r).getUsersList().size()!=0) {
 		User tempUser = rooms.get(r).getUser(userId);
-		if(tempUser!=null) { //Si el usuario  esta ya en al sala...
-			tempUser.setOnline(true); //...se le marca como conectado
+		if(tempUser.getOnline()==false) {
+			rooms.get(r).getUsersList().remove(tempUser);
 		}
+				//}else
 		break;
 			}
 		}

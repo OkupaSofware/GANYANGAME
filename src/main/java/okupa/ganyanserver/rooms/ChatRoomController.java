@@ -16,6 +16,7 @@ public class ChatRoomController {
 	@Autowired
 	ChatRoomService chatRoomService; //Gestor de la sala de chat del servidor
 	
+	
 	@PostMapping()
 	public User newUser(@RequestBody String userId) { //Post de nuevo usuario
 		User tempUserId = chatRoomService.addUser(userId); //Se añade el usuario recibido desde el front-end a los usuarios de la sala mediante chatRoomService
@@ -28,15 +29,25 @@ public class ChatRoomController {
 	}
 	
 	@PostMapping("{chatRoomId}") //Post de mensaje
-	public boolean putAnuncio(@RequestBody Message message, @PathVariable("chatRoomId") String chatRoomId){ //A paritr de un mensaje y el id de una sala...
+	public void putAnuncio(@RequestBody Message message, @PathVariable("chatRoomId") String chatRoomId){ //A paritr de un mensaje y el id de una sala...
 		chatRoomService.getRoomByIdx(chatRoomId).getDatabase().setMessage(message); //...añade el mensaje a la base de datos de la sala activa
-		return true; //Devuelve que el Http esta creado
+		
 	}
 	
-	@GetMapping("{chatRoomId}/{userId}")  //Get de desconexiones
+	@GetMapping("{chatRoomId}/{userId}")  //Get de informacion
 	public ConnectionCheck check(@PathVariable("chatRoomId") String chatRoomId, @PathVariable("userId") String userId){
 		chatRoomService.markOnlineUser(chatRoomId, userId); //Comprueba si el usuario sigue conectado
 		return new ConnectionCheck(chatRoomService.returnMessages(chatRoomId, userId), chatRoomService.returnUsers(chatRoomId, userId));
 	}
+	
+	@DeleteMapping("{chatRoomId}/{userId}") //Update de estado del jugador a offline
+	public void updateUserState(@PathVariable("chatRoomId") String chatRoomId, @PathVariable("userId") String userId) {
+		chatRoomService.getRoomByIdx(chatRoomId).getUser(userId).setOnline(false);
+		chatRoomService.markOnlineUser(chatRoomId, userId);
+		
+		
+	}
+	
+	
 	
 }

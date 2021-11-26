@@ -1,6 +1,6 @@
 <style>
-  .button {
-    background-image: url("assets/buttons/accept_button_normal_resized.png");
+  .sendButton {
+    background-image: url("assets/buttons/send.png");
     border: none;
     width: 99px;
     height: 43px;
@@ -15,8 +15,8 @@
     cursor: url(assets/player/weapon/mirillaBlack.png), pointer;
   }
       
-  .button:hover {
-    background-image: url("assets/buttons/accept_button_hover_resized.png");
+  .sendButton:hover {
+    background-image: url("assets/buttons/send 2.png");
     border: none;
     width: 99px;
     height: 43px;
@@ -31,8 +31,8 @@
     cursor: url(assets/player/weapon/mirillaBlack.png), pointer;
   }
       
-  .button:active {
-    background-image: url("assets/buttons/accept_button_click_resized.png");
+  .sendButton:active {
+    background-image: url("assets/buttons/send 3.png");
     border: none;
     width: 99px;
     height: 43px;
@@ -58,21 +58,17 @@
     position: relative;
   }
   
-  .center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
+  
   
   </style>
   
-  <input autocomplete="off" type="text" class ="sendMessage" name="sendMessage" placeholder="Type your message" style="font-size: 32px"><br/>
+  
+  
+
   <div class="container">
-    <div class="center">
-      <input type="button" class="button" name="sendButton" value="Accept" style="font-size: 32px">
-    </div>
+    
+      <input autocomplete="off" type="text" class ="sendMessage" name="sendMessage" placeholder="Type your message" style="font-size: 24px">
+      <input type="button" class="sendButton" name="sendButton" value="Accept" style="font-size: 36px">
+    
   </div>
   <br/>

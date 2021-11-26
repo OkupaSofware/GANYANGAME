@@ -8,8 +8,6 @@ var clock;
 var online = false;
 var server = false;
 var chat = ["","",""]
-var textUserName = "";
-var textUsersOnline = "";
 var sendText = "";
 
 class LobbyONLINE extends Phaser.Scene {
@@ -27,8 +25,7 @@ class LobbyONLINE extends Phaser.Scene {
         this.serverStatus = this.add.text(640,160, "Disconnected",{font: 'bold 24px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
         // Comprueba si el servidor está conectado de primeras
         checkConnection();
-        this.titleText4=this.add.text(20,50, textUserName,{font: 'bold 20px Arial', fontSize: "20px"});
-        this.titleText5=this.add.text(20,75, textUsersOnline,{font: 'bold 20px Arial', fontSize: "20px"});
+        
 
         
         this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
@@ -62,16 +59,16 @@ class LobbyONLINE extends Phaser.Scene {
 
 
         //GANCHAT
-        this.chatTitle = this.add.text(20, 600, 'GANCHAT', {font: 'bold 18px Arial', color: 'white', fontSize: '15px '})
-        this.chat1 = this.add.text(20, 620, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
-        this.chat2 = this.add.text(20, 640, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
-        this.chat3 = this.add.text(20, 660, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
+        this.chatTitle = this.add.text(20, 570, 'GANCHAT', {font: 'bold 18px Arial', color: 'white', fontSize: '35px '}).setTint(0xffff00)
+        this.chat1 = this.add.text(20, 600, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
+        this.chat2 = this.add.text(20, 625, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
+        this.chat3 = this.add.text(20, 650, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
         //this.chat4 = this.add.text(20, 670, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
         //this.chat5 = this.add.text(20, 690, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
 
         //Input text for player name
-        var elementHTML1 = this.add.dom(420, 425).createFromCache('nameform');
-        var elementHTML2 = this.add.dom(1050, 670).createFromCache('sendMessage');
+        var elementHTML1 = this.add.dom(420, 425).createFromCache('connection');
+        var elementHTML2 = this.add.dom(220, 705).createFromCache('sendMessage');
         inputText1 = "Player 1";
 
         elementHTML1.addListener('click');
@@ -120,12 +117,22 @@ class LobbyONLINE extends Phaser.Scene {
             }
             
         });
+        
     }
     
     goBack(){
+        disconnect()
+        inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
+        chatRoomId = -1;
+        baseUrl =  window.location + "get/";
+        userId = -1;
+        clock = null;
+        online = false;
+        server = false;
+        chat = ["","",""]
+        sendText = "";
         this.scene.start("GameMode")
         this.scene.remove("Lobby")
-        disconnect()
     }
     playOnline(){
         
@@ -144,14 +151,6 @@ class LobbyONLINE extends Phaser.Scene {
         this.serverStatus.setText(serverStatus);
         usernameText2.setText("P2: "+player2Status)
         
-        
-        if(online === true){
-            textUserName = $("#nickname").text();
-            textUsersOnline = $("#onlineUsers").text();
-        }else{
-            textUserName = "";
-            textUsersOnline = "";
-        }
 
         
         if(server === true){
@@ -164,9 +163,7 @@ class LobbyONLINE extends Phaser.Scene {
         this.chat1.setText(chat[0])
         this.chat2.setText(chat[1])
         this.chat3.setText(chat[2])
-        this.titleText4.setText(textUserName);
-        this.titleText5.setText(textUsersOnline);
-
+       
     }
     
 }
@@ -193,14 +190,16 @@ function connect() {
                     userId = data.id;
                     clock = setInterval(function () {
                         checkConnection();
-                    }, 1000);
+                    }, 2000);
                     online = true;
                     
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
+                clearInterval(clock);
+                
                serverStatus = "Server disconnected"
                server = false;
-               clearInterval(clock);
+               chat[0]= "GANCHAT [ERROR] Server disconnected"
                 
             });
 
@@ -231,6 +230,9 @@ function checkConnection() {
             chat[2] = "";
         }
         //ACTUALIZA ESTADO DEL JUGADOR EN RED
+        if(data.users.length==1){
+            player2Status="Waiting for player 2...";
+        }
        for (var i = 0; i < data.users.length; i++) {
            if(data.users[i].id!=userId){
                player2Status = data.users[i].id
@@ -241,12 +243,16 @@ function checkConnection() {
         server = true;
         console.log(data.users)
     }).fail(function (jqXHR, textStatus, errorThrown) {
+        clearInterval(clock);
         serverStatus = "Server disconnected"
         server = false;
+        if(chat[0]==""){
+        chat[0]= "GANCHAT [ERROR] Server disconnected"
+        }else{
         chat[0]=chat[1]
         chat[1]=chat[2]
         chat[2]= "GANCHAT [ERROR] Server disconnected"
-        clearInterval(clock);
+        }
     });
 
 }
@@ -254,10 +260,17 @@ function disconnect() {
     if (online) {
         clearInterval(clock);
         online = false;
+        console.log("bye bye")
         //player2Status = "disconnected"
-        chat[0]=chat[1]
-        chat[1]=chat[2]
-        chat[2]= "GANCHAT "+userId+"has disconnected"
+        $.ajax({
+            method: "DELETE",
+            url: baseUrl +"/"+ chatRoomId + "/" + userId,
+            
+            processData: false,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
     }
 
 }
@@ -274,13 +287,18 @@ function send() {
         }
         $.ajax({
             method: "POST",
-            url: "http://localhost:8080/get/" + chatRoomId,
+            url: baseUrl + chatRoomId,
             data: JSON.stringify(message),
             processData: false,
             headers: {
                 "Content-Type": "application/json"
             }
-        })
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            clearInterval(clock);
+           serverStatus = "Server disconnected"
+           server = false;
+           chat[0]= "GANCHAT [ERROR] Server disconnected"
+        });
         console.log("Item created: " + JSON.stringify(message));
     }
 }
