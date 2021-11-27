@@ -18,13 +18,13 @@ create(){
 
     var offlineButton = new Button({
         'scene': this,
-        'key':'play_buttons',
+        'key':'offline_buttons',
         'up': 0,
         'over':1,
         'down':2,
         'x': 480,
         'y': 370
-    }).setScale(0.9,0.9);
+    }).setScale(0.4,0.4);
     offlineButton.on('pointerup',this.playOffline,this)
     var onlineButton = new Button({
         'scene': this,
