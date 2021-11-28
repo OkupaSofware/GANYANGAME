@@ -13,8 +13,6 @@ create(){
     this.text=this.add.text(640,80, "CHOOSE GAME MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
     
     this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
-    this.add.text(480,280,"OFFLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)//.setTint(0XFFA500)
-    this.add.text(800,280,"ONLINE MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)//.setTint(0XFFA500)
 
     var offlineButton = new Button({
         'scene': this,
@@ -23,18 +21,18 @@ create(){
         'over':1,
         'down':2,
         'x': 480,
-        'y': 370
+        'y': 350
     }).setScale(0.4,0.4);
     offlineButton.on('pointerup',this.playOffline,this)
     var onlineButton = new Button({
         'scene': this,
-        'key':'play_buttons',
+        'key':'online_buttons',
         'up': 0,
         'over':1,
         'down':2,
         'x': 800,
-        'y': 370
-    }).setScale(0.9,0.9);
+        'y': 350
+    }).setScale(0.4,0.4);
     onlineButton.on('pointerup',this.playOnline,this);
     var back_button = new Button({
         'scene': this,
