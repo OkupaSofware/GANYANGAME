@@ -19,7 +19,7 @@ public class ChatRoomService {
 
 	private int maxDefaultUsers = 2; //Numero maximo por defecto de participantes permitidos
 	private int maxDefaultRooms = 5;
-	private int lastRoom = 0; //Indice que apunta a la ultima sala ocupada
+	
 	private List<ChatRoom> rooms= new ArrayList<ChatRoom>();
 	
 	Timer clock; 
@@ -28,13 +28,7 @@ public class ChatRoomService {
 	public ChatRoomService() {
 		for(int i =0; i<maxDefaultRooms;i++) {
 			
-			ChatRoom activeRoom = new ChatRoom();
-			Random rand = new Random();
-			activeRoom.setMaxUsers(maxDefaultUsers);
-			String alphabet = "123xyz";
-			activeRoom.setId("" + alphabet.charAt(rand.nextInt(alphabet.length())) + (long)(Math.floor(rand.nextDouble()*999)) + alphabet.charAt(rand.nextInt(alphabet.length())) + (long)(Math.floor(rand.nextDouble()*999))); //Crea un id aleatorio alfanumerico para la sala
-			activeRoom.getDatabase().setPath("chatDatabase/ChatRecordId_" + activeRoom.getId() + ".txt"); //Genera el txt donde se guardaran los mensajes con una ruta especificada
-			rooms.add(activeRoom);
+			rooms.add(createNewRoom());
 			
 		}
 		clock = new Timer(3000, new ActionListener(){ //Temporizador de 3 segundos
@@ -72,11 +66,7 @@ public class ChatRoomService {
 	}
 		return null;
 	}
-/*
-	public void setActiveRoom(ChatRoom activeRoom) {
-		this.activeRoom = activeRoom;
-	}
-	*/
+
 
 	public User addUser(String userId) {
 		
@@ -108,16 +98,35 @@ public class ChatRoomService {
 		
 		
 	}
+	public ChatRoom createNewRoom() { //Creador de nuevas chatrooms
+		
+		ChatRoom activeRoom = new ChatRoom();
+		Random rand = new Random();
+		activeRoom.setMaxUsers(maxDefaultUsers);
+		String alphabet = "123xyz";
+		activeRoom.setId("" + alphabet.charAt(rand.nextInt(alphabet.length())) + (long)(Math.floor(rand.nextDouble()*999)) + alphabet.charAt(rand.nextInt(alphabet.length())) + (long)(Math.floor(rand.nextDouble()*999))); //Crea un id aleatorio alfanumerico para la sala
+		activeRoom.getDatabase().setPath("chatDatabase/ChatRecordId_" + activeRoom.getId() + ".txt"); //Genera el txt donde se guardaran los mensajes con una ruta especificada
+		
+		return activeRoom;
+		
+	}
 	
-	public void markOnlineUser(String chatRoomId, String userId) {
+	
+	public void markOnlineUser(String chatRoomId, String userId) { //Comprueba si el usuario sigue conectado. Tambien controla si hay una habitacion que se ha quedado vacia;
 		for(int r = 0; r<maxDefaultRooms; r++) {
 			if(rooms.get(r).getId()==chatRoomId) {
+				System.out.print("Paso por aquiiii");
 				//if(rooms.get(r).getUsersList().size()!=0) {
 		User tempUser = rooms.get(r).getUser(userId);
 		if(tempUser.getOnline()==false) {
-			rooms.get(r).getUsersList().remove(tempUser);
+			rooms.get(r).getUsersList().remove(tempUser); //Si no esta online lo saca y elimina.
 		}
-				//}else
+		/*
+				}else {
+					System.out.print("Paso por aqui");
+					rooms.set(r, createNewRoom());//Si esta vacia la sustituye por una nueva habitacion. Para proteger datos de la habiaticación antigua
+				}
+				*/
 		break;
 			}
 		}

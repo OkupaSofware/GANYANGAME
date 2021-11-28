@@ -107,6 +107,7 @@ class LobbyONLINE extends Phaser.Scene {
 
         elementHTML2.addListener('click');
         elementHTML2.on('click', function (event) {
+            if(online){
             if (event.target.name === 'sendButton')
             {
                 sendText = this.getChildByName('sendMessage');
@@ -115,8 +116,11 @@ class LobbyONLINE extends Phaser.Scene {
                     sendText.value = "";
                 }
             }
-            
+        }else{
+            alert("Player 1, you have to be connected to chat");
+        }
         });
+    
         
     }
     
@@ -136,7 +140,7 @@ class LobbyONLINE extends Phaser.Scene {
     }
     playOnline(){
         
-        
+        if(player2Status!="Waiting for player 2..."){
         usernameText1.destroy();
         usernameText2.destroy();
         this.registry.set('username1', inputText1);
@@ -144,6 +148,7 @@ class LobbyONLINE extends Phaser.Scene {
 
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
         this.scene.remove("Lobby")
+        }
         
     }
     
@@ -169,6 +174,7 @@ class LobbyONLINE extends Phaser.Scene {
 }
 //Manejo de peticiones rest
 function connect() {
+    if(server == true){
     if (!online) {
         var usernameId = inputText1;
         console.log(usernameId);
@@ -203,7 +209,7 @@ function connect() {
                 
             });
 
-        
+        }   
     }
 }
 function checkConnection() {
