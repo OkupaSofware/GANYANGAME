@@ -14,6 +14,31 @@ Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra 
 
   <img src="https://user-images.githubusercontent.com/91082053/136620835-a46912da-abf4-4e0d-8a26-b5b70adde92b.png">
 </p>
+<H2>DIAGRAMA DE CLASES BACK-END</H2>
+
+
+<p align="center"> 
+
+  <img src="https://user-images.githubusercontent.com/91082053/143792535-a4f5a095-0ac1-4ba1-b628-032fefb802ba.jpeg">
+</p>
+<H2>INSTRUCCIONES DE USO</H2>
+
+
+Versión mínima JDK = 11
+Versión mínima JDR = 1.8
+
+
+Doble clic para ejecutar
+       	 
+La URL a cargar es <<<localhost:8080>>>
+
+
+El archivo .jar debe ir siempre dentro de una carpeta junto a chatDatabase, que es donde se guardarán los datos de las salas.
+
+
+
+El programa esta preparado para gestionar el servidor en la pantalla de lobby. Para desconectarse como usuario, pulsar el boton de atrás.
+El programa NO esta preparado para gestionar el servidor en la escena de partida.
 
 
 <H2>INTEGRANTES DEL GRUPO</H2>
