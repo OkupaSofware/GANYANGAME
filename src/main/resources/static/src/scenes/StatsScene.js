@@ -86,6 +86,7 @@ class StatsScene extends Phaser.Scene {
     goBack(){
         this.scene.stop("StatsScene")
         this.scene.start("MainMenuBackground");
+        this.scene.remove("Lobby")
         this.scene.remove("ScenePlay")
 
     }

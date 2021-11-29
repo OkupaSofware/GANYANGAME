@@ -144,10 +144,20 @@ class LobbyONLINE extends Phaser.Scene {
         usernameText1.destroy();
         usernameText2.destroy();
         this.registry.set('username1', inputText1);
+         this.registry.set('username2', player2Status);
         //this.registry.set('username2', inputText2);
 
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
-        this.scene.remove("Lobby")
+        inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
+        chatRoomId = -1;
+        baseUrl =  window.location + "get/";
+        userId = -1;
+        clock = null;
+        online = false;
+        server = false;
+        chat = ["","",""]
+        sendText = "";
+        this.scene.sleep("Lobby")
         }
         
     }

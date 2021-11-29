@@ -30,6 +30,7 @@ create(){
 }
 goBack(){
     this.scene.start("MainMenuBackground");
+    this.scene.remove("Lobby")
     this.scene.remove("ScenePlay")
     
 }

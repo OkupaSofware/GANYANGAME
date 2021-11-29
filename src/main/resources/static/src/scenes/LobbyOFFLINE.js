@@ -127,7 +127,7 @@ class LobbyOFFLINE extends Phaser.Scene {
         this.registry.set('username2', inputText2);
 
         this.scene.add("ScenePlay",ScenePlayOFFLINE,true);
-        this.scene.remove("Lobby")
+        this.scene.sleep("Lobby")
         
     }
 
