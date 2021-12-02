@@ -17,7 +17,7 @@ class LobbyONLINE extends Phaser.Scene {
         
     }
     create(){
-        this.text=this.add.text(640,80, "LOBBY",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
+        this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
 
@@ -44,13 +44,13 @@ class LobbyONLINE extends Phaser.Scene {
         exit_button.on('pointerup',this.goBack,this);
         var offlineButton = new Button({
             'scene': this,
-            'key':'play_buttons',
+            'key':'button_basic',
             'up': 0,
             'over':1,
             'down':2,
             'x': 640,
             'y': 490
-        }).setScale(0.9,0.9);
+        },"play").setScale(0.9,0.9);
         offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
@@ -146,7 +146,6 @@ class LobbyONLINE extends Phaser.Scene {
         this.registry.set('username1', inputText1);
          this.registry.set('username2', player2Status);
         //this.registry.set('username2', inputText2);
-
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
         inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
         chatRoomId = -1;
@@ -155,9 +154,9 @@ class LobbyONLINE extends Phaser.Scene {
         clock = null;
         online = false;
         server = false;
-        chat = ["","",""]
+        chat = ["","",""];
         sendText = "";
-        this.scene.sleep("Lobby")
+        this.scene.sleep("Lobby");
         }
         
     }

@@ -10,29 +10,29 @@ class GameMode extends Phaser.Scene {
     }
 create(){
     this.cameras.main.fadeIn(250, 0, 0, 0)
-    this.text=this.add.text(640,80, "CHOOSE GAME MODE",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
+    this.text=this.add.text(640,80, "CHOOSE GAME MODE",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     
     this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
 
     var offlineButton = new Button({
         'scene': this,
-        'key':'offline_buttons',
+        'key':'button_basic',
         'up': 0,
         'over':1,
         'down':2,
         'x': 480,
         'y': 350
-    }).setScale(0.4,0.4);
+    },"offline").setScale(0.9,0.9);
     offlineButton.on('pointerup',this.playOffline,this)
     var onlineButton = new Button({
         'scene': this,
-        'key':'online_buttons',
+        'key':'button_basic',
         'up': 0,
         'over':1,
         'down':2,
         'x': 800,
         'y': 350
-    }).setScale(0.4,0.4);
+    },"online").setScale(0.9,0.9);
     onlineButton.on('pointerup',this.playOnline,this);
     var back_button = new Button({
         'scene': this,

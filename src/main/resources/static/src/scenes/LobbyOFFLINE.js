@@ -7,7 +7,7 @@ class LobbyOFFLINE extends Phaser.Scene {
         
     }
     create(){
-        this.text=this.add.text(640,80, "LOBBY",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
+        this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
         this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
@@ -26,13 +26,13 @@ class LobbyOFFLINE extends Phaser.Scene {
         exit_button.on('pointerup',this.goBack,this)
         var offlineButton = new Button({
             'scene': this,
-            'key':'play_buttons',
+            'key':'button_basic',
             'up': 0,
             'over':1,
             'down':2,
             'x': 640,
             'y': 490
-        }).setScale(0.9,0.9);
+        },"play").setScale(0.9,0.9);
         offlineButton.on('pointerup',this.playOffline,this)
 
         //Display text for player name

@@ -6,49 +6,51 @@ class MainMenu extends Phaser.Scene {
     }
 create(){
 this.cameras.main.fadeIn(1500, 0, 0, 0)
-this.titleText=this.add.text(640,80, "WELCOME TO",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
+this.titleText=this.add.text(640,70, "WELCOME TO",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
 this.neo = this.add.image(640,165,"new_title").setScale(0.7,0.7);
 //Buttons creation
 var play_button = new Button({
     'scene': this,
-    'key':'play_buttons',
+    'key':'button_basic',
     'up': 0,
     'over':1,
     'down':2,
     'x': 780,
     'y': 400
-}).setScale(0.8,0.8);
+},"play").setScale(0.8,0.8);
 var credits_button = new Button({
     'scene': this,
-    'key':'credits_button',
+    'key':'button_basic',
     'up': 0,
     'over':1,
     'down':2,
     'x': 780,
     'y': 500
-}).setScale(0.8,0.8);
+},"credits").setScale(0.8,0.8);
 var tutorial_button = new Button({
     'scene': this,
-    'key':'help_button',
+    'key':'button_basic',
     'up': 0,
     'over':1,
     'down':2,
     'x': 500,
     'y': 400
-}).setScale(0.8,0.8);
+},"tutorial").setScale(0.8,0.8);
 var settings_button = new Button({
     'scene': this,
-    'key':'setting_button',
+    'key':'button_basic',
     'up': 0,
     'over':1,
     'down':2,
     'x': 500,
     'y': 500
-}).setScale(0.8,0.8);
+},"settings").setScale(0.8,0.8);
 play_button.on('pointerup',this.playOnPressed,this);
 tutorial_button.on('pointerup',this.launchTutorialMenu,this);
 settings_button.on('pointerup',this.launchSettingsMenu,this);
 credits_button.on('pointerup',this.launchCreditsMenu,this);
+
+
 
 this.holesTrigger = this.physics.add.staticGroup();
 // Button "animation"

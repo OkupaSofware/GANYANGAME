@@ -6,7 +6,7 @@ class Credits extends Phaser.Scene {
 
 create(){
     this.cameras.main.fadeIn(250, 0, 0, 0)
-    this.text=this.add.text(640,80, "CREDITS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5);
+    this.text=this.add.text(640,80, "CREDITS",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5);
     this.add.image(640, 320, "creditsBackground").setScale(0.4,0.4);
 
     var back_button = new Button({

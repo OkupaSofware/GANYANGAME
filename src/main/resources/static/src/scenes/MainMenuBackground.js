@@ -40,7 +40,7 @@ class MainMenuBackground extends Phaser.Scene {
        this.fog = this.add.sprite(640,600, "fog_anim")
        this.anims.create({key: "fog",frames: this.anims.generateFrameNumbers("fog_anim", {frames: [0,1,2,3,4]}), repeat: -1, frameRate: 7})
        this.fog.anims.play("fog")
-       this.rights = this.add.text (640,700, "Okupa Software. All rights reserved. 2021.",{font: 'bold 12px Arial'}).setOrigin(0.5,0.5)
+       this.rights = this.add.text (640,700, "Okupa Software. All rights reserved. 2021.",{fontFamily: 'army_font', fontSize:'18px' }).setOrigin(0.5,0.5)
      
        this.scene.launch("MainMenu");
        this.scene.bringToTop("MainMenu");

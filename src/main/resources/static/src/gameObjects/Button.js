@@ -1,5 +1,6 @@
 class Button extends Phaser.GameObjects.Sprite{
-    constructor(config) {
+    constructor(config, text) {
+
       //check if config contains a scene
       if (!config.scene) {
         console.log('No scene');
@@ -35,6 +36,8 @@ class Button extends Phaser.GameObjects.Sprite{
     }
     //add this to the scene
     config.scene.add.existing(this);
+    //add text to button
+    this.content = config.scene.add.text(config.x,config.y-5, text,{fontFamily: 'army_font', fontSize:'45px'  }).setOrigin(0.5,0.5).setTint(0x250303 ).setAlpha(0.8)
     //make interactive and set listeners
     this.setInteractive();
     this.on('pointerdown',this.onDown,this);
@@ -45,14 +48,17 @@ class Button extends Phaser.GameObjects.Sprite{
 onDown()
     {
     	this.setFrame(this.config.down);
+        this.content.setTint(0xffffff)
     }
     onOver()
     {
     	this.setFrame(this.config.over);
+        this.content.setTint(0x8B2600)
     }
     onUp()
     {
     	this.setFrame(this.config.up);
+       this.content.setTint(0x250303 ).setAlpha(0.8)
     }
 
 
