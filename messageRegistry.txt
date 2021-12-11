@@ -1,0 +1,6 @@
+date|rrrr|Has connected
+date|que dice|Has connected
+date|[eee]|Has connected
+date|[rr]|Has connected
+date|[tt]|Has connected
+date|[tttttt]|Has connected

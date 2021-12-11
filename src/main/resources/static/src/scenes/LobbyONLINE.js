@@ -1,30 +1,35 @@
 import Button from "../gameObjects/Button.js";
 import ScenePlayONLINE from "./ScenePlayONLINE.js";
-var inputText1, usernameText1, usernameText2, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
+var inputText1, usernameText1, usernameText2, serverStatus="SERVER CONNECTED", player2Status="Waiting for player 2...";
 var chatRoomId;
 var baseUrl =  window.location + "get/";
 var userId;
 var clock;
 var online = false;
-var server = false;
+var server = true;
 var chat = ["","",""]
 var sendText = "";
 
+var chatSocket;
+
+
+	
 class LobbyONLINE extends Phaser.Scene {
     constructor() {
         super({ key: "Lobby" });
 
         
     }
+    
     create(){
         this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
 
         
-        this.serverStatus = this.add.text(640,160, "Disconnected",{font: 'bold 24px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
+        this.serverStatus = this.add.text(640,160, "Disconnected",{fontFamily: 'army_font', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
         // Comprueba si el servidor está conectado de primeras
-        checkConnection();
+        //checkConnection();
         
 
         
@@ -54,12 +59,12 @@ class LobbyONLINE extends Phaser.Scene {
         offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
-        usernameText1 = this.add.text(420, 400, '', {font: 'bold 32px Arial', color: 'white', fontSize: '15px '}).setOrigin(0.5,0.5);  
-        usernameText2 = this.add.text(840, 400, player2Status, {font: 'bold 32px Arial', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);
+        usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);  
+        usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);
 
 
         //GANCHAT
-        this.chatTitle = this.add.text(20, 570, 'GANCHAT', {font: 'bold 18px Arial', color: 'white', fontSize: '35px '}).setTint(0xffff00)
+        this.chatTitle = this.add.text(20, 530, 'GANCHAT', {fontFamily: 'army_font', color: 'white', fontSize: '35px '}).setTint(0xffff00)
         this.chat1 = this.add.text(20, 600, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
         this.chat2 = this.add.text(20, 625, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
         this.chat3 = this.add.text(20, 650, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
@@ -69,6 +74,7 @@ class LobbyONLINE extends Phaser.Scene {
         //Input text for player name
         var elementHTML1 = this.add.dom(420, 425).createFromCache('connection');
         var elementHTML2 = this.add.dom(220, 705).createFromCache('sendMessage');
+        var elementHTML3 = this.add.dom(150, 622).createFromCache('chat');
         inputText1 = "Player 1";
 
         elementHTML1.addListener('click');
@@ -95,7 +101,26 @@ class LobbyONLINE extends Phaser.Scene {
                     console.log("Soy " + inputText1);
                     usernameText1.setText('P1: ' + inputText1);
                     //usernameText.setText('Username: ' + this.registry.get('username'));
-                    connect()
+                    connect();
+                    
+                    userId = inputText1;
+                   
+           	var msg = {
+			name: userId,
+            message: "Has connected"
+		}
+                    
+		//chatSocket.send(JSON.stringify(msg));
+		if(chat[0]==""){
+						chat[0]= userId + ": " + "Has connected";
+					}else if(chat[1]==""){
+						chat[0]=chat[1];
+						chat[1]= userId + ": " + "Has connected";
+					}else if(chat[2]==""){
+						chat[0]=chat[1];
+						chat[1]=chat[2];
+						chat[2]= userId + ": " + "Has connected";
+						}
                 }
                 else
                 {
@@ -106,26 +131,42 @@ class LobbyONLINE extends Phaser.Scene {
         });
 
         elementHTML2.addListener('click');
+        
         elementHTML2.on('click', function (event) {
-            if(online){
-            if (event.target.name === 'sendButton')
+	 if (event.target.name === 'sendButton')
             {
                 sendText = this.getChildByName('sendMessage');
                 if (sendText.value !== ''){
-                    send();
+                    
+	 			 var textMessage = sendText.value;
+           var msg = {
+			name: userId,
+            message: textMessage
+		}
                     sendText.value = "";
+					chatSocket.send(JSON.stringify(msg));
+					/*
+					if(chat[0]==""){
+						chat[0]= userId + ": " + textMessage;
+					}else if(chat[1]==""){
+						chat[0]=chat[1];
+						chat[1]= userId + ": " + textMessage;
+					}else if(chat[2]==""){
+						chat[0]=chat[1];
+						chat[1]=chat[2];
+						chat[2]= userId + ": " + textMessage;
+						}
+						*/
                 }
             }
-        }else{
-            alert("Player 1, you have to be connected to chat");
-        }
+	   // $('#chat').val($('#chat').val() + "\n" + msg.name + ": " + msg.message);
         });
     
         
     }
     
     goBack(){
-        disconnect()
+        //disconnect()
         inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
         chatRoomId = -1;
         baseUrl =  window.location + "get/";
@@ -161,6 +202,17 @@ class LobbyONLINE extends Phaser.Scene {
         
     }
     
+    sendMessage(){
+	 var textMessage = sendText.value;
+           var msg = {
+			name: userId,
+            message: textMessage
+		}
+            sendText.value = "";
+		chatSocket.send(JSON.stringify(msg));
+		
+}
+    
     update(time,delta){
         this.serverStatus.setText(serverStatus);
         usernameText2.setText("P2: "+player2Status)
@@ -180,142 +232,45 @@ class LobbyONLINE extends Phaser.Scene {
        
     }
     
+    
 }
-//Manejo de peticiones rest
-function connect() {
-    if(server == true){
-    if (!online) {
-        var usernameId = inputText1;
-        console.log(usernameId);
-            $.ajax({
-                method: "POST",
-                url: baseUrl,
-                data: usernameId,
-                processData: false,
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).done(function (data) {
-                if (data.chatRoomId == null || data.chatRoomId == undefined) {
-                   
-                    online = false;
-                } else {
-                    chatRoomId = data.chatRoomId;
-                    console.log(chatRoomId)
-                    userId = data.id;
-                    clock = setInterval(function () {
-                        checkConnection();
-                    }, 2000);
-                    online = true;
-                    
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                clearInterval(clock);
-                
-               serverStatus = "Server disconnected"
-               server = false;
-               chat[0]= "GANCHAT [ERROR] Server disconnected"
-                
-            });
+function connect(){
+	chatSocket = new WebSocket('ws://127.0.0.1:8080/chat');
+                    chatSocket.onerror = function(e) {
+		console.log("WS error: " + e);
+		server = false;
+		serverStatus = "SERVER DISCONNECTED"
+	}
+	chatSocket.onmessage = function(msg) {
+		console.log("WS message: " + msg.data);
+		var message = JSON.parse(msg.data)
+		/*
+		chat[2] = message.name1 + ": " + message.message1;
+		chat[1] = message.name2 + ": " + message.message2;
+		chat[0] = message.name3 + ": " + message.message3;
+		*/
+		//elementHTML3.getChildByName('chat');
+		$('.chat').val($('.chat').val() + "\n" + message.name + ": " + message.message);
 
-        }   
-    }
-}
-function checkConnection() {
-    $.ajax({
-        url: baseUrl +"/"+ chatRoomId + "/" + userId,
-    }).done(function (data) {
-        if(server == true){
-        //ACTUALIZA MENSAJES
-        if(data.messages.length >= 3){
-            chat[0] = data.messages[data.messages.length-3].username + ": " + data.messages[data.messages.length-3].textMessage;
-            chat[1] = data.messages[data.messages.length-2].username + ": " + data.messages[data.messages.length-2].textMessage;
-            chat[2] = data.messages[data.messages.length-1].username + ": " + data.messages[data.messages.length-1].textMessage;
-        } else if (data.messages.length == 2){
-            chat[0] = data.messages[data.messages.length-2].username + ": " + data.messages[data.messages.length-2].textMessage;
-            chat[1] = data.messages[data.messages.length-1].username + ": " + data.messages[data.messages.length-1].textMessage;
-            chat[2] = "";
-        } else if (data.messages.length == 1){
-            chat[0] = data.messages[data.messages.length-1].username + ": " + data.messages[data.messages.length-1].textMessage;
-            chat[1] = "";
-            chat[2] = "";
-        } else {
-            chat[0] = "";
-            chat[1] = "";
-            chat[2] = "";
-        }
-        //ACTUALIZA ESTADO DEL JUGADOR EN RED
-        if(data.users.length==1){
-            player2Status="Waiting for player 2...";
-        }
-       for (var i = 0; i < data.users.length; i++) {
-           if(data.users[i].id!=userId){
-               player2Status = data.users[i].id
-            }
-        }
-    }
-        serverStatus = "Server connected"
-        server = true;
-        console.log(data.users)
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        clearInterval(clock);
-        serverStatus = "Server disconnected"
-        server = false;
-        if(chat[0]==""){
-        chat[0]= "GANCHAT [ERROR] Server disconnected"
-        }else{
-        chat[0]=chat[1]
-        chat[1]=chat[2]
-        chat[2]= "GANCHAT [ERROR] Server disconnected"
-        }
-    });
+		var psconsole = $('.chat');
+    	if(psconsole.length)
+       	psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
 
+		chat[0] = message.name + ": " + message.message;
+		//player2Status = message.name
+	}
+	chatSocket.onclose = function() {
+		console.log("Closing socket");
+	}
+	chatSocket.binaryType;
+	
+	
 }
-function disconnect() {
-    if (online) {
-        clearInterval(clock);
-        online = false;
-        console.log("bye bye")
-        //player2Status = "disconnected"
-        $.ajax({
-            method: "DELETE",
-            url: baseUrl +"/"+ chatRoomId + "/" + userId,
-            
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-    }
+	
+	
 
-}
-function send() {
-    var currentDate = new Date();
-    var localDate = currentDate.toLocaleTimeString();
-    if (online) {
-        console.log("Sendtext: " + sendText.value);
-        var textMessage = sendText.value;
-        var message = {
-	        date: localDate,
-            username: "" + userId + "",
-            textMessage: textMessage
-        }
-        $.ajax({
-            method: "POST",
-            url: baseUrl + chatRoomId,
-            data: JSON.stringify(message),
-            processData: false,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            clearInterval(clock);
-           serverStatus = "Server disconnected"
-           server = false;
-           chat[0]= "GANCHAT [ERROR] Server disconnected"
-        });
-        console.log("Item created: " + JSON.stringify(message));
-    }
-}
+	
+
+
 
 export default LobbyONLINE;
