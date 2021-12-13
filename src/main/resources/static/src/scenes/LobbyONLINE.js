@@ -1,17 +1,18 @@
 import Button from "../gameObjects/Button.js";
 import ScenePlayONLINE from "./ScenePlayONLINE.js";
 var inputText1, usernameText1, usernameText2, serverStatus="SERVER CONNECTED", player2Status="Waiting for player 2...";
-var chatRoomId;
-var baseUrl =  window.location + "get/";
+
+
 var userId;
-var clock;
+
 var online = false;
 var server = true;
-var chat = ["","",""]
+
 var sendText = "";
 
 var chatSocket;
-
+var interval;
+var checkServerInterval;
 
 	
 class LobbyONLINE extends Phaser.Scene {
@@ -23,7 +24,7 @@ class LobbyONLINE extends Phaser.Scene {
     
     create(){
         this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
-    
+    	//setCheck();
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
 
         
@@ -39,13 +40,14 @@ class LobbyONLINE extends Phaser.Scene {
         
         var exit_button = new Button({
             'scene': this,
-            'key':'back_buttons',
+            'key':'button_basic',
             'up': 0,
             'over':1,
             'down':2,
             'x': 1010,
             'y': 186
-        }).setScale(0.7,0.7);
+        },"disconnect").setScale(0.7,0.7);
+        //exit_button.content.setText("disconnect")  text,{fontFamily: 'army_font', fontSize:'45px'  }).setOrigin(0.5,0.5).setTint(0x250303 ).setAlpha(0.8)
         exit_button.on('pointerup',this.goBack,this);
         var offlineButton = new Button({
             'scene': this,
@@ -55,7 +57,7 @@ class LobbyONLINE extends Phaser.Scene {
             'down':2,
             'x': 640,
             'y': 490
-        },"play").setScale(0.9,0.9);
+        },"READY").setScale(0.9,0.9);
         offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
@@ -65,16 +67,14 @@ class LobbyONLINE extends Phaser.Scene {
 
         //GANCHAT
         this.chatTitle = this.add.text(20, 530, 'GANCHAT', {fontFamily: 'army_font', color: 'white', fontSize: '35px '}).setTint(0xffff00)
-        this.chat1 = this.add.text(20, 600, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
-        this.chat2 = this.add.text(20, 625, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
-        this.chat3 = this.add.text(20, 650, '', {font: 'bold 12px Arial', color: 'white', fontSize: '20px '}).setTint(0xffff00)
-        //this.chat4 = this.add.text(20, 670, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
-        //this.chat5 = this.add.text(20, 690, '', {font: 'bold 12px Arial', color: 'white', fontSize: '15px '})
+        
 
         //Input text for player name
         var elementHTML1 = this.add.dom(420, 425).createFromCache('connection');
         var elementHTML2 = this.add.dom(220, 705).createFromCache('sendMessage');
         var elementHTML3 = this.add.dom(150, 622).createFromCache('chat');
+        var elementHTML4 = this.add.dom(420, 450).createFromCache('color');
+        
         inputText1 = "Player 1";
 
         elementHTML1.addListener('click');
@@ -102,25 +102,11 @@ class LobbyONLINE extends Phaser.Scene {
                     usernameText1.setText('P1: ' + inputText1);
                     //usernameText.setText('Username: ' + this.registry.get('username'));
                     connect();
+                    online = true
                     
                     userId = inputText1;
                    
-           	var msg = {
-			name: userId,
-            message: "Has connected"
-		}
-                    
-		//chatSocket.send(JSON.stringify(msg));
-		if(chat[0]==""){
-						chat[0]= userId + ": " + "Has connected";
-					}else if(chat[1]==""){
-						chat[0]=chat[1];
-						chat[1]= userId + ": " + "Has connected";
-					}else if(chat[2]==""){
-						chat[0]=chat[1];
-						chat[1]=chat[2];
-						chat[2]= userId + ": " + "Has connected";
-						}
+		
                 }
                 else
                 {
@@ -133,6 +119,7 @@ class LobbyONLINE extends Phaser.Scene {
         elementHTML2.addListener('click');
         
         elementHTML2.on('click', function (event) {
+	if(online==true){
 	 if (event.target.name === 'sendButton')
             {
                 sendText = this.getChildByName('sendMessage');
@@ -140,26 +127,19 @@ class LobbyONLINE extends Phaser.Scene {
                     
 	 			 var textMessage = sendText.value;
            var msg = {
+			type: "chat",
 			name: userId,
             message: textMessage
 		}
                     sendText.value = "";
 					chatSocket.send(JSON.stringify(msg));
-					/*
-					if(chat[0]==""){
-						chat[0]= userId + ": " + textMessage;
-					}else if(chat[1]==""){
-						chat[0]=chat[1];
-						chat[1]= userId + ": " + textMessage;
-					}else if(chat[2]==""){
-						chat[0]=chat[1];
-						chat[1]=chat[2];
-						chat[2]= userId + ": " + textMessage;
-						}
-						*/
+					
                 }
             }
-	   // $('#chat').val($('#chat').val() + "\n" + msg.name + ": " + msg.message);
+	  } else
+                {
+                    alert("Player 1, please enter a username and connect");
+                }
         });
     
         
@@ -167,51 +147,45 @@ class LobbyONLINE extends Phaser.Scene {
     
     goBack(){
         //disconnect()
-        inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
-        chatRoomId = -1;
-        baseUrl =  window.location + "get/";
+        inputText1 = null; usernameText1=null; usernameText2=null,  player2Status="Waiting for player 2...";
+       
+        
         userId = -1;
-        clock = null;
+       
         online = false;
         server = false;
-        chat = ["","",""]
-        sendText = "";
+       	
+       
+        //clearCheck();
+        chatSocket.close()
+        
         this.scene.start("GameMode")
         this.scene.remove("Lobby")
     }
     playOnline(){
         
         if(player2Status!="Waiting for player 2..."){
-        usernameText1.destroy();
-        usernameText2.destroy();
+        
         this.registry.set('username1', inputText1);
          this.registry.set('username2', player2Status);
         //this.registry.set('username2', inputText2);
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
-        inputText1 = null; usernameText1=null; usernameText2=null, serverStatus="Cheking connection...", player2Status="Waiting for player 2...";
-        chatRoomId = -1;
-        baseUrl =  window.location + "get/";
-        userId = -1;
-        clock = null;
-        online = false;
-        server = false;
-        chat = ["","",""];
-        sendText = "";
+        
+       
+       
+        
+        
+       
+        
+       
         this.scene.sleep("Lobby");
-        }
+        }else{
+		alert("Player 2 is not ready")
+}
         
     }
     
-    sendMessage(){
-	 var textMessage = sendText.value;
-           var msg = {
-			name: userId,
-            message: textMessage
-		}
-            sendText.value = "";
-		chatSocket.send(JSON.stringify(msg));
-		
-}
+   
     
     update(time,delta){
         this.serverStatus.setText(serverStatus);
@@ -226,9 +200,6 @@ class LobbyONLINE extends Phaser.Scene {
         }
 
         
-        this.chat1.setText(chat[0])
-        this.chat2.setText(chat[1])
-        this.chat3.setText(chat[2])
        
     }
     
@@ -244,33 +215,70 @@ function connect(){
 	chatSocket.onmessage = function(msg) {
 		console.log("WS message: " + msg.data);
 		var message = JSON.parse(msg.data)
-		/*
-		chat[2] = message.name1 + ": " + message.message1;
-		chat[1] = message.name2 + ": " + message.message2;
-		chat[0] = message.name3 + ": " + message.message3;
-		*/
-		//elementHTML3.getChildByName('chat');
+		
+		if(message.type=="subscription"){
+		console.log("subscription")	
+		$('.chat').val($('.chat').val() + "\n"+ message.message);
+		player2Status = message.name
+		}
+		
+		if(message.type=="info"){
+		console.log("info")	
+		$('.chat').val($('.chat').val() + "\n"+ message.message);
+		player2Status = message.name
+		}
+		if(message.type=="chat"){
+			console.log("chat")	
 		$('.chat').val($('.chat').val() + "\n" + message.name + ": " + message.message);
+		}
 
 		var psconsole = $('.chat');
     	if(psconsole.length)
        	psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
 
-		chat[0] = message.name + ": " + message.message;
+		
 		//player2Status = message.name
 	}
 	chatSocket.onclose = function() {
 		console.log("Closing socket");
+		
 	}
 	chatSocket.binaryType;
-	
-	
+	server = true
+	serverStatus="SERVER CONNECTED"
+	interval = setInterval(checkConnectionStatus, 1000);
 }
 	
-	
+	function checkConnectionStatus() {
+       if(chatSocket.OPEN){
+	 var msg = {
+					type: "subscription",
+					name: userId,
+            		message: "GANCHAT: "+userId+" has entered the room"
+		}
+                   
+					chatSocket.send(JSON.stringify(msg));
+					clearInterval(interval);
+}
+     }
 
-	
-
-
+	function checkServer(){
+		if(online){
+			if(chatSocket.CLOSED){
+				server = false;
+				online = false;
+				serverStatus="SERVER DISCONNECTED"
+			}
+			
+		}
+		
+		
+	}
+function setCheck(){
+	checkServerInterval = setInterval(checkServer, 4000);
+}
+function clearCheck(){
+	clearInterval(checkServerInterval)
+}
 
 export default LobbyONLINE;

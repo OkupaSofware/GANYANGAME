@@ -31,14 +31,40 @@ public class GameChatHandler extends TextWebSocketHandler {
 		System.out.println("New user: " + session.getId());
 		sessions.put(session.getId(), session);
 		
-		manager.addPlayer(new Player("Pedro",session.getId()));
+		manager.addPlayer(new Player("_",session.getId()));
+		
+		
+		
 	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("Session closed: " + session.getId());
-		sessions.remove(session.getId());
 		
+		//Se encuentra al jugador en el managter
+		int roomIdx = manager.getPlayerRoomIdx(session.getId());
+		Player p = manager.getPlayerBySessionId(session.getId());
+		Message msg = new Message("date", "GANCHAT", "P2 has left the room");
+		roomIdx = manager.getPlayerRoomIdx(session.getId());
+		manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
+		
+		//Se envia el mensaje a la sala de que se ha ido
+		ObjectNode newNode = mapper.createObjectNode();
+		System.out.println("Msg type info sent");
+		newNode.put("type", "info");
+		newNode.put("name", "Waiting for player 2...");
+		String m = "GANCHAT:"+p.getName()+" has left the room";
+		newNode.put("message", m);
+		
+		for(Player player: manager.getRooms().get(roomIdx).getPlayers()) {
+			if(!player.equals(p)) {
+				
+				sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+			}
+		}
+		
+		//Se elimina
+		sessions.remove(session.getId());
 		manager.removePlayer(session.getId());
 		
 		
@@ -47,40 +73,82 @@ public class GameChatHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
-		System.out.println("Message received: " + message.getPayload());
+		//System.out.println("Message received: " + message.getPayload());
 		JsonNode node = mapper.readTree(message.getPayload());
+		int roomIdx = -1;
 		
-		Message msg = new Message("date", node.get("name").asText(), node.get("message").asText());
-		int roomIdx = manager.getPlayerRoomIdx(session.getId());
-		manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
-
-		
-		sendToOtherLobbyParticipant(manager.getRooms().get(roomIdx), node);
-	}
-
-	private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
-
-		System.out.println("Message sent: " + node.toString());
-		
-		ObjectNode newNode = mapper.createObjectNode();
-		newNode.put("name", node.get("name").asText());
-		newNode.put("message", node.get("message").asText());
-		
-		
-		
-		for(WebSocketSession participant : sessions.values()) {
-			if(!participant.getId().equals(session.getId())) {
-				participant.sendMessage(new TextMessage(newNode.toString()));
+		if(node.get("type").asText().contentEquals("subscription")) {
+			Message msg = new Message("date", "GANCHAT", node.get("message").asText());
+			roomIdx = manager.getPlayerRoomIdx(session.getId());
+			manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
+			Player p = manager.getPlayerBySessionId(session.getId());
+			p.setName(node.get("name").asText());
+			String otherName = "Waiting for player 2...";
+			String hasEntered = node.get("message").asText();
+			for(Player player: manager.getRooms().get(roomIdx).getPlayers()) {
+				if(!player.equals(p)) {
+					otherName = player.getName();
+					hasEntered+="\nGANCHAT: "+otherName+" has entered the room";
 			}
+			}
+			ObjectNode newNode = mapper.createObjectNode();
+				
+				newNode.put("type", node.get("type").asText());	
+				newNode.put("name", p.getName());
+				newNode.put("message", node.get("message").asText());
+				
+ObjectNode newNode2 = mapper.createObjectNode();
+				
+				newNode2.put("type", node.get("type").asText());	
+				newNode2.put("name", otherName);
+				newNode2.put("message", hasEntered);
+				
+				for(Player player: manager.getRooms().get(roomIdx).getPlayers()) {
+					if(!player.equals(p)) {
+						
+						sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+					}else {
+						sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode2.toString()));
+					}
+				}
+				
+			
 		}
+		
+		if(node.get("type").asText().contentEquals("chat")) {
+			Message msg = new Message("date", node.get("name").asText(), node.get("message").asText());
+			roomIdx = manager.getPlayerRoomIdx(session.getId());
+			manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
+			sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
+		}
+
+		
 	}
-	private void sendToOtherLobbyParticipant(Room room, JsonNode node) throws IOException {
+
+	
+	private void sendToLobbyParticipants(Room room, JsonNode node) throws IOException {
 
 		
 		//List<Message> msgs = db.getMessages();
 		ObjectNode newNode = mapper.createObjectNode();
+		
+		if(node.get("type").asText().contentEquals("info")) {
+			//System.out.println("Msg type info sent");
+			newNode.put("type", node.get("type").asText());	
+			newNode.put("name", node.get("name").asText());
+			newNode.put("message", node.get("message").asText());
+			
+		}
+		
+		
+		if(node.get("type").asText().contentEquals("chat")) {
+		//System.out.println("Msg type chat sent");
+		newNode.put("type", node.get("type").asText());	
 		newNode.put("name", node.get("name").asText());
 		newNode.put("message", node.get("message").asText());
+		}
+		
+		
 		
 		
 		for(Player p: room.getPlayers()) {
@@ -89,32 +157,6 @@ public class GameChatHandler extends TextWebSocketHandler {
 		
 		
 		
-		
-			
-			
-
-			
-			
-		
-		
-		
-		/*
-		newNode.put("name1", msgs.get(msgs.size()-1).getUsername());
-		newNode.put("message1", msgs.get(msgs.size()-1).getTextMessage());
-		if(msgs.size()>=2) {
-		newNode.put("name2", msgs.get(msgs.size()-2).getUsername());
-		newNode.put("message2", msgs.get(msgs.size()-2).getTextMessage());
-		}
-		if(msgs.size()>=3) {
-		newNode.put("name3", msgs.get(msgs.size()-3).getUsername());
-		newNode.put("message3", msgs.get(msgs.size()-3).getTextMessage());
-		}
-		for(WebSocketSession participant : sessions.values()) {
-			if(participant.getId().equals(session.getId())) {
-				participant.sendMessage(new TextMessage(newNode.toString()));
-			}
-		}
-		*/
 	
 	}
 }

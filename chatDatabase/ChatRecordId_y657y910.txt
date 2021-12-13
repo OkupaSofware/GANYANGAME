@@ -1,3 +1,0 @@
-date|ttt|ttttt
-date|ttt|ttt
-date|ttt|tt

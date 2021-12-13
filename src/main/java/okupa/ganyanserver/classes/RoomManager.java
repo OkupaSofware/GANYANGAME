@@ -91,4 +91,18 @@ public class RoomManager {
     	return -1;
     	
     }
+    public Player getPlayerBySessionId(String sessionId) {
+    	for(int i = 0; i<this.rooms.size();i++) {
+    		
+        	if(this.rooms.get(i).getPlayers().get(0).getSessionID().equals(sessionId)) {
+    			
+        		return this.rooms.get(i).getPlayers().get(0);
+    		}else if(this.rooms.get(i).getPlayers().get(1).getSessionID().equals(sessionId)) {
+    			
+    			return this.rooms.get(i).getPlayers().get(1);
+    		}
+        	
+        	}
+        	return null;
+    }
 }
