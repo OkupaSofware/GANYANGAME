@@ -32,9 +32,6 @@ public class GameChatHandler extends TextWebSocketHandler {
 		sessions.put(session.getId(), session);
 		
 		manager.addPlayer(new Player("_",session.getId()));
-		
-		
-		
 	}
 	
 	@Override

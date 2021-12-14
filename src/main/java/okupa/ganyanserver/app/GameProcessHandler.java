@@ -28,18 +28,19 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.println("New player: " + session.getId());
+		System.out.println("New Player: " + session.getId());
 		sessions.put(session.getId(), session);
 		
-		//manager.getRooms().get(0).addPlayer(new Player(session.getId()));
-		
-		
+		manager.addPlayer(new Player("_",session.getId()));
 	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("Session closed: " + session.getId());
+
+		//Se elimina
 		sessions.remove(session.getId());
+		manager.removePlayer(session.getId());
 	}
 	
 	@Override
@@ -53,7 +54,7 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
 
 		double randBoost = Math.floor(Math.random() * 3) + 1;
-		System.out.println("Message sent: " + randBoost);
+		//System.out.println("Message sent: " + randBoost);
 		
 		ObjectNode newNode = mapper.createObjectNode();
 		newNode.put("left", node.get("left").asText());
