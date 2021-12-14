@@ -52,7 +52,8 @@ public class GameProcessHandler extends TextWebSocketHandler {
 
 	private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
 
-		System.out.println("Message sent: " + node.toString());
+		double randBoost = Math.floor(Math.random() * 3) + 1;
+		System.out.println("Message sent: " + randBoost);
 		
 		ObjectNode newNode = mapper.createObjectNode();
 		newNode.put("left", node.get("left").asText());
@@ -60,6 +61,9 @@ public class GameProcessHandler extends TextWebSocketHandler {
 		newNode.put("jump", node.get("jump").asText());
 		newNode.put("mousex", node.get("mousex").asText());
 		newNode.put("mousey", node.get("mousey").asText());
+		newNode.put("click", node.get("click").asText());
+		newNode.put("life", node.get("life").asText());
+		
 		
 		
 		for(WebSocketSession participant : sessions.values()) {
