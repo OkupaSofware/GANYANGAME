@@ -39,10 +39,10 @@ class Player extends Phaser.GameObjects.Sprite{
         //Voices
         this.cry = scene.hitPlayer;
 
-        this.player1jump = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP)
-        this.player1RightControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-        this.player1LeftControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-        this.player1die = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN)
+        this.player1jump = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+        this.player1RightControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        this.player1LeftControl = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+        this.player1die = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
     }
     
 };

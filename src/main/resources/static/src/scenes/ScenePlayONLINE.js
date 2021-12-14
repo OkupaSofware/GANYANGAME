@@ -2,7 +2,19 @@ import Player from '../gameObjects/Player.js';
 import Boost from '../gameObjects/boost.js';
 import Bullet from '../gameObjects/bullet.js';
 
+var connection;
 
+var p1_A;
+var p1_D;
+var p1_W;
+var p1_mousex;
+var p1_mousey;
+
+var p2_A;
+var p2_D;
+var p2_W;
+var p2_mousex;
+var p2_mousey;
 
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
@@ -16,6 +28,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 
 
     create() {
+        connect()
         //timer        
         this.timeText = this.add.text(640, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.gap = 0;
@@ -73,7 +86,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         //players
         //En este caso uno mas 
         this.playersArray = new Array();
-        this.playersArray[0] = new Player(this, 2, 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0x92C5FC);
+        this.playersArray[0] = new Player(this, 550, 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0xffdf00);
         //Cambio de controles para local
         this.playersArray[0].player1jump = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
         this.playersArray[0].player1RightControl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -98,7 +111,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         //this.playersArray[0].setShield(true)
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0xCC6666);
+        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0xffdf00);
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
@@ -157,7 +170,27 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
 
     update(time, delta) {
-        
+
+        //almaceno los valores del p1 para enviarselo al player 2
+        p1_mousex = this.input.activePointer.x;
+        p1_mousey = this.input.activePointer.y;
+
+        if(this.player1.player1LeftControl.isDown){
+            p1_A = 1;
+        }else{
+            p1_A = 0;
+        }
+        if(this.player1.player1RightControl.isDown){
+            p1_D = 1;
+        }else{
+            p1_D = 0;
+        }
+        if(this.player1.player1jump.isDown){
+            p1_W = 1;
+        }else{
+            p1_W = 0;
+        }
+
         this.checkRespawn();
         
         this.randBoostFunc();
@@ -165,13 +198,48 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.cronoFunc(time);
         
         //#region Players movement
-        
         if (this.menuOn == false) {
-            if(this.playersArray[0].alive == true){
-            this.playersArray[0].body.setVelocityX(0)
-            this.playersArray[0].update(time, delta)
-                
-            }
+
+                if (p2_D == 1) {
+                    this.playersArray[0].body.setVelocityX(400)
+                }
+                if (p2_A == 1) {
+                    this.playersArray[0].body.setVelocityX(-400)
+                }
+                if (p2_W == 1 && this.playersArray[0].body.onFloor()){
+                    this.playersArray[0].jumpTimer = 1;
+                    this.playersArray[0].body.setVelocityY(-600);
+                }
+                else if (p2_W == 1 && (this.playersArray[0].jumpTimer != 0)) {
+                    if (this.playersArray[0].jumpTimer > 16) {
+                        this.playersArray[0].jumpTimer = 0;
+                    }
+                    else {
+                        this.playersArray[0].jumpTimer++;
+                        this.playersArray[0].body.setVelocityY(-600);
+                    }
+                }
+                else if (this.playersArray[0].jumpTimer != 0) {
+                    this.playersArray[0].jumpTimer = 0;
+                }
+                if ((p2_A == 1 || p2_D == 1) && this.playersArray[0].body.onFloor()) {
+                    this.playersArray[0].anims.play('run', true)
+                }
+                if (!(p2_A == 1 || p2_D == 1) && this.playersArray[0].body.onFloor()) {
+                    this.playersArray[0].anims.play('idle', true)
+                }
+                if (!this.playersArray[0].body.onFloor()) {
+                    this.playersArray[0].anims.play('jump', true)
+                }
+
+                this.playersArray[0].weapon.setPosition(this.x, this.y+2)
+                this.playersArray[0].hud.update(this.x,this.y)
+                this.playersArray[0].flipHorizontal();
+                //Flip sprites
+            if(p2_A == 0 && p2_D == 0){
+                this.playersArray[0].body.setVelocityX(0)
+            }    
+            
             this.player1.body.setVelocityX(0)
             this.player1.update(time, delta)
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
@@ -246,9 +314,11 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.tcount++;
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 90 - Math.round(seconds) + this.gap;
+        var timer = 500 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-
+        if (timer < 495){
+            sendData()
+        }
         if (timer > 0) {
             if (timer > 20) {
                 this.timeText.setTint(0xFFFFFF);
@@ -339,6 +409,46 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.playersArray[0].dieTimer = 200;
         }
     }
+    
+}
+function sendData(){
+        var msg = {
+            left: p1_A,
+            right: p1_D,
+            jump: p1_W,
+            mousex: p1_mousex,
+            mousey: p1_mousey
+		}
+
+		connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+    }
+
+function connect(){
+    connection = new WebSocket('ws://127.0.0.1:8080/game');
+    
+	connection.onerror = function(e) {
+		console.log("WS error: " + e);
+	}
+
+	connection.onmessage = function(msg) { //esto es lo que me viene
+		console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
+		var message = JSON.parse(msg.data) //descodifico el msg para convertirlo en message que es legible
+        
+        p2_A = message.left;
+        p2_D = message.right;
+        p2_W = message.jump;
+        p2_mousex = message.mousex;
+        p2_mousey = message.mousey;
+	}
+
+	connection.onclose = function() {
+		console.log("Closing socket");
+	}
+
+    //al pulsar el boton el jugador host envia esta informacion al jugador web
+	$('#send-btn').click(function() { //esto es lo que yo he puesto
+		sendData();
+	});
 }
 
 export default ScenePlayONLINE;

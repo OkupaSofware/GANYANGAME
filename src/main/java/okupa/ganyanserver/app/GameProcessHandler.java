@@ -55,8 +55,11 @@ public class GameProcessHandler extends TextWebSocketHandler {
 		System.out.println("Message sent: " + node.toString());
 		
 		ObjectNode newNode = mapper.createObjectNode();
-		newNode.put("name", node.get("name").asText());
-		newNode.put("message", node.get("message").asText());
+		newNode.put("left", node.get("left").asText());
+		newNode.put("right", node.get("right").asText());
+		newNode.put("jump", node.get("jump").asText());
+		newNode.put("mousex", node.get("mousex").asText());
+		newNode.put("mousey", node.get("mousey").asText());
 		
 		
 		for(WebSocketSession participant : sessions.values()) {
