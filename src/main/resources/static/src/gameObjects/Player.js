@@ -19,7 +19,7 @@ class Player extends Phaser.GameObjects.Sprite{
         this.ammoSpeed = 80;
         this.alive = true;
         this.shieldOn = false;
-        this.shield = 100;
+        this.shield = 0;
         this.jumpTimer = 0;
         this.dieTimer = 200;
         
@@ -119,6 +119,7 @@ Player.prototype.setShield = function(bool){
     this.shieldOn=bool; 
     this.hud.setShield(bool);
 };
+Player.prototype.getShield = function(){return this.shield; };
 Player.prototype.die = function(){
     this.anims.play('die', true)
     this.hud.setVisible(false)
@@ -128,7 +129,7 @@ Player.prototype.die = function(){
     this.life = 1;
     this.increaseCountDeaths();
     this.on('animationcomplete',() => {
-        //this.setVisible(false);
+    //this.setVisible(false);
     //this.setActive(false);
     this.weapon.setVisible(false);
     });

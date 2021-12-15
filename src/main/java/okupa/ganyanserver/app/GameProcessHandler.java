@@ -64,6 +64,7 @@ public class GameProcessHandler extends TextWebSocketHandler {
 		newNode.put("mousey", node.get("mousey").asText());
 		newNode.put("click", node.get("click").asText());
 		newNode.put("life", node.get("life").asText());
+		//newNode.put("shield", node.get("shield").asText());
 		
 		
 		

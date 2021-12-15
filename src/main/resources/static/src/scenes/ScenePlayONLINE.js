@@ -11,6 +11,7 @@ var p1_mousex;
 var p1_mousey;
 var p1_click = 0;
 var p1_life;
+var p1_shield;
 
 var p2_A;
 var p2_D;
@@ -19,6 +20,7 @@ var p2_mousex;
 var p2_mousey;
 var p2_click;
 var p2_life;
+var p2_shield;
 
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
@@ -118,7 +120,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
-            if (this.menuOn == false) {
+            if (this.menuOn == false && p1_click == 0) {
                 if (this.player1.getCurrentAmmo() > 0) {
                     let foundBullet = false;
                     for(var i = 0; i < this.player1.getTotalAmmo();i++){
@@ -173,7 +175,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         //almaceno los valores del p1 para enviarselo al player 2
         p1_mousex = this.input.activePointer.x;
         p1_mousey = this.input.activePointer.y;
-        p1_life = this.player1.getLife();
+        //p1_life = this.player1.getLife();
         
         if(this.player1.player1LeftControl.isDown){
             p1_A = 1;
@@ -282,6 +284,52 @@ class ScenePlayONLINE extends Phaser.Scene {
                 }
             }
         }
+
+        // Player 2 shooting
+        // player 1 shooting
+        if(p2_click == 1) {
+            p2_click = 0;
+            if (this.menuOn == false) {
+                for(var i = 0; i < this.player1.getTotalAmmo();i++){
+                    if(!this.bulletsPlayer2[i].active){
+                        var pos = new Phaser.Math.Vector2(p2_mousex, p2_mousey);
+                        this.bulletsPlayer2[i].shot(pos, this.enemyPlayer);
+                    }
+                }
+                this.bulletMenuSound = this.sound.add('shot');
+                this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu")});
+            }
+           console.log("Disparo recibido");
+        }
+
+        // Bullets enemy player out of bounds
+        for(var i = 0; i < this.player1.getTotalAmmo() ;i++){
+            if(this.bulletsPlayer2[i].active){
+                //Code that we want
+                //this.bulletsPlayer1[i].checkOutOfBounds(1280, 720);
+
+                //Code that works by now
+                if(this.bulletsPlayer2[i].x >= 1275 ||
+                   this.bulletsPlayer2[i].x <= 5    ||
+                   this.bulletsPlayer2[i].y <= 5    ||
+                   this.bulletsPlayer2[i].y >= 715)
+                {
+                    this.bulletsPlayer2[i].setPosition(-50);
+                    this.bulletsPlayer2[i].body.setVelocityX(0);
+                    this.bulletsPlayer2[i].body.setVelocityY(0);
+                    this.bulletsPlayer2[i].setVisible(false);
+                    this.bulletsPlayer2[i].setActive(false);
+                }
+            }
+        }
+
+        // Life update
+        this.player1.setLife(p1_life);
+        p2_life = this.enemyPlayer.getLife();
+        // Shield update
+        //this.player1.setLife(p1_life);
+        //p2_life = this.enemyPlayer.getLife();
+
     }
     
     launchMenu() {
@@ -430,10 +478,11 @@ function sendData(){
             mousex: p1_mousex,
             mousey: p1_mousey,
             click: p1_click,
-            life: p1_life
+            life: p2_life
 		}
 
 		connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+        p1_click = 0;
     }
 
 function connect(){
@@ -453,7 +502,7 @@ function connect(){
         p2_mousex = message.mousex;
         p2_mousey = message.mousey;
         p2_click = message.click;
-        p2_life = message.life;
+        p1_life = message.life;
 	}
 
 	connection.onclose = function() {
