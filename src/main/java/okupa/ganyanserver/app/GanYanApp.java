@@ -28,6 +28,8 @@ public class GanYanApp implements WebSocketConfigurer{
 			.setAllowedOrigins("*");
 		registry.addHandler(createGameHandler(), "/game")
 		.setAllowedOrigins("*");
+		registry.addHandler(createPositionHandler(), "/position")
+		.setAllowedOrigins("*");
 	}
 		
 	@Bean
@@ -38,6 +40,11 @@ public class GanYanApp implements WebSocketConfigurer{
 	@Bean
 	public GameProcessHandler createGameHandler() {
 		return new GameProcessHandler();
+	}
+
+	@Bean
+	public PositionHandler createPositionHandler() {
+		return new PositionHandler();
 	}
 
 }

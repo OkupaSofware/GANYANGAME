@@ -3,6 +3,9 @@ import Boost from '../gameObjects/boost.js';
 import Bullet from '../gameObjects/bullet.js';
 
 var connection;
+var posConnection;
+
+var timer = 0;
 
 var p1_A;
 var p1_D;
@@ -12,6 +15,8 @@ var p1_mousey;
 var p1_click = 0;
 var p1_life;
 var p1_shield;
+var p1_xPos = 0;
+var p1_yPos = 0;
 
 var p2_A;
 var p2_D;
@@ -21,6 +26,8 @@ var p2_mousey;
 var p2_click;
 var p2_life;
 var p2_shield;
+var p2_xPos = 0;
+var p2_yPos = 0;
 
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
@@ -171,6 +178,8 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
 
     update(time, delta) {
+        timer++;
+
 
         //almaceno los valores del p1 para enviarselo al player 2
         p1_mousex = this.input.activePointer.x;
@@ -238,9 +247,19 @@ class ScenePlayONLINE extends Phaser.Scene {
             }    
             this.enemyPlayer.hud.update(this.enemyPlayer.x,this.enemyPlayer.y)
             this.player1.body.setVelocityX(0)
-            this.player1.update(time, delta)
+            this.player1.update(time, delta);
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
-            // Player 1 controls
+
+            // Position send data
+            if(timer%2 == 0){
+                p1_xPos = this.player1.body.position.x;
+                p1_yPos = this.player1.body.position.y;
+                sendPosAux();
+                this.enemyPlayer.body.position.x = p2_xPos;
+                this.enemyPlayer.body.position.y = p2_yPos;
+            }
+            
+
             
         }else{
             this.player1.body.setVelocityX(0)
@@ -375,7 +394,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         var timer = 500 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
         if (timer < 495){
-            sendData()
+            sendData();
         }
         if (timer > 0) {
             if (timer > 20) {
@@ -481,19 +500,42 @@ function sendData(){
             life: p2_life
 		}
 
-		connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
-        p1_click = 0;
+	connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+    p1_click = 0;
+}
+
+function sendPosAux(){
+    var msg = {
+        posX: p1_xPos,
+        posY: p1_yPos
     }
+    posConnection.send(JSON.stringify(msg));
+}
 
 function connect(){
+    // Sockets initializations
     connection = new WebSocket('ws://127.0.0.1:8080/game');
+    posConnection = new WebSocket('ws://127.0.0.1:8080/position');
     
+    // Connections
 	connection.onerror = function(e) {
 		console.log("WS error: " + e);
 	}
+    posConnection.onerror = function(e) {
+		console.log("WS error: " + e);
+	}
 
+    //Desconnections
+    connection.onclose = function() {
+		console.log("Closing socket");
+	}
+    posConnection.onclose = function() {
+		console.log("Closing socket");
+	}
+
+    // On messages
 	connection.onmessage = function(msg) { //esto es lo que me viene
-		console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
+		//console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
 		var message = JSON.parse(msg.data) //descodifico el msg para convertirlo en message que es legible
         
         p2_A = message.left;
@@ -504,10 +546,15 @@ function connect(){
         p2_click = message.click;
         p1_life = message.life;
 	}
+    posConnection.onmessage = function(msg) { //esto es lo que me viene
+		//console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
+		var message = JSON.parse(msg.data) //descodifico el msg para convertirlo en message que es legible
 
-	connection.onclose = function() {
-		console.log("Closing socket");
+        p2_xPos = message.posX;
+        p2_yPos = message.posY;
 	}
+
+	
 
     //al pulsar el boton el jugador host envia esta informacion al jugador web
 	$('#send-btn').click(function() { //esto es lo que yo he puesto
