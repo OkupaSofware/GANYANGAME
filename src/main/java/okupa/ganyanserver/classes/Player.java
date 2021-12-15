@@ -6,7 +6,7 @@ public class Player {
 	
 	private String name;
 	private String sessionID;
-	
+	private String color;
 	/*
 	private boolean isGoingLeft;
 	private boolean isGoingRight;
@@ -109,6 +109,14 @@ public class Player {
 
 	public void setSessionID(String sessionID) {
 		this.sessionID = sessionID;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	

@@ -13,6 +13,8 @@ var sendText = "";
 var chatSocket;
 var interval;
 var checkServerInterval;
+var player1Color ="0xffffff";
+var player2Color ="0xffffff";
 
 	
 class LobbyONLINE extends Phaser.Scene {
@@ -32,11 +34,11 @@ class LobbyONLINE extends Phaser.Scene {
         // Comprueba si el servidor está conectado de primeras
         //checkConnection();
         
-
+		console.log(player1Color)
         
-        this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
+        this.idle1 = this.add.image(420, 285, "idle")//.setTint(0xffffff);
         this.idle1.flipX=true;
-        this.idle2 = this.add.image(840, 285, "idle").setTint(0x92C5FC);
+        this.idle2 = this.add.image(840, 285, "idle").setAlpha(0);
         
         var exit_button = new Button({
             'scene': this,
@@ -61,8 +63,8 @@ class LobbyONLINE extends Phaser.Scene {
         offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
-        usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);  
-        usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);
+        usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);  
+        usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);
 
 
         //GANCHAT
@@ -73,7 +75,17 @@ class LobbyONLINE extends Phaser.Scene {
         var elementHTML1 = this.add.dom(420, 425).createFromCache('connection');
         var elementHTML2 = this.add.dom(220, 705).createFromCache('sendMessage');
         var elementHTML3 = this.add.dom(150, 622).createFromCache('chat');
-        var elementHTML4 = this.add.dom(420, 450).createFromCache('color');
+        var elementHTML4 = this.add.dom(420, 285).createFromCache('color');
+        
+        this.changeColor = this.add.text(420, 200, 'click on avatar to change color', {fontFamily: 'army_font', color: 'black', fontSize: '25px '}).setOrigin(0.5,0.5);
+        
+        elementHTML4.addListener('change');
+         elementHTML4.on('change', function (event) {
+			//console.log("0x"+event.target.value.slice(8,0))	
+			player1Color = event.target.value;
+			//console.log("0x"+player1Color.slice(1))
+			player1Color="0x"+player1Color.slice(1)
+	});
         
         inputText1 = "Player 1";
 
@@ -152,12 +164,14 @@ class LobbyONLINE extends Phaser.Scene {
         
         userId = -1;
        
-        online = false;
-        server = false;
        	
-       
-        //clearCheck();
+       if(online){
         chatSocket.close()
+        online = false;
+	
+}
+        //clearCheck();
+        server = true;
         
         this.scene.start("GameMode")
         this.scene.remove("Lobby")
@@ -168,6 +182,8 @@ class LobbyONLINE extends Phaser.Scene {
         
         this.registry.set('username1', inputText1);
          this.registry.set('username2', player2Status);
+         this.registry.set('color1', player1Color);
+         this.registry.set('color2', player2Color);
         //this.registry.set('username2', inputText2);
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
         
@@ -190,8 +206,19 @@ class LobbyONLINE extends Phaser.Scene {
     update(time,delta){
         this.serverStatus.setText(serverStatus);
         usernameText2.setText("P2: "+player2Status)
+        if(!online){
+	this.changeColor.setAlpha(1)
+}else{
+	this.changeColor.setAlpha(0)
+}
         
-
+if(player2Status!="Waiting for player 2..."){
+	this.idle2.setAlpha(1)
+		this.idle2.setTint(player2Color)
+	}else{
+		this.idle2.setAlpha(0)
+		
+	}
         
         if(server === true){
             this.serverStatus.setTint(0x00ff00);
@@ -199,7 +226,7 @@ class LobbyONLINE extends Phaser.Scene {
             this.serverStatus.setTint(0xff0000);
         }
 
-        
+       this.idle1.setTint(player1Color) 
        
     }
     
@@ -220,6 +247,9 @@ function connect(){
 		console.log("subscription")	
 		$('.chat').val($('.chat').val() + "\n"+ message.message);
 		player2Status = message.name
+		player2Color = message.color
+		player2Color = "0x"+player2Color.slice(2)
+		console.log(player2Color)
 		}
 		
 		if(message.type=="info"){
@@ -254,7 +284,8 @@ function connect(){
 	 var msg = {
 					type: "subscription",
 					name: userId,
-            		message: "GANCHAT: "+userId+" has entered the room"
+            		message: "GANCHAT: "+userId+" has entered the room",
+            		color: player1Color
 		}
                    
 					chatSocket.send(JSON.stringify(msg));

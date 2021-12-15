@@ -90,7 +90,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         //PLAYER 2
         //En este caso uno mas 
-        this.enemyPlayer = new Player(this, 550, 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0xffdf00);
+        this.enemyPlayer = new Player(this, 550, 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color2"));
         //Cambio de controles para local
         this.enemyWeapon = this.add.image(this.enemyPlayer.x, this.enemyPlayer.y+2, "rifle").setOrigin(0.1, 0).setScale(0.2, 0.2).setDepth(1);
 
@@ -104,7 +104,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
 
         //PLAYER 1
-        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(0xffdf00);
+        this.player1 = new Player(this, 50, 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1"));
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
