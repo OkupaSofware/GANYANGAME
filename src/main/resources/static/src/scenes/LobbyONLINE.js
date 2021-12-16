@@ -13,9 +13,12 @@ var sendText = "";
 var chatSocket;
 var interval;
 var checkServerInterval;
+var StartPlayInterval;
 var player1Color ="0xffffff";
 var player2Color ="0xffffff";
-
+var ready2 = false;
+var counter = 10;
+var scene;
 	
 class LobbyONLINE extends Phaser.Scene {
     constructor() {
@@ -28,7 +31,7 @@ class LobbyONLINE extends Phaser.Scene {
         this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     	//setCheck();
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
-
+		scene = this.scene.get("Lobby")
         
         this.serverStatus = this.add.text(640,160, "Disconnected",{fontFamily: 'army_font', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
         // Comprueba si el servidor está conectado de primeras
@@ -60,13 +63,17 @@ class LobbyONLINE extends Phaser.Scene {
             'x': 640,
             'y': 490
         },"READY").setScale(0.9,0.9);
+        //offlineButton.on('pointerup',this.setReady,this);
         offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
         usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);  
         usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);
-
-
+		
+		this.readyText1 =this.add.text(420, 450, 'READY', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
+		this.readyText2 =this.add.text(840, 450, 'READY', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
+		
+		this.ready = false;
         //GANCHAT
         this.chatTitle = this.add.text(20, 530, 'GANCHAT', {fontFamily: 'army_font', color: 'white', fontSize: '35px '}).setTint(0xffff00)
         
@@ -78,13 +85,16 @@ class LobbyONLINE extends Phaser.Scene {
         var elementHTML4 = this.add.dom(420, 285).createFromCache('color');
         
         this.changeColor = this.add.text(420, 200, 'click on avatar to change color', {fontFamily: 'army_font', color: 'black', fontSize: '25px '}).setOrigin(0.5,0.5);
+        this.countDownText = this.add.text(640, 300,counter, {fontFamily: 'army_font', color: 'black', fontSize: '100px '}).setOrigin(0.5,0.5).setAlpha(0);
         
         elementHTML4.addListener('change');
          elementHTML4.on('change', function (event) {
 			//console.log("0x"+event.target.value.slice(8,0))	
+			if(!online){
 			player1Color = event.target.value;
 			//console.log("0x"+player1Color.slice(1))
 			player1Color="0x"+player1Color.slice(1)
+			}
 	});
         
         inputText1 = "Player 1";
@@ -115,7 +125,7 @@ class LobbyONLINE extends Phaser.Scene {
                     //usernameText.setText('Username: ' + this.registry.get('username'));
                     connect();
                     online = true
-                    
+                     elementHTML4.destroy()
                     userId = inputText1;
                    
 		
@@ -171,11 +181,28 @@ class LobbyONLINE extends Phaser.Scene {
 	
 }
         //clearCheck();
+        clearInterval(StartPlayInterval);
         server = true;
-        
+        ready2 = false;
+        counter=10;
         this.scene.start("GameMode")
         this.scene.remove("Lobby")
     }
+    setReady(){
+	  if(player2Status!="Waiting for player 2..." && this.ready == false){
+		this.readyText1.setAlpha(1)
+		 var msg = {
+			type: "ready"
+			
+		}
+                    
+		chatSocket.send(JSON.stringify(msg));
+		this.ready = true;
+	}else{
+		alert("Wait for player 2")
+	}
+}
+    
     playOnline(){
         
         if(player2Status!="Waiting for player 2..."){
@@ -225,8 +252,25 @@ if(player2Status!="Waiting for player 2..."){
         }else{
             this.serverStatus.setTint(0xff0000);
         }
+        
+        if(ready2 ==true){
+	
+	this.readyText2.setAlpha(1);
+}else{
+	this.readyText2.setAlpha(0);
+
+}
 
        this.idle1.setTint(player1Color) 
+       if(counter<=9 && counter>=0){
+	 this.countDownText.setAlpha(1);
+	 this.countDownText.setText(counter)
+}
+       
+       if(counter ==0){
+	counter -1
+	//this.playOnline();
+}
        
     }
     
@@ -252,11 +296,16 @@ function connect(){
 		console.log(player2Color)
 		}
 		
-		if(message.type=="info"){
-		console.log("info")	
-		$('.chat').val($('.chat').val() + "\n"+ message.message);
-		player2Status = message.name
+		if(message.type=="player2ready"){
+		console.log("player2ready")	
+		ready2 = true;
 		}
+		if(message.type=="ready"){
+		console.log("Game starts in 10 seconds")	
+		ready2 = true;
+		StartPlayInterval = setInterval(countDown, 1000);
+		}
+		
 		if(message.type=="chat"){
 			console.log("chat")	
 		$('.chat').val($('.chat').val() + "\n" + message.name + ": " + message.message);
@@ -293,23 +342,17 @@ function connect(){
 }
      }
 
-	function checkServer(){
-		if(online){
-			if(chatSocket.CLOSED){
-				server = false;
-				online = false;
-				serverStatus="SERVER DISCONNECTED"
-			}
+	function countDown(){
+		if(counter==0){
+			clearInterval(StartPlayInterval);
+			scene.playOnline()
+			//LobbyONLINE.playOnline();
+		}else{
 			
+		counter = counter-1
 		}
 		
 		
 	}
-function setCheck(){
-	checkServerInterval = setInterval(checkServer, 4000);
-}
-function clearCheck(){
-	clearInterval(checkServerInterval)
-}
 
 export default LobbyONLINE;

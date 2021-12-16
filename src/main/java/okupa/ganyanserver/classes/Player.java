@@ -7,6 +7,7 @@ public class Player {
 	private String name;
 	private String sessionID;
 	private String color;
+	private boolean isReady;
 	/*
 	private boolean isGoingLeft;
 	private boolean isGoingRight;
@@ -24,6 +25,7 @@ public class Player {
 		
 		this.name = id;
 		this.sessionID=session;
+		this.isReady = false;
 		
 		/*
 		this.isGoingLeft = false;
@@ -117,6 +119,14 @@ public class Player {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public boolean isReady() {
+		return isReady;
+	}
+
+	public void setReady(boolean isReady) {
+		this.isReady = isReady;
 	}
 
 	

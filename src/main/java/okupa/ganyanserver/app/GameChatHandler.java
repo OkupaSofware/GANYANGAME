@@ -129,6 +129,38 @@ public class GameChatHandler extends TextWebSocketHandler {
 			manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
 			sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
 		}
+		
+		//Si el mensage es de tipo ready, comprueba si el otro jugador de la sala esta redy, y si lo está, envia un mensaje para comenzar la partida
+		if(node.get("type").asText().contentEquals("ready")) {
+			
+			//roomIdx = manager.getPlayerRoomIdx(session.getId());
+			roomIdx = manager.getPlayerRoomIdx(session.getId());
+			Player p = manager.getPlayerBySessionId(session.getId());
+			p.setReady(true);
+			Room room = manager.getRooms().get(roomIdx);
+			
+			for(Player player: room.getPlayers()) {
+				if(!player.equals(p)) {
+					if(player.isReady()) {
+						ObjectNode newNode = mapper.createObjectNode();
+						
+						newNode.put("type", node.get("type").asText());	
+						for(Player pl: room.getPlayers()) {
+							sessions.get(pl.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+						}
+						
+					}else {
+						ObjectNode newNode = mapper.createObjectNode();
+						
+						newNode.put("type", "player2ready");	
+						sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+					}
+					
+				}
+			}
+			
+			
+		}
 
 		
 	}
@@ -140,13 +172,6 @@ public class GameChatHandler extends TextWebSocketHandler {
 		//List<Message> msgs = db.getMessages();
 		ObjectNode newNode = mapper.createObjectNode();
 		
-		if(node.get("type").asText().contentEquals("info")) {
-			//System.out.println("Msg type info sent");
-			newNode.put("type", node.get("type").asText());	
-			newNode.put("name", node.get("name").asText());
-			newNode.put("message", node.get("message").asText());
-			
-		}
 		
 		
 		if(node.get("type").asText().contentEquals("chat")) {

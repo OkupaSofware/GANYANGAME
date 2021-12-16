@@ -14,7 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import okupa.ganyanserver.classes.Player;
+import okupa.ganyanserver.classes.Room;
 import okupa.ganyanserver.classes.RoomManager;
+import okupa.ganyanserver.storage.Message;
 
 
 
@@ -47,15 +49,17 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		JsonNode node = mapper.readTree(message.getPayload());
+		//int roomIdx = manager.getPlayerRoomIdx(session.getId());
+		//sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
+		sendOtherPlayers(session,node);
 		
-		sendOtherPlayers(session, node);
 	}
 
-	private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
+private void sendToLobbyParticipants(Room room, JsonNode node) throws IOException {
 
-		double randBoost = Math.floor(Math.random() * 3) + 1;
-		//System.out.println("Message sent: " + randBoost);
+	double randBoost = Math.floor(Math.random() * 3) + 1;
 		
+		//List<Message> msgs = db.getMessages();
 		ObjectNode newNode = mapper.createObjectNode();
 		newNode.put("left", node.get("left").asText());
 		newNode.put("right", node.get("right").asText());
@@ -68,12 +72,36 @@ public class GameProcessHandler extends TextWebSocketHandler {
 		
 		
 		
-		for(WebSocketSession participant : sessions.values()) {
-			if(!participant.getId().equals(session.getId())) {
-				participant.sendMessage(new TextMessage(newNode.toString()));
-				
-			}
+		for(Player p: room.getPlayers()) {
+			sessions.get(p.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+		}
+		
+	
+	}
+
+private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
+	
+	double randBoost = Math.floor(Math.random() * 3) + 1;
+	//System.out.println("Message sent: " + randBoost);
+	
+	ObjectNode newNode = mapper.createObjectNode();
+	newNode.put("left", node.get("left").asText());
+	newNode.put("right", node.get("right").asText());
+	newNode.put("jump", node.get("jump").asText());
+	newNode.put("mousex", node.get("mousex").asText());
+	newNode.put("mousey", node.get("mousey").asText());
+	newNode.put("click", node.get("click").asText());
+	newNode.put("life", node.get("life").asText());
+	//newNode.put("shield", node.get("shield").asText());
+	
+	
+	
+	for(WebSocketSession participant : sessions.values()) {
+		if(!participant.getId().equals(session.getId())) {
+			participant.sendMessage(new TextMessage(newNode.toString()));
+			
 		}
 	}
-	
+}
+
 }
