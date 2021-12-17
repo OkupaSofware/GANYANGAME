@@ -283,6 +283,7 @@ function connect(){
 		server = false;
 		serverStatus = "SERVER DISCONNECTED"
 	}
+    
 	chatSocket.onmessage = function(msg) {
 		console.log("WS message: " + msg.data);
 		var message = JSON.parse(msg.data)

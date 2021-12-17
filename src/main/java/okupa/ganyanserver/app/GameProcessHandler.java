@@ -49,6 +49,7 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		JsonNode node = mapper.readTree(message.getPayload());
+		System.out.println("Message recieve: " + message.getPayload());
 		//int roomIdx = manager.getPlayerRoomIdx(session.getId());
 		//sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
 		sendOtherPlayers(session,node);
@@ -61,6 +62,7 @@ private void sendToLobbyParticipants(Room room, JsonNode node) throws IOExceptio
 		
 		//List<Message> msgs = db.getMessages();
 		ObjectNode newNode = mapper.createObjectNode();
+		//newNode.put("type", node.get("type").asText());
 		newNode.put("left", node.get("left").asText());
 		newNode.put("right", node.get("right").asText());
 		newNode.put("jump", node.get("jump").asText());
@@ -85,13 +87,25 @@ private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IO
 	//System.out.println("Message sent: " + randBoost);
 	
 	ObjectNode newNode = mapper.createObjectNode();
-	newNode.put("left", node.get("left").asText());
-	newNode.put("right", node.get("right").asText());
-	newNode.put("jump", node.get("jump").asText());
-	newNode.put("mousex", node.get("mousex").asText());
-	newNode.put("mousey", node.get("mousey").asText());
-	newNode.put("click", node.get("click").asText());
-	newNode.put("life", node.get("life").asText());
+	newNode.put("type", node.get("type").asText());
+	
+	if(node.get("type").asText().contentEquals("movement")){
+		newNode.put("left", node.get("left").asText());
+		newNode.put("right", node.get("right").asText());
+		newNode.put("jump", node.get("jump").asText());
+	}
+	if(node.get("type").asText().contentEquals("mouse")) {	
+		newNode.put("mousex", node.get("mousex").asText());
+		newNode.put("mousey", node.get("mousey").asText());
+		newNode.put("click", node.get("click").asText());
+	}
+	if(node.get("type").asText().contentEquals("status")) {		
+		newNode.put("life", node.get("life").asText());
+	}
+	if(node.get("type").asText().contentEquals("position")) {
+		newNode.put("posX", node.get("posX").asText());
+		newNode.put("posY", node.get("posY").asText());
+	}
 	//newNode.put("shield", node.get("shield").asText());
 	
 	

@@ -3,10 +3,10 @@ import Boost from '../gameObjects/boost.js';
 import Bullet from '../gameObjects/bullet.js';
 
 var connection;
-var posConnection;
 
 var timer = 0;
 
+var p1_wstype = "player 1";
 var p1_A;
 var p1_D;
 var p1_W;
@@ -18,6 +18,7 @@ var p1_shield;
 var p1_xPos = 0;
 var p1_yPos = 0;
 
+var p2_wstype = "player 2";
 var p2_A;
 var p2_D;
 var p2_W;
@@ -179,6 +180,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 
     update(time, delta) {
         timer++;
+        console.log("tipo: " + p2_wstype);
+
 
 
         //almaceno los valores del p1 para enviarselo al player 2
@@ -188,16 +191,19 @@ class ScenePlayONLINE extends Phaser.Scene {
         
         if(this.player1.player1LeftControl.isDown){
             p1_A = 1;
+            sendMovement();
         }else{
             p1_A = 0;
         }
         if(this.player1.player1RightControl.isDown){
             p1_D = 1;
+            sendMovement();
         }else{
             p1_D = 0;
         }
         if(this.player1.player1jump.isDown){
             p1_W = 1;
+            sendMovement();
         }else{
             p1_W = 0;
         }
@@ -254,7 +260,8 @@ class ScenePlayONLINE extends Phaser.Scene {
             if(timer%2 == 0){
                 p1_xPos = this.player1.body.position.x;
                 p1_yPos = this.player1.body.position.y;
-                sendPosAux();
+                sendPosition();
+                //sendPosAux();
                 this.enemyPlayer.body.position.x = p2_xPos;
                 this.enemyPlayer.body.position.y = p2_yPos;
             }
@@ -305,7 +312,6 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
 
         // Player 2 shooting
-        // player 1 shooting
         if(p2_click == 1) {
             p2_click = 0;
             if (this.menuOn == false) {
@@ -394,7 +400,8 @@ class ScenePlayONLINE extends Phaser.Scene {
         var timer = 500 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
         if (timer < 495){
-            sendData();
+            sendMouse();
+            sendStatus();
         }
         if (timer > 0) {
             if (timer > 20) {
@@ -426,7 +433,7 @@ class ScenePlayONLINE extends Phaser.Scene {
     randBoostFunc(){
         // Boost generator
         var randBoost = Math.floor(Math.random() * 3) + 1;
-        console.log(randBoost)
+        
         for (var i = 0; i < this.boostArray.length; i++) {
             if (this.boostArray[i].status == false) {
                 this.boostArray[i].counter++;
@@ -489,8 +496,53 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
     
 }
+
+function sendMovement(){
+    var msg = {
+        type: "movement",
+        left: p1_A,
+        right: p1_D,
+        jump: p1_W
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+function sendPosition(){
+    var msg = {
+        type: "position",
+        posX: p1_xPos,
+        posY: p1_yPos
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+function sendMouse(){
+    var msg = {
+        type: "mouse",
+        mousex: p1_mousex,
+        mousey: p1_mousey,
+        click: p1_click,
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+p1_click = 0;
+}
+
+function sendStatus(){
+    var msg = {
+        type: "status",
+        life: p2_life
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+//send data de recuerdo por todo lo bonito que nos ha aportado
 function sendData(){
         var msg = {
+            type: p1_wstype,
             left: p1_A,
             right: p1_D,
             jump: p1_W,
@@ -504,32 +556,17 @@ function sendData(){
     p1_click = 0;
 }
 
-function sendPosAux(){
-    var msg = {
-        posX: p1_xPos,
-        posY: p1_yPos
-    }
-    posConnection.send(JSON.stringify(msg));
-}
-
 function connect(){
     // Sockets initializations
     connection = new WebSocket('ws://127.0.0.1:8080/game');
-    posConnection = new WebSocket('ws://127.0.0.1:8080/position');
     
     // Connections
 	connection.onerror = function(e) {
 		console.log("WS error: " + e);
 	}
-    posConnection.onerror = function(e) {
-		console.log("WS error: " + e);
-	}
 
     //Desconnections
     connection.onclose = function() {
-		console.log("Closing socket");
-	}
-    posConnection.onclose = function() {
 		console.log("Closing socket");
 	}
 
@@ -538,28 +575,33 @@ function connect(){
 		//console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
 		var message = JSON.parse(msg.data) //descodifico el msg para convertirlo en message que es legible
         
-        p2_A = message.left;
-        p2_D = message.right;
-        p2_W = message.jump;
-        p2_mousex = message.mousex;
-        p2_mousey = message.mousey;
-        p2_click = message.click;
-        p1_life = message.life;
+        p2_wstype = message.type;
+
+        if(message.type == "movement"){
+            p2_A = message.left;
+            p2_D = message.right;
+            p2_W = message.jump;
+        }
+        /*
+        if(message.type != "movement"){
+            p2_A = 0;
+            p2_D = 0;
+            p2_W = 0;
+        }
+        */
+        if(message.type == "mouse"){
+            p2_mousex = message.mousex;
+            p2_mousey = message.mousey;
+            p2_click = message.click;
+        }
+        if(message.type == "status"){
+            p1_life = message.life;
+        }
+        if(message.type == "position"){
+            p2_xPos = message.posX;
+            p2_yPos = message.posY;
+        }
 	}
-    posConnection.onmessage = function(msg) { //esto es lo que me viene
-		//console.log("WS color: " + msg.data); //saco por consola el msg que me envia web
-		var message = JSON.parse(msg.data) //descodifico el msg para convertirlo en message que es legible
-
-        p2_xPos = message.posX;
-        p2_yPos = message.posY;
-	}
-
-	
-
-    //al pulsar el boton el jugador host envia esta informacion al jugador web
-	$('#send-btn').click(function() { //esto es lo que yo he puesto
-		sendData();
-	});
 }
 
 export default ScenePlayONLINE;

@@ -1,0 +1,4 @@
+date|GANCHAT|GANCHAT: riki has entered the room
+date|GANCHAT|GANCHAT: dasd has entered the room
+date|GANCHAT|P2 has left the room
+date|GANCHAT|P2 has left the room
