@@ -54,18 +54,18 @@ class StatsScene extends Phaser.Scene {
         */
         
         if(this.pointsPlayer1 > this.pointsPlayer2){
-            this.win1=this.add.text(420,180, "WIN",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0x50C234)
-            this.lose2=this.add.text(840,180, "LOSE",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0xD64239)
+            this.win1=this.add.text(420,180, "WIN",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0x50C234)
+            this.lose2=this.add.text(840,180, "LOSE",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0xD64239)
             this.textName1.setTint(0x50C234)
             this.textName2.setTint(0xD64239)
         }else if(this.pointsPlayer2 > this.pointsPlayer1){
-            this.lose1=this.add.text(420,180, "LOSE",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0xD64239)
-            this.win2=this.add.text(840,180, "WIN",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0x50C234)
+            this.lose1=this.add.text(420,180, "LOSE",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0xD64239)
+            this.win2=this.add.text(840,180, "WIN",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0x50C234)
             this.textName2.setTint(0x50C234)
             this.textName1.setTint(0xD64239)
         }else{
-            this.draw1=this.add.text(420,180, "DRAW",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0xE2AD43)
-            this.draw2=this.add.text(840,180, "DRAW",{font: 'bold 32px Arial', fontSize: "38px"}).setOrigin(0.5,0.5).setTint(0xE2AD43)
+            this.draw1=this.add.text(420,180, "DRAW",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0xE2AD43)
+            this.draw2=this.add.text(840,180, "DRAW",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0xE2AD43)
         }
         
         this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
@@ -74,19 +74,19 @@ class StatsScene extends Phaser.Scene {
         
         var exit_button = new Button({
             'scene': this,
-            'key':'quit_button',
+            'key':'button_basic',
             'up': 0,
             'over':1,
             'down':2,
             'x': 1010,
             'y': 200
-        }).setScale(0.7,0.7);
+        },"back").setScale(0.7,0.7);
         exit_button.on('pointerup',this.goBack,this)
     }
     goBack(){
         this.scene.stop("StatsScene")
-        this.scene.start("MainMenuBackground");
-        this.scene.remove("Lobby")
+        //this.scene.start("MainMenuBackground");
+        this.scene.wake("Lobby")
         this.scene.remove("ScenePlay")
 
     }

@@ -1,0 +1,4 @@
+date|GANCHAT|GANCHAT: perro has entered the room
+date|GANCHAT|GANCHAT: tonto 3 has entered the room
+date|GANCHAT|P2 has left the room
+date|GANCHAT|P2 has left the room

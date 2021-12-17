@@ -53,6 +53,7 @@ public class GameChatHandler extends TextWebSocketHandler {
 		String m = "GANCHAT: "+p.getName()+" has left the room";
 		newNode.put("message", m);
 		
+		
 		for(Player player: manager.getRooms().get(roomIdx).getPlayers()) {
 			if(!player.equals(p)) {
 				
@@ -142,11 +143,13 @@ public class GameChatHandler extends TextWebSocketHandler {
 			for(Player player: room.getPlayers()) {
 				if(!player.equals(p)) {
 					if(player.isReady()) {
-						ObjectNode newNode = mapper.createObjectNode();
-						
-						newNode.put("type", node.get("type").asText());	
+						int pos = 50;
 						for(Player pl: room.getPlayers()) {
+							ObjectNode newNode = mapper.createObjectNode();
+							newNode.put("type", node.get("type").asText());	
+							newNode.put("position", pos);
 							sessions.get(pl.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+							pos+=1180;
 						}
 						
 					}else {
@@ -154,6 +157,7 @@ public class GameChatHandler extends TextWebSocketHandler {
 						
 						newNode.put("type", "player2ready");	
 						sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+						
 					}
 					
 				}

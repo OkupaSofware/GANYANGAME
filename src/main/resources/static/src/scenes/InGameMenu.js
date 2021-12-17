@@ -9,26 +9,28 @@ create(){
     this.add.image(640, 308, "ingamemenu").setAlpha(0.5)
     var exit_button = new Button({
         'scene': this,
-        'key':'quit_button',
+        'key':'button_basic',
         'up': 0,
         'over':1,
         'down':2,
         'x': 640,
         'y': 320
-    }).setScale(0.7,0.7);
+    },"quit").setScale(0.7,0.7);
     var resume_button = new Button({
         'scene': this,
-        'key':'resume_button',
+        'key':'button_basic',
         'up': 0,
         'over':1,
         'down':2,
         'x': 640,
         'y': 420
-    }).setScale(0.7,0.7);
+    },"resume").setScale(0.7,0.7);
     exit_button.on('pointerup',this.goBack,this)
     resume_button.on('pointerup',this.resume,this)
 }
 goBack(){
+	this.scene.get("Lobby").socketRef.close()
+	//connection.close()
     this.scene.start("MainMenuBackground");
     this.scene.remove("Lobby")
     this.scene.remove("ScenePlay")

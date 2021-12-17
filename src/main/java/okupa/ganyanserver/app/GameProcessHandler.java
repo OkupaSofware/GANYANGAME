@@ -49,7 +49,7 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		
 		JsonNode node = mapper.readTree(message.getPayload());
-		System.out.println("Message recieve: " + message.getPayload());
+		//System.out.println("Message recieve: " + message.getPayload());
 		//int roomIdx = manager.getPlayerRoomIdx(session.getId());
 		//sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
 		sendOtherPlayers(session,node);
@@ -73,10 +73,14 @@ private void sendToLobbyParticipants(Room room, JsonNode node) throws IOExceptio
 		//newNode.put("shield", node.get("shield").asText());
 		
 		
-		
-		for(Player p: room.getPlayers()) {
-			sessions.get(p.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+		/*
+		for(Player player: manager.getRooms().get(roomIdx).getPlayers()) {
+			if(!player.equals()) {
+				
+				sessions.get(player.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
+			}
 		}
+		*/
 		
 	
 	}

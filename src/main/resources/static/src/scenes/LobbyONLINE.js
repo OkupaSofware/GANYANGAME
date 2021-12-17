@@ -12,12 +12,12 @@ var sendText = "";
 
 var chatSocket;
 var interval;
-var checkServerInterval;
+
 var StartPlayInterval;
 var player1Color ="0xffffff";
 var player2Color ="0xffffff";
 var ready2 = false;
-var counter = 10;
+var counter = 5;
 var scene;
 	
 class LobbyONLINE extends Phaser.Scene {
@@ -32,12 +32,13 @@ class LobbyONLINE extends Phaser.Scene {
     	//setCheck();
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
 		scene = this.scene.get("Lobby")
-        
+        this.socketRef;
         this.serverStatus = this.add.text(640,160, "Disconnected",{fontFamily: 'army_font', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
         // Comprueba si el servidor está conectado de primeras
         //checkConnection();
-        
-		console.log(player1Color)
+        this.checkServer;
+        this.positionP1;
+		
         
         this.idle1 = this.add.image(420, 285, "idle")//.setTint(0xffffff);
         this.idle1.flipX=true;
@@ -62,9 +63,9 @@ class LobbyONLINE extends Phaser.Scene {
             'down':2,
             'x': 640,
             'y': 490
-        },"READY").setScale(0.9,0.9);
-        //offlineButton.on('pointerup',this.setReady,this);
-        offlineButton.on('pointerup',this.playOnline,this);
+        },"ready").setScale(0.9,0.9);
+        offlineButton.on('pointerup',this.setReady,this);
+        //offlineButton.on('pointerup',this.playOnline,this);
 
         //Display text for player name
         usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);  
@@ -125,7 +126,7 @@ class LobbyONLINE extends Phaser.Scene {
                     //usernameText.setText('Username: ' + this.registry.get('username'));
                     connect();
                     online = true
-                     elementHTML4.destroy()
+                     elementHTML4.setActive(false)
                     userId = inputText1;
                    
 		
@@ -180,11 +181,12 @@ class LobbyONLINE extends Phaser.Scene {
         online = false;
 	
 }
+		player1Color ="0xffffff";
         //clearCheck();
         clearInterval(StartPlayInterval);
         server = true;
         ready2 = false;
-        counter=10;
+        counter=5;
         this.scene.start("GameMode")
         this.scene.remove("Lobby")
     }
@@ -211,6 +213,15 @@ class LobbyONLINE extends Phaser.Scene {
          this.registry.set('username2', player2Status);
          this.registry.set('color1', player1Color);
          this.registry.set('color2', player2Color);
+         
+         this.registry.set('position1', this.positionP1);
+         if(this.positionP1==50){
+			this.registry.set('position2', 1230);
+}else{
+	this.registry.set('position2', 50);
+}
+         
+         
         //this.registry.set('username2', inputText2);
         this.scene.add("ScenePlay",ScenePlayONLINE,true);
         
@@ -262,7 +273,7 @@ if(player2Status!="Waiting for player 2..."){
 }
 
        this.idle1.setTint(player1Color) 
-       if(counter<=9 && counter>=0){
+       if(counter<=4 && counter>=0){
 	 this.countDownText.setAlpha(1);
 	 this.countDownText.setText(counter)
 }
@@ -278,10 +289,12 @@ if(player2Status!="Waiting for player 2..."){
 }
 function connect(){
 	chatSocket = new WebSocket('ws://127.0.0.1:8080/chat');
+	scene.socketRef = chatSocket;
                     chatSocket.onerror = function(e) {
 		console.log("WS error: " + e);
 		server = false;
 		serverStatus = "SERVER DISCONNECTED"
+		clearInterval(scene.checkServer)
 	}
     
 	chatSocket.onmessage = function(msg) {
@@ -305,11 +318,23 @@ function connect(){
 		console.log("Game starts in 10 seconds")	
 		ready2 = true;
 		StartPlayInterval = setInterval(countDown, 1000);
+		scene.positionP1 = message.position;
 		}
 		
 		if(message.type=="chat"){
 			console.log("chat")	
 		$('.chat').val($('.chat').val() + "\n" + message.name + ": " + message.message);
+		}
+		
+		if(message.type=="info"){
+			player2Status = message.name
+			$('.chat').val($('.chat').val() + "\n" +message.message);
+			clearInterval(StartPlayInterval);
+			ready2= false;
+			scene.ready = false;
+			scene.readyText1.setAlpha(0)
+			counter = 5;
+			//escene.elementHTML4.setActive(true)
 		}
 
 		var psconsole = $('.chat');
@@ -339,6 +364,16 @@ function connect(){
 		}
                    
 					chatSocket.send(JSON.stringify(msg));
+					scene.checkServer = setInterval(function(){
+						if(chatSocket.CLOSED){
+							server = false;
+							serverStatus = "SERVER DISCONNECTED"
+		
+							}else{
+								server = true;
+								serverStatus = "SERVER CONNECTED"
+							}
+						}, 3000);
 					clearInterval(interval);
 }
      }
