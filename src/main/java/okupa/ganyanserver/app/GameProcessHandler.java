@@ -105,6 +105,7 @@ private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IO
 	}
 	if(node.get("type").asText().contentEquals("status")) {		
 		newNode.put("life", node.get("life").asText());
+		newNode.put("shield", node.get("shield").asText());
 	}
 	if(node.get("type").asText().contentEquals("position")) {
 		newNode.put("posX", node.get("posX").asText());

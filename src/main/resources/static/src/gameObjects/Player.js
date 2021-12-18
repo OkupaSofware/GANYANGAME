@@ -78,10 +78,10 @@ Player.prototype.decreaseLife = function(damage){
             var scalef = scale0 - auxdamage;
             this.life -= damage;
             this.hud.decreaseLife(scalef);
-    }
-    }else{
+        }
+    }else if (this.life <= 0){
         this.alive = false;
-    }
+    }   
     console.log(this.life)
     console.log(this.alive)
 };

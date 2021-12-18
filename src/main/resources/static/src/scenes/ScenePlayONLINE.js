@@ -4,7 +4,7 @@ import Bullet from '../gameObjects/bullet.js';
 
 var connection;
 
-var timer = 0;
+var timerPos = 0;
 
 var p1_wstype = "player 1";
 var p1_A;
@@ -51,6 +51,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         
         this.cameras.main.fadeIn(500, 0, 0, 0);
         this.killText = this.add.text(640, 200, "+1 KILL", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
+        this.deadText = this.add.text(640, 200, "YOU DEAD", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0);
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
@@ -98,6 +99,9 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.boostArray[1] = new Boost(this, 230, 150 + 10, "bubble").setScale(0.3, 0.3);
         this.boostArray[2] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
 
+        // Creación de personajes. Es importante que estén aqui encima ya que en las balas se utilizan referencias entre ellos y tienen que estar ya creados ambos.
+        //PLAYER 1
+        this.player1 = new Player(this, this.registry.get('position1'), 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1"));
         //PLAYER 2
         //En este caso uno mas 
         this.enemyPlayer = new Player(this, this.registry.get('position2'), 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color2"));
@@ -110,11 +114,8 @@ class ScenePlayONLINE extends Phaser.Scene {
             let bullet = new Bullet(this, -50, -50, "bala").setScale(0.5);
             this.bulletsPlayer2.push(bullet);
             this.physics.add.collider(this.platforms, this.bulletsPlayer2[i], this.hit);
-            this.physics.add.collider(this.bulletsPlayer2[i], this.player1, this.hitBody); // Collision with only one enemy
+            this.physics.add.collider(this.bulletsPlayer2[i], this.player1, this.hitSelf);
         }
-
-        //PLAYER 1
-        this.player1 = new Player(this, this.registry.get('position1'), 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1"));
 
         // bullets player 1
         this.bulletsPlayer1 = new Array();
@@ -122,24 +123,24 @@ class ScenePlayONLINE extends Phaser.Scene {
             let bullet = new Bullet(this, -50, -50, "bala").setScale(0.5);
             this.bulletsPlayer1.push(bullet);
             this.physics.add.collider(this.platforms, this.bulletsPlayer1[i], this.hit);
-            this.physics.add.collider(this.bulletsPlayer1[i], this.enemyPlayer, this.hitBody); // Collision with only one enemy
+            this.physics.add.collider(this.bulletsPlayer1[i], this.enemyPlayer, this.hitEnemy); // Collision with only one enemy
         }
         
 
         // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
-            if (this.menuOn == false && p1_click == 0) {
+            if ((this.menuOn == false) && (p1_click == 0) && (this.player1.alive == true)) {
                 if (this.player1.getCurrentAmmo() > 0) {
                     let foundBullet = false;
-                    for(var i = 0; i < this.player1.getTotalAmmo();i++){
+                    for(var i = 0; i < this.bulletsPlayer1.length ;i++){
                         if(!this.bulletsPlayer1[i].active){
                             this.bulletsPlayer1[i].shot(pointer, this.player1);
                             p1_click = 1;
-                            console.log("pulso el boton")
+                            //console.log("pulso el boton")
                             foundBullet = true;
                         }
                         if(foundBullet)
-                            i = this.player1.getTotalAmmo() - 1; // ends finding bullet
+                        i = this.bulletsPlayer1.length - 1; // ends finding bullet
                     }
 
                     this.player1.decreaseCurrentAmmo();
@@ -149,7 +150,6 @@ class ScenePlayONLINE extends Phaser.Scene {
                     this.bulletMenuSound = this.sound.add('shot');
                     this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu")});
                     
-                    //this.player1.decreaseLife(10);
                 }else{
                     this.noAmmo = this.sound.add('noAmmo');
                     this.noAmmo.play();
@@ -160,8 +160,6 @@ class ScenePlayONLINE extends Phaser.Scene {
             p1_click = 0;
             console.log("solto el boton");
         }, this);
-
-        //controls player 1
         
         //Physics player 1
         this.physics.add.collider(this.player1, this.platforms);
@@ -179,7 +177,7 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
 
     update(time, delta) {
-        timer++;
+        timerPos++;
         console.log("tipo: " + p2_wstype);
 
 
@@ -191,19 +189,19 @@ class ScenePlayONLINE extends Phaser.Scene {
         
         if(this.player1.player1LeftControl.isDown){
             p1_A = 1;
-            sendMovement();
+            //sendMovement();
         }else{
             p1_A = 0;
         }
         if(this.player1.player1RightControl.isDown){
             p1_D = 1;
-            sendMovement();
+            //sendMovement();
         }else{
             p1_D = 0;
         }
         if(this.player1.player1jump.isDown){
             p1_W = 1;
-            sendMovement();
+            //sendMovement();
         }else{
             p1_W = 0;
         }
@@ -257,23 +255,31 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
 
             // Position send data
-            if(timer%2 == 0){
-                p1_xPos = this.player1.body.position.x;
-                p1_yPos = this.player1.body.position.y;
-                sendPosition();
-                //sendPosAux();
-                this.enemyPlayer.body.position.x = p2_xPos;
-                this.enemyPlayer.body.position.y = p2_yPos;
+            if(timerPos%2 == 0){
+                if(this.player1.alive == true){
+                    p1_xPos = this.player1.body.position.x;
+                    p1_yPos = this.player1.body.position.y;
+                    sendPosition();
+                    if(this.enemyPlayer.getLife() > 0){
+                        this.enemyPlayer.body.position.x = p2_xPos;
+                        this.enemyPlayer.body.position.y = p2_yPos;
+                    }else{
+                        this.enemyPlayer.body.position.x = -100;
+                        this.enemyPlayer.body.position.y = 0;
+                    }
+                    
+                }
             }
             
 
-            
         }else{
-            this.player1.body.setVelocityX(0)
-            this.enemyPlayer.body.setVelocityX(0)
+            this.player1.body.setVelocityX(0);
+            this.enemyPlayer.body.setVelocityX(0);
         }
         //#endregion
         
+
+
         //#region Player flip horizontal
         if(p2_mousex > this.enemyPlayer.x){
             this.enemyPlayer.flipX = true;
@@ -315,25 +321,25 @@ class ScenePlayONLINE extends Phaser.Scene {
         if(p2_click == 1) {
             p2_click = 0;
             if (this.menuOn == false) {
-                for(var i = 0; i < this.player1.getTotalAmmo();i++){
+                let foundBullet = false;
+                for(var i = 0; i < this.bulletsPlayer2.length;i++){
                     if(!this.bulletsPlayer2[i].active){
                         var pos = new Phaser.Math.Vector2(p2_mousex, p2_mousey);
                         this.bulletsPlayer2[i].shot(pos, this.enemyPlayer);
+                        foundBullet = true;
+                    }
+                    if(foundBullet){
+                        i = this.bulletsPlayer2.length - 1;
                     }
                 }
                 this.bulletMenuSound = this.sound.add('shot');
-                this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu")});
+                this.bulletMenuSound.play({volume: this.registry.get("effectsVolumeFromMenu") * 0.7});
             }
-           console.log("Disparo recibido");
         }
 
-        // Bullets enemy player out of bounds
-        for(var i = 0; i < this.player1.getTotalAmmo() ;i++){
+        // Player 2 bullets out of bounds
+        for(var i = 0; i < this.enemyPlayer.getTotalAmmo() ;i++){
             if(this.bulletsPlayer2[i].active){
-                //Code that we want
-                //this.bulletsPlayer1[i].checkOutOfBounds(1280, 720);
-
-                //Code that works by now
                 if(this.bulletsPlayer2[i].x >= 1275 ||
                    this.bulletsPlayer2[i].x <= 5    ||
                    this.bulletsPlayer2[i].y <= 5    ||
@@ -348,12 +354,13 @@ class ScenePlayONLINE extends Phaser.Scene {
             }
         }
 
+        // TIENEN QUE MOVERSE A UN SITIO MÁS ADECUADO Y QUE NO ESTÉN EN EL UPDATE
         // Life update
         this.player1.setLife(p1_life);
         p2_life = this.enemyPlayer.getLife();
         // Shield update
-        //this.player1.setLife(p1_life);
-        //p2_life = this.enemyPlayer.getLife();
+        p1_shield = this.player1.getShield();
+        this.enemyPlayer.setShield(p2_shield);
 
     }
     
@@ -379,14 +386,30 @@ class ScenePlayONLINE extends Phaser.Scene {
         gBullet.setActive(false);
         
     }
-    hitBody(gBullet, target) {
+    hitEnemy(gBullet, target) {
         gBullet.setPosition(-50);
         gBullet.body.setVelocityX(0);
         gBullet.body.setVelocityY(0);
         gBullet.setVisible(false);
         gBullet.setActive(false);
 
-        target.decreaseLife(20);
+        if(target.getShield() > 0){
+            target.decreaseShield(21);
+        }else{
+            target.decreaseLife(21);
+        }
+
+    }
+    hitSelf(gBullet, target) {
+        gBullet.setPosition(-50);
+        gBullet.body.setVelocityX(0);
+        gBullet.body.setVelocityY(0);
+        gBullet.setVisible(false);
+        gBullet.setActive(false);
+
+        if(target.getShield() > 0){
+            target.decreaseShield(21);
+        }
     }
 //#endregion
     
@@ -400,8 +423,11 @@ class ScenePlayONLINE extends Phaser.Scene {
         var timer = 500 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
         if (timer < 495){
-            sendMouse();
-            sendStatus();
+            if(this.player1.alive == true){
+                sendStatus();
+                sendMouse();
+                sendMovement();
+            }
         }
         if (timer > 0) {
             if (timer > 20) {
@@ -478,20 +504,40 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
     }
     checkRespawn(){
+        // Enemy player
         if (this.enemyPlayer.alive == false) {
+            this.enemyPlayer.body.position.x = -100;
+            this.enemyPlayer.body.position.y = 0;
             this.funnyPlayer.play();
             this.killText.setAlpha(1);
             this.killText.setPosition(this.killText.x,this.killText.y+5)
             this.enemyPlayer.dieTimer--;
         }
-
         if (this.enemyPlayer.alive == false && this.enemyPlayer.dieTimer == 0) {
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
-            //this.enemyPlayer.body.setPosition(-200,-200);
             this.killText.setAlpha(0);
-            this.killText.setPosition(640,200)
-            this.enemyPlayer.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1])
+            this.killText.setPosition(640,200);
+            this.enemyPlayer.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.enemyPlayer.dieTimer = 200;
+        }
+
+        // Client Player
+        if (this.player1.alive == false) {
+            this.player1.body.position.x = -100;
+            this.player1.body.position.y = 0;
+            this.funnyPlayer.play();
+            this.deadText.setAlpha(1);
+            this.deadText.setPosition(this.deadText.x,this.deadText.y+5);
+            this.player1.dieTimer--;
+        }
+        if (this.player1.alive == false && this.player1.dieTimer == 0) {
+            var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0);
+            this.deadText.setAlpha(0);
+            this.deadText.setPosition(640,200);
+            this.player1.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
+            this.player1.dieTimer = 200;
+            this.player1.setLife(100);
+            this.player1.setShield(0);
         }
     }
     
@@ -533,7 +579,8 @@ p1_click = 0;
 function sendStatus(){
     var msg = {
         type: "status",
-        life: p2_life
+        life: p2_life,
+        shield: p1_shield
     }
 
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
@@ -582,13 +629,6 @@ function connect(){
             p2_D = message.right;
             p2_W = message.jump;
         }
-        /*
-        if(message.type != "movement"){
-            p2_A = 0;
-            p2_D = 0;
-            p2_W = 0;
-        }
-        */
         if(message.type == "mouse"){
             p2_mousex = message.mousex;
             p2_mousey = message.mousey;
@@ -596,6 +636,7 @@ function connect(){
         }
         if(message.type == "status"){
             p1_life = message.life;
+            p2_shield = message.shield;
         }
         if(message.type == "position"){
             p2_xPos = message.posX;
