@@ -30,6 +30,8 @@ var p2_shield;
 var p2_xPos = 0;
 var p2_yPos = 0;
 
+var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
+
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
@@ -167,7 +169,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         for (var i = 0; i < this.boostArray.length; i++) {
             this.physics.add.collider(this.platforms, this.boostArray)
-            this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
+            this.physics.add.collider(this.player1, this.boostArray[i], this.boostConsumed)
+            //this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect)
             this.physics.add.collider(this.enemyPlayer, this.boostArray[i], this.boostArray[i].efect)
         }
         
@@ -178,7 +181,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 
     update(time, delta) {
         timerPos++;
-        console.log("tipo: " + p2_wstype);
+        //console.log("tipo: " + p2_wstype);
 
 
 
@@ -456,9 +459,16 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.scene.stop("InGameMenu");
         }
     }
+    
+    boostConsumed(player1, boostArray){
+		console.log("Boost consumido");
+		boostArray.efect(player1, boostArray);
+		sendBoost();
+	}
+    
     randBoostFunc(){
         // Boost generator
-        var randBoost = Math.floor(Math.random() * 3) + 1;
+        //var randBoost = Math.floor(Math.random() * 3) + 1;
         
         for (var i = 0; i < this.boostArray.length; i++) {
             if (this.boostArray[i].status == false) {
@@ -466,39 +476,45 @@ class ScenePlayONLINE extends Phaser.Scene {
             }
             if (this.boostArray[i].counter == 700) {
                 if (i == 0) {
-                    if (randBoost == 1) {
+					var boostValue = randBoost.shift();
+					//console.log("Nuevo boost sera.... " + boostValue);
+                    if (boostValue == 1) {
                         this.boostArray[i] = new Boost(this, 640, 450 + 10, "live").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 2) {
+                    if (boostValue == 2) {
                         this.boostArray[i] = new Boost(this, 640, 450 + 10, "bubble").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 3) {
+                    if (boostValue == 3) {
                         this.boostArray[i] = new Boost(this, 640, 450 + 10, "ammo").setScale(0.15, 0.15);
                     }
                 }
                 if (i == 1) {
-                    if (randBoost == 1) {
+					var boostValue = randBoost.shift();
+                    if (boostValue == 1) {
                         this.boostArray[i] = new Boost(this, 230, 150 + 10, "live").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 2) {
+                    if (boostValue == 2) {
                         this.boostArray[i] = new Boost(this, 230, 150 + 10, "bubble").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 3) {
+                    if (boostValue == 3) {
                         this.boostArray[i] = new Boost(this, 230, 150 + 10, "ammo").setScale(0.15, 0.15);
                     }
                 }
                 if (i == 2) {
-                    if (randBoost == 1) {
+					var boostValue = randBoost.shift();
+                    if (boostValue == 1) {
                         this.boostArray[i] = new Boost(this, 1050, 150 + 10, "live").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 2) {
+                    if (boostValue == 2) {
                         this.boostArray[i] = new Boost(this, 1050, 150 + 10, "bubble").setScale(0.3, 0.3);
                     }
-                    if (randBoost == 3) {
+                    if (boostValue == 3) {
                         this.boostArray[i] = new Boost(this, 1050, 150 + 10, "ammo").setScale(0.15, 0.15);
                     }
                 }
-                this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect);
+                
+                this.physics.add.collider(this.player1, this.boostArray[i], this.boostConsumed);
+                //this.physics.add.collider(this.player1, this.boostArray[i], this.boostArray[i].efect);
                 this.physics.add.collider(this.enemyPlayer, this.boostArray[i], this.boostArray[i].efect);
             }
         }
@@ -586,6 +602,14 @@ function sendStatus(){
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
 }
 
+function sendBoost(){
+    var msg = {
+        type: "boost",
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
 //send data de recuerdo por todo lo bonito que nos ha aportado
 function sendData(){
         var msg = {
@@ -642,6 +666,9 @@ function connect(){
             p2_xPos = message.posX;
             p2_yPos = message.posY;
         }
+        if(message.type == "boost"){
+			randBoost.push(message.indexBoost);
+		}
 	}
 }
 

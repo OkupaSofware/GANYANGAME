@@ -87,8 +87,6 @@ private void sendToLobbyParticipants(Room room, JsonNode node) throws IOExceptio
 
 private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
 	
-	double randBoost = Math.floor(Math.random() * 3) + 1;
-	//System.out.println("Message sent: " + randBoost);
 	
 	ObjectNode newNode = mapper.createObjectNode();
 	newNode.put("type", node.get("type").asText());
@@ -110,6 +108,13 @@ private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IO
 	if(node.get("type").asText().contentEquals("position")) {
 		newNode.put("posX", node.get("posX").asText());
 		newNode.put("posY", node.get("posY").asText());
+	}
+	if(node.get("type").asText().contentEquals("boost")) {
+		double randBoost = Math.floor(Math.random() * 3) + 1;
+		newNode.put("indexBoost", (int)randBoost);
+		System.out.println("Message sent: " + randBoost);
+		session.sendMessage(new TextMessage(newNode.toString()));
+		//newNode.put("posY", node.get("posY").asText());
 	}
 	//newNode.put("shield", node.get("shield").asText());
 	
