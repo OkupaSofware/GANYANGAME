@@ -82,8 +82,8 @@ Player.prototype.decreaseLife = function(damage){
     }else if (this.life <= 0){
         this.alive = false;
     }   
-    console.log(this.life)
-    console.log(this.alive)
+    console.log("Tengo " + this.life + " de vida");
+    console.log("Vivo:" +this.alive);
 };
 Player.prototype.increaseShield = function(life){
    

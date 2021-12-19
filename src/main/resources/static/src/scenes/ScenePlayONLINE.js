@@ -32,6 +32,9 @@ var p2_yPos = 0;
 
 var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
 
+var enemyRespawn;
+var toRespawn = false;
+
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
@@ -359,11 +362,12 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // TIENEN QUE MOVERSE A UN SITIO MÁS ADECUADO Y QUE NO ESTÉN EN EL UPDATE
         // Life update
+        /*
         this.player1.setLife(p1_life);
         p2_life = this.enemyPlayer.getLife();
         // Shield update
         p1_shield = this.player1.getShield();
-        this.enemyPlayer.setShield(p2_shield);
+        this.enemyPlayer.setShield(p2_shield);*/
 
     }
     
@@ -412,6 +416,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         if(target.getShield() > 0){
             target.decreaseShield(21);
+        }else{
+            target.decreaseLife(21);
         }
     }
 //#endregion
@@ -423,11 +429,18 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.tcount++;
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 500 - Math.round(seconds) + this.gap;
+        //var timer = 500 - Math.round(seconds) + this.gap;
+        var timer = 20 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-        if (timer < 495){
+        if(timer < 19 && timer > 17){
+			this.enemyPlayer.setLife(-1);
+		}else if(timer < 17 && timer > 15){
+			this.enemyPlayer.respawn(this.registry.get('position1'), 650);
+		}
+        //if (timer < 495){
+        if (timer < 15){
             if(this.player1.alive == true){
-                sendStatus();
+                //sendStatus();
                 sendMouse();
                 sendMovement();
             }
@@ -463,7 +476,10 @@ class ScenePlayONLINE extends Phaser.Scene {
     boostConsumed(player1, boostArray){
 		console.log("Boost consumido");
 		boostArray.efect(player1, boostArray);
-		sendBoost();
+		var messageBoost = Math.floor(Math.random() * 3) + 1;
+		console.log("El boost enviado es " + messageBoost);
+		randBoost.push(messageBoost);
+		sendBoost(messageBoost);
 	}
     
     randBoostFunc(){
@@ -520,6 +536,8 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
     }
     checkRespawn(){
+	
+		
         // Enemy player
         if (this.enemyPlayer.alive == false) {
             this.enemyPlayer.body.position.x = -100;
@@ -529,12 +547,22 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.killText.setPosition(this.killText.x,this.killText.y+5)
             this.enemyPlayer.dieTimer--;
         }
+        /*
         if (this.enemyPlayer.alive == false && this.enemyPlayer.dieTimer == 0) {
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
             this.killText.setAlpha(0);
             this.killText.setPosition(640,200);
             this.enemyPlayer.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.enemyPlayer.dieTimer = 200;
+        }*/
+        
+        if (this.enemyPlayer.alive == false && toRespawn == true) {
+            //var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
+            this.killText.setAlpha(0);
+            this.killText.setPosition(640,200);
+            this.enemyPlayer.respawn(this.respawnPlaces[enemyRespawn][0], this.respawnPlaces[enemyRespawn][1]);
+            this.enemyPlayer.dieTimer = 200;
+            toRespawn = false;
         }
 
         // Client Player
@@ -554,6 +582,8 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.player1.dieTimer = 200;
             this.player1.setLife(100);
             this.player1.setShield(0);
+            console.log("Reaparecere en el index: " + idx);
+            sendRespawn(idx);
         }
     }
     
@@ -602,9 +632,19 @@ function sendStatus(){
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
 }
 
-function sendBoost(){
+function sendBoost(messageBoost){
     var msg = {
         type: "boost",
+        boost: messageBoost
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+function sendRespawn(idx){
+    var msg = {
+        type: "respawn",
+        respawn: idx
     }
 
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
@@ -648,6 +688,36 @@ function connect(){
         
         p2_wstype = message.type;
 
+		switch(p2_wstype){
+			case "movement":
+				p2_A = message.left;
+	            p2_D = message.right;
+	            p2_W = message.jump;
+				break;
+			case "mouse":
+				p2_mousex = message.mousex;
+	            p2_mousey = message.mousey;
+	            p2_click = message.click;
+				break;
+			case "status":
+				p1_life = message.life;
+	            p2_shield = message.shield;
+				break;
+			case "position":
+				p2_xPos = message.posX;
+	            p2_yPos = message.posY;
+				break;
+			case "boost":
+				//console.log("El boost recibido es " + message.indexBoost);
+				randBoost.push(message.indexBoost);
+				break;
+			case "respawn":
+				console.log("Respawn recibido: " + message.respawn);
+				enemyRespawn = message.respawn;
+				toRespawn = true;
+				break;
+		}
+		/*
         if(message.type == "movement"){
             p2_A = message.left;
             p2_D = message.right;
@@ -667,8 +737,10 @@ function connect(){
             p2_yPos = message.posY;
         }
         if(message.type == "boost"){
+			console.log("El boost recibido es " + message.indexBoost);
 			randBoost.push(message.indexBoost);
 		}
+		if()*/
 	}
 }
 
