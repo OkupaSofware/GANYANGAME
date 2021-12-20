@@ -121,6 +121,14 @@ private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IO
 			newNode.put("respawn", node.get("respawn").asText());
 			System.out.println("Respawn sent: " + node.get("respawn").asText());
 			break;
+		case "damage":
+			newNode.put("damage", node.get("damage").asText());
+			//System.out.println("Respawn sent: " + node.get("respawn").asText());
+			break;
+		case "shield":
+			newNode.put("shield", node.get("shield").asText());
+			//System.out.println("Respawn sent: " + node.get("respawn").asText());
+			break;
 	}
 	
 	/*

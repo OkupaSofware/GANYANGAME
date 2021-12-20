@@ -35,6 +35,10 @@ var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
 var enemyRespawn;
 var toRespawn = false;
 
+var damageReceived = -1;
+var firstBlood = false;
+var shieldAvalaible = true;
+
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
@@ -266,6 +270,10 @@ class ScenePlayONLINE extends Phaser.Scene {
                     p1_xPos = this.player1.body.position.x;
                     p1_yPos = this.player1.body.position.y;
                     sendPosition();
+                    /*
+                    sendState(this.enemyPlayer.getLife(), this.enemyPlayer.getShield());
+                    this.player1.setLife(p1_life);
+                    this.player1.setShield(p1_shield);*/
                     if(this.enemyPlayer.getLife() > 0){
                         this.enemyPlayer.body.position.x = p2_xPos;
                         this.enemyPlayer.body.position.y = p2_yPos;
@@ -400,11 +408,20 @@ class ScenePlayONLINE extends Phaser.Scene {
         gBullet.setVisible(false);
         gBullet.setActive(false);
 
+		/*
         if(target.getShield() > 0){
             target.decreaseShield(21);
         }else{
             target.decreaseLife(21);
-        }
+        }*/
+        console.log("Disparo");
+        target.decreaseLife(21);
+        if(firstBlood == true){
+			sendDamage();
+		}
+        
+        
+        
 
     }
     hitSelf(gBullet, target) {
@@ -414,11 +431,12 @@ class ScenePlayONLINE extends Phaser.Scene {
         gBullet.setVisible(false);
         gBullet.setActive(false);
 
+		/*
         if(target.getShield() > 0){
             target.decreaseShield(21);
         }else{
             target.decreaseLife(21);
-        }
+        }*/
     }
 //#endregion
     
@@ -430,17 +448,30 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
         var seconds = (time * 0.001); //Converted to Seconds
         //var timer = 500 - Math.round(seconds) + this.gap;
-        var timer = 20 - Math.round(seconds) + this.gap;
+        var timer = 90 - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-        if(timer < 19 && timer > 17){
+        if(timer < 89 && timer > 87){
 			this.enemyPlayer.setLife(-1);
-		}else if(timer < 17 && timer > 15){
+		}else if(timer < 87 && timer > 85){
 			this.enemyPlayer.respawn(this.registry.get('position1'), 650);
 		}
         //if (timer < 495){
-        if (timer < 15){
+        if (timer < 85){
+			firstBlood = true;
             if(this.player1.alive == true){
                 //sendStatus();
+                if(damageReceived > 0){
+					console.log("Fui herido " + damageReceived + " de daño");
+					this.player1.decreaseLife(damageReceived);
+					damageReceived = -1;
+					//sendProtection(this.player1.isShield());
+				}
+				if(this.enemyPlayer.getShield() <= 0){this.enemyPlayer.setShield(false);}
+				/*
+				if(shieldAvalaible == false){
+					this.enemyPlayer.setShield(false);
+					shieldAvalaible = true;
+				}*/
                 sendMouse();
                 sendMovement();
             }
@@ -587,6 +618,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
     }
     
+    
 }
 
 function sendMovement(){
@@ -645,6 +677,26 @@ function sendRespawn(idx){
     var msg = {
         type: "respawn",
         respawn: idx
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+function sendDamage(){
+	console.log("Enviando mensaje de danyo");
+    var msg = {
+        type: "damage",
+        damage: "21"
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
+function sendProtection(shield){
+	console.log("Enviando mensaje de escudo");
+    var msg = {
+        type: "shield",
+        shield: shield
     }
 
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
@@ -715,6 +767,12 @@ function connect(){
 				console.log("Respawn recibido: " + message.respawn);
 				enemyRespawn = message.respawn;
 				toRespawn = true;
+				break;
+			case "damage":
+				damageReceived = message.damage;
+				break;
+			case "shield":
+				shieldAvalaible = message.shield;
 				break;
 		}
 		/*

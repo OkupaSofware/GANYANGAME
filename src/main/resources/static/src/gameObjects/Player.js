@@ -98,6 +98,8 @@ Player.prototype.decreaseShield = function(damage){
     }else{
         this.setShield(false);
     }
+    console.log("Tengo " + this.shield + " de escudo");
+    console.log("Protegido " + this.shieldOn);
 };
 
 Player.prototype.setTotalAmmo = function(ammo){this.totalAmmo = ammo; };
