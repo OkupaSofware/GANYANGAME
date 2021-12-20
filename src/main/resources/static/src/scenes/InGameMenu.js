@@ -29,8 +29,9 @@ create(){
     resume_button.on('pointerup',this.resume,this)
 }
 goBack(){
-	this.scene.get("Lobby").socketRef.close()
-	//connection.close()
+	this.scene.get("Lobby").socketRef.close();
+	this.scene.get("ScenePlay").socketRef.close();
+	
     this.scene.start("MainMenuBackground");
     this.scene.remove("Lobby")
     this.scene.remove("ScenePlay")

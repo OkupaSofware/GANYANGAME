@@ -30,6 +30,9 @@ var p2_shield;
 var p2_xPos = 0;
 var p2_yPos = 0;
 
+//Referencia a la clase escena
+var scene;
+
 var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
 
 class ScenePlayONLINE extends Phaser.Scene {
@@ -41,23 +44,25 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.timeText;
         this.gap = 0;
         this.tcount = 0;
+        
     }
 
 
     create() {
-        connect()
         //timer        
         this.timeText = this.add.text(640, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.gap = 0;
         this.tcount = 0;
-        
+        scene = this.scene.get("ScenePlay")
+        this.socketRef;
+        connect()
         this.cameras.main.fadeIn(500, 0, 0, 0);
-        this.killText = this.add.text(640, 200, "+1 KILL", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
-        this.deadText = this.add.text(640, 200, "YOU DEAD", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0);
+        this.killText = this.add.text(640, 200, "+1 KILL", {fontFamily: 'army_font', color: 'white', fontSize: '50px ' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
+        this.deadText = this.add.text(640, 200, "YOU DEAD", {fontFamily: 'army_font', color: 'white', fontSize: '50px ' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0);
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
-        this.add.text(15, 15, "Press ESC to open in game menu", { font: '24px Arial' }).setDepth(10)
+        this.add.text(15, 15, "Press ESC to open in game menu", {fontFamily: 'army_font', color: 'white', fontSize: '24px '}).setDepth(10)
 
         //________________________________________________________
 
@@ -630,7 +635,7 @@ function sendData(){
 function connect(){
     // Sockets initializations
     connection = new WebSocket('ws://127.0.0.1:8080/game');
-    
+    scene.socketRef = connection;
     // Connections
 	connection.onerror = function(e) {
 		console.log("WS error: " + e);
@@ -669,6 +674,26 @@ function connect(){
         if(message.type == "boost"){
 			randBoost.push(message.indexBoost);
 		}
+		if(message.type == "disconnection"){
+			var count = 0;
+			var disconnect = setInterval(function(){
+				if(count<1){
+				count++
+				scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '50px '}).setOrigin(0.5)
+				}else{
+					clearInterval(disconnect);
+					scene.scene.get("Lobby").socketRef.close();
+					scene.scene.get("ScenePlay").socketRef.close();
+	
+    				scene.scene.start("MainMenuBackground");
+    				scene.scene.remove("Lobby")
+   				 	scene.scene.remove("ScenePlay")
+				}
+				
+				
+			},5000)
+		}
+		
 	}
 }
 

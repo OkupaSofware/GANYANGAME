@@ -40,6 +40,16 @@ public class GameProcessHandler extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("Session closed: " + session.getId());
 
+		ObjectNode newNode = mapper.createObjectNode();
+		newNode.put("type", "disconnection");
+			
+		for(WebSocketSession participant : sessions.values()) {
+			if(!participant.getId().equals(session.getId())) {
+				participant.sendMessage(new TextMessage(newNode.toString()));
+				
+			}
+		}
+		
 		//Se elimina
 		sessions.remove(session.getId());
 		manager.removePlayer(session.getId());
