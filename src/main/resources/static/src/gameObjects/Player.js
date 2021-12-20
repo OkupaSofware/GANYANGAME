@@ -89,13 +89,13 @@ Player.prototype.increaseShield = function(life){
    
 };
 Player.prototype.decreaseShield = function(damage){
-    if(this.shield>0){
     var scale0 = this.shield/100
     var auxdamage = damage/100
     var scalef = scale0 - auxdamage;
     this.shield -= damage;
     this.hud.decreaseShield(scalef);
-    }else{
+    if(this.shield<=0){
+    
         this.setShield(false);
     }
 };

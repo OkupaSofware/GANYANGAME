@@ -368,7 +368,11 @@ class ScenePlayONLINE extends Phaser.Scene {
         p2_life = this.enemyPlayer.getLife();
         // Shield update
         p1_shield = this.player1.getShield();
+        
         this.enemyPlayer.setShield(p2_shield);
+        if( this.enemyPlayer.shield<=0){
+			this.enemyPlayer.setShield(false)
+}
 
     }
     
@@ -452,7 +456,7 @@ class ScenePlayONLINE extends Phaser.Scene {
                 }
             }
         }
-        else {
+        else  {
             this.timeText.setText("END");
             this.player1.setCountKills(this.enemyPlayer.getCountDeaths());
             this.enemyPlayer.setCountKills(this.player1.getCountDeaths());
@@ -675,8 +679,8 @@ function connect(){
 			randBoost.push(message.indexBoost);
 		}
 		if(message.type == "disconnection"){
-			var count = 0;
-			scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '50px '}).setOrigin(0.5)
+		
+			scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
 			var disconnect = setInterval(function(){
 				
 					clearInterval(disconnect);

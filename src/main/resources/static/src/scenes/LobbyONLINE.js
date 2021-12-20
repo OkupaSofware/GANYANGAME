@@ -179,6 +179,7 @@ class LobbyONLINE extends Phaser.Scene {
        if(online){
         chatSocket.close()
         online = false;
+        clearInterval(this.checkServer);
 	
 }
 		player1Color ="0xffffff";
@@ -302,7 +303,7 @@ if(player2Status!="Waiting for player 2..."){
         server = true;
         ready2 = false;
         counter=5;
-	
+		clearInterval(scene.checkServer);
 	
 }
 }
@@ -353,6 +354,7 @@ function connect(){
 			scene.ready = false;
 			scene.readyText1.setAlpha(0)
 			counter = 5;
+			scene.countDownText.setText(counter)
 			//escene.elementHTML4.setActive(true)
 		}
 
