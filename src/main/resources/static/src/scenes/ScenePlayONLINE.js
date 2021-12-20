@@ -5,6 +5,7 @@ import Bullet from '../gameObjects/bullet.js';
 var connection;
 
 var timerPos = 0;
+var gameTime = 35;
 
 var p1_wstype = "player 1";
 var p1_A = 0;
@@ -442,9 +443,9 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.tcount++;
         }
         var seconds = (time * 0.001); //Converted to Seconds
-        var timer = 500 - Math.round(seconds) + this.gap;
+        var timer = gameTime - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-        if (timer < 495){
+        if (timer < (gameTime - 5)){
             if(this.player1.alive == true){
                 sendStatus();
                 sendMouse();
@@ -482,7 +483,9 @@ class ScenePlayONLINE extends Phaser.Scene {
     boostConsumed(player1, boostArray){
 		console.log("Boost consumido");
 		boostArray.efect(player1, boostArray);
-		sendBoost();
+		var messageBoost = Math.floor(Math.random() * 3) + 1;
+		randBoost.push(messageBoost);
+		sendBoost(messageBoost);
 	}
     
     randBoostFunc(){
@@ -621,9 +624,10 @@ function sendStatus(){
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
 }
 
-function sendBoost(){
+function sendBoost(messageBoost){
     var msg = {
         type: "boost",
+        boost: messageBoost
     }
 
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
@@ -689,7 +693,7 @@ function connect(){
 			randBoost.push(message.indexBoost);
 		}
 		if(message.type == "disconnection"){
-		disconnectOnError();
+			disconnectOnError();
 			
 		}
 		

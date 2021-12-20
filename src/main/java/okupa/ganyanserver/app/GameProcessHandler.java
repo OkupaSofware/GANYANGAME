@@ -82,31 +82,32 @@ private void sendToLobbyParticipants(Room room, JsonNode node, WebSocketSession 
 	ObjectNode newNode = mapper.createObjectNode();
 	newNode.put("type", node.get("type").asText());
 	
-	if(node.get("type").asText().contentEquals("movement")){
-		newNode.put("left", node.get("left").asText());
-		newNode.put("right", node.get("right").asText());
-		newNode.put("jump", node.get("jump").asText());
-	}
-	if(node.get("type").asText().contentEquals("mouse")) {	
-		newNode.put("mousex", node.get("mousex").asText());
-		newNode.put("mousey", node.get("mousey").asText());
-		newNode.put("click", node.get("click").asText());
-	}
-	if(node.get("type").asText().contentEquals("status")) {		
-		newNode.put("life", node.get("life").asText());
-		newNode.put("shield", node.get("shield").asText());
-	}
-	if(node.get("type").asText().contentEquals("position")) {
-		newNode.put("posX", node.get("posX").asText());
-		newNode.put("posY", node.get("posY").asText());
-	}
-	if(node.get("type").asText().contentEquals("boost")) {
-		double randBoost = Math.floor(Math.random() * 3) + 1;
-		newNode.put("indexBoost", (int)randBoost);
-		System.out.println("Message sent: " + randBoost);
-		
-		session.sendMessage(new TextMessage(newNode.toString()));
-		
+	switch(node.get("type").asText()) {
+		case "movement":
+			newNode.put("left", node.get("left").asText());
+			newNode.put("right", node.get("right").asText());
+			newNode.put("jump", node.get("jump").asText());
+			break;
+		case "mouse":
+			newNode.put("mousex", node.get("mousex").asText());
+			newNode.put("mousey", node.get("mousey").asText());
+			newNode.put("click", node.get("click").asText());
+			break;
+		case "status":
+			newNode.put("life", node.get("life").asText());
+			newNode.put("shield", node.get("shield").asText());
+			break;
+		case "position":
+			newNode.put("posX", node.get("posX").asText());
+			newNode.put("posY", node.get("posY").asText());
+			break;
+		case "boost":
+			//double randBoost = Math.floor(Math.random() * 3) + 1;
+			//newNode.put("indexBoost", (int)randBoost);
+			newNode.put("indexBoost", node.get("boost").asText());
+			System.out.println("Message sent: " + node.get("boost").asText());
+			//session.sendMessage(new TextMessage(newNode.toString()));
+			break;
 	}
 
 		for(Player p: room.getPlayers()) {
