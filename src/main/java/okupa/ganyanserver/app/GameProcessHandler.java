@@ -109,18 +109,12 @@ private void sendToLobbyParticipants(Room room, JsonNode node, WebSocketSession 
 		
 	}
 
-	
-		
-		
 		for(Player p: room.getPlayers()) {
 			if(!p.equals(player)) {
 			sessions.get(p.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
 			}
 		}
 		
-		
-		
-	
 	}
 
 private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {

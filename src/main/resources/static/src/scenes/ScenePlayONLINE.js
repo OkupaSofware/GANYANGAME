@@ -7,9 +7,9 @@ var connection;
 var timerPos = 0;
 
 var p1_wstype = "player 1";
-var p1_A;
-var p1_D;
-var p1_W;
+var p1_A = 0;
+var p1_D = 0;
+var p1_W = 0;
 var p1_mousex;
 var p1_mousey;
 var p1_click = 0;
@@ -66,10 +66,9 @@ class ScenePlayONLINE extends Phaser.Scene {
 		
 		//CHEQUEO DE CONEXION DEL SERVIDOR CADA 2 SEGUNDOS
 		this.checkServer = setInterval(function(){
-			if(connection.readyState == chatSocket.CLOSED){
+			if(connection.readyState == connection.CLOSED){
 				clearInterval(this.checkServer)
 				disconnectOnError();
-			
 			}
 		},2000)
 		
@@ -87,6 +86,31 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.funnyPlayer.play();
 
         this.input.keyboard.on('keydown-' + 'ESC', this.launchMenu, this);
+        
+        this.input.keyboard.on('keydown-' + 'A', function(){
+            p1_A = 1;
+            sendMovement();
+        }, this);
+        this.input.keyboard.on('keydown-' + 'D', function(){
+            p1_D = 1;
+            sendMovement();
+        }, this);
+        this.input.keyboard.on('keydown-' + 'W', function(){
+            p1_W = 1;
+            sendMovement();
+        }, this);
+        this.input.keyboard.on('keyup-' + 'A', function(){
+            p1_A = 0;
+            sendMovement();
+        }, this);
+        this.input.keyboard.on('keyup-' + 'D', function(){
+            p1_D = 0;
+            sendMovement();
+        }, this);
+        this.input.keyboard.on('keyup-' + 'W', function(){
+            p1_W = 0;
+            sendMovement();
+        }, this);
         
         //Ambiental music
         this.sceneplayMusicBackground = this.sound.add('sceneplayMusic');
@@ -196,33 +220,10 @@ class ScenePlayONLINE extends Phaser.Scene {
 
     update(time, delta) {
         timerPos++;
-        //console.log("tipo: " + p2_wstype);
-
-
 
         //almaceno los valores del p1 para enviarselo al player 2
         p1_mousex = this.input.activePointer.x;
         p1_mousey = this.input.activePointer.y;
-        //p1_life = this.player1.getLife();
-        
-        if(this.player1.player1LeftControl.isDown){
-            p1_A = 1;
-            //sendMovement();
-        }else{
-            p1_A = 0;
-        }
-        if(this.player1.player1RightControl.isDown){
-            p1_D = 1;
-            //sendMovement();
-        }else{
-            p1_D = 0;
-        }
-        if(this.player1.player1jump.isDown){
-            p1_W = 1;
-            //sendMovement();
-        }else{
-            p1_W = 0;
-        }
 
         this.checkRespawn();
         
@@ -396,7 +397,6 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.menuOn = false;
             this.scene.stop("InGameMenu");
         }
-
     }
 
 //#region Bullets
@@ -448,7 +448,7 @@ class ScenePlayONLINE extends Phaser.Scene {
             if(this.player1.alive == true){
                 sendStatus();
                 sendMouse();
-                sendMovement();
+                //ndMovement();
             }
         }
         if (timer > 0) {
