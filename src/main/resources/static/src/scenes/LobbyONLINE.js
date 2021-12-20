@@ -285,7 +285,26 @@ if(player2Status!="Waiting for player 2..."){
        
     }
     
-    
+    reset(){
+        inputText1 = null; usernameText1=null; usernameText2=null,  player2Status="Waiting for player 2...";
+       
+        
+        userId = -1;
+       
+       	
+      
+        online = false;
+	
+
+		player1Color ="0xffffff";
+        //clearCheck();
+        clearInterval(StartPlayInterval);
+        server = true;
+        ready2 = false;
+        counter=5;
+	
+	
+}
 }
 function connect(){
 	chatSocket = new WebSocket('ws://127.0.0.1:8080/chat');

@@ -676,19 +676,17 @@ function connect(){
 		}
 		if(message.type == "disconnection"){
 			var count = 0;
+			scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '50px '}).setOrigin(0.5)
 			var disconnect = setInterval(function(){
-				if(count<1){
-				count++
-				scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '50px '}).setOrigin(0.5)
-				}else{
+				
 					clearInterval(disconnect);
 					scene.scene.get("Lobby").socketRef.close();
 					scene.scene.get("ScenePlay").socketRef.close();
-	
+					scene.scene.get("Lobby").reset();
     				scene.scene.start("MainMenuBackground");
     				scene.scene.remove("Lobby")
    				 	scene.scene.remove("ScenePlay")
-				}
+				
 				
 				
 			},5000)
