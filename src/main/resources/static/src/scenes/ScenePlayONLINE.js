@@ -63,7 +63,17 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.background = this.add.image(640, 360, "background_2");
         //Options button
         this.add.text(15, 15, "Press ESC to open in game menu", {fontFamily: 'army_font', color: 'white', fontSize: '24px '}).setDepth(10)
-
+		
+		//CHEQUEO DE CONEXION DEL SERVIDOR CADA 2 SEGUNDOS
+		this.checkServer = setInterval(function(){
+			if(connection.readyState == chatSocket.CLOSED){
+				clearInterval(this.checkServer)
+				disconnectOnError();
+			
+			}
+		},2000)
+		
+		
         //________________________________________________________
 
         //Sound effects
@@ -679,10 +689,16 @@ function connect(){
 			randBoost.push(message.indexBoost);
 		}
 		if(message.type == "disconnection"){
+		disconnectOnError();
+			
+		}
 		
-			scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
+	}
+}
+function disconnectOnError(){
+	scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
 			var disconnect = setInterval(function(){
-				
+					clearInterval(scene.checkServer)
 					clearInterval(disconnect);
 					scene.scene.get("Lobby").socketRef.close();
 					scene.scene.get("ScenePlay").socketRef.close();
@@ -694,9 +710,8 @@ function connect(){
 				
 				
 			},5000)
-		}
-		
-	}
+	
+	
 }
 
 export default ScenePlayONLINE;

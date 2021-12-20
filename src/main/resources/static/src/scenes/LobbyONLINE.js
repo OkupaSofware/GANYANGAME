@@ -247,8 +247,10 @@ class LobbyONLINE extends Phaser.Scene {
         usernameText2.setText("P2: "+player2Status)
         if(!online){
 	this.changeColor.setAlpha(1)
+	//this.serverStatus.setAlpha(1)
 }else{
 	this.changeColor.setAlpha(0)
+	//this.serverStatus.setAlpha(1)
 }
         
 if(player2Status!="Waiting for player 2..."){
@@ -259,7 +261,7 @@ if(player2Status!="Waiting for player 2..."){
 		
 	}
         
-        if(server === true){
+        if(server == true){
             this.serverStatus.setTint(0x00ff00);
         }else{
             this.serverStatus.setTint(0xff0000);
@@ -318,31 +320,31 @@ function connect(){
 	}
     
 	chatSocket.onmessage = function(msg) {
-		console.log("WS message: " + msg.data);
+		//console.log("WS message: " + msg.data);
 		var message = JSON.parse(msg.data)
 		
 		if(message.type=="subscription"){
-		console.log("subscription")	
+		//console.log("subscription")	
 		$('.chat').val($('.chat').val() + "\n"+ message.message);
 		player2Status = message.name
 		player2Color = message.color
 		player2Color = "0x"+player2Color.slice(2)
-		console.log(player2Color)
+		//console.log(player2Color)
 		}
 		
 		if(message.type=="player2ready"){
-		console.log("player2ready")	
+		//console.log("player2ready")	
 		ready2 = true;
 		}
 		if(message.type=="ready"){
-		console.log("Game starts in 10 seconds")	
+		//console.log("Game starts in 5 seconds")	
 		ready2 = true;
 		StartPlayInterval = setInterval(countDown, 1000);
 		scene.positionP1 = message.position;
 		}
 		
 		if(message.type=="chat"){
-			console.log("chat")	
+			///console.log("chat")	
 		$('.chat').val($('.chat').val() + "\n" + message.name + ": " + message.message);
 		}
 		
@@ -372,11 +374,11 @@ function connect(){
 	chatSocket.binaryType;
 	server = true
 	serverStatus="SERVER CONNECTED"
-	interval = setInterval(checkConnectionStatus, 1000);
+	interval = setInterval(waitUntilConnected, 1000);
 }
 	
-	function checkConnectionStatus() {
-       if(chatSocket.OPEN){
+	function waitUntilConnected() {
+       
 	 var msg = {
 					type: "subscription",
 					name: userId,
@@ -385,8 +387,11 @@ function connect(){
 		}
                    
 					chatSocket.send(JSON.stringify(msg));
+					
+					//Chequeo de conexion cada 3 segundos
 					scene.checkServer = setInterval(function(){
-						if(chatSocket.CLOSED){
+						console.log(chatSocket.readyState)
+						if(chatSocket.readyState == chatSocket.CLOSED){
 							server = false;
 							serverStatus = "SERVER DISCONNECTED"
 		
@@ -396,7 +401,7 @@ function connect(){
 							}
 						}, 3000);
 					clearInterval(interval);
-}
+
      }
 
 	function countDown(){
