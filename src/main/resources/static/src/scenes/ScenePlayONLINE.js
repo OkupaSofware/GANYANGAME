@@ -89,7 +89,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 		//CHEQUEO DE CONEXION DEL SERVIDOR CADA 2 SEGUNDOS
 		this.checkServer = setInterval(function(){
 			if(connection.readyState == connection.CLOSED){
-				clearInterval(this.checkServer)
+				//clearInterval(this)
 				disconnectOnError();
 			}
 		},2000)
@@ -168,11 +168,12 @@ class ScenePlayONLINE extends Phaser.Scene {
         // Creación de personajes. Es importante que estén aqui encima ya que en las balas se utilizan referencias entre ellos y tienen que estar ya creados ambos.
         //PLAYER 1
         this.player1 = new Player(this, this.registry.get('position1'), 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1")).setAlpha(0);
+      	 //this.player1.weapon.setAlpha(0);
         //PLAYER 2
         //En este caso uno mas 
         this.enemyPlayer = new Player(this, this.registry.get('position2'), 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color2")).setAlpha(0);
         //Cambio de controles para local
-        this.enemyWeapon = this.add.image(this.enemyPlayer.x, this.enemyPlayer.y+2, "rifle").setOrigin(0.1, 0).setScale(0.2, 0.2).setDepth(1);
+        this.enemyWeapon = this.add.image(this.enemyPlayer.x, this.enemyPlayer.y+2, "rifle").setOrigin(0.1, 0).setScale(0.2, 0.2).setDepth(1).setAlpha(0);
 
         p1_xPos = this.player1.body.position.x;
         p1_yPos = this.player1.body.position.y;
@@ -181,7 +182,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         // Bullets player 2
         this.bulletsPlayer2 = new Array();
         for(var i = 0; i < this.enemyPlayer.getTotalAmmo(); i++){
-            let bullet = new Bullet(this, -50, -50, "bala").setScale(0.5);
+            let bullet = new Bullet(this, -100,-100, "bala").setScale(0.5);
             this.bulletsPlayer2.push(bullet);
             this.physics.add.collider(this.platforms, this.bulletsPlayer2[i], this.hit);
             this.physics.add.collider(this.bulletsPlayer2[i], this.player1, this.hitSelf);
@@ -251,6 +252,9 @@ class ScenePlayONLINE extends Phaser.Scene {
 	if(this.fight==true){
 		this.player1.setAlpha(1)
 		this.enemyPlayer.setAlpha(1)
+		this.enemyWeapon.setAlpha(1);
+		//this.player1.weapon.setAlpha(1);
+		
         timerPos++;
 
         //almaceno los valores del p1 para enviarselo al player 2
@@ -312,11 +316,11 @@ class ScenePlayONLINE extends Phaser.Scene {
                     p1_xPos = this.player1.body.position.x;
                     p1_yPos = this.player1.body.position.y;
                     sendPosition();
-                    if(this.enemyPlayer.getLife() > 0){
+                }
+                if(this.enemyPlayer.getLife() > 0){
                         this.enemyPlayer.body.position.x = p2_xPos;
                         this.enemyPlayer.body.position.y = p2_yPos;
                     }
-                }
             }
         }
        
@@ -357,7 +361,8 @@ class ScenePlayONLINE extends Phaser.Scene {
                    this.bulletsPlayer1[i].y <= 5    ||
                    this.bulletsPlayer1[i].y >= 715)
                 {
-                    this.bulletsPlayer1[i].setPosition(-50);
+                    this.bulletsPlayer1[i].setPosition(-500);
+                    this.bulletsPlayer1[i].body.position.x = -500;
                     this.bulletsPlayer1[i].body.setVelocityX(0);
                     this.bulletsPlayer1[i].body.setVelocityY(0);
                     this.bulletsPlayer1[i].setVisible(false);
@@ -394,7 +399,8 @@ class ScenePlayONLINE extends Phaser.Scene {
                    this.bulletsPlayer2[i].y <= 5    ||
                    this.bulletsPlayer2[i].y >= 715)
                 {
-                    this.bulletsPlayer2[i].setPosition(-50);
+                    this.bulletsPlayer2[i].setPosition(-500);
+                    this.bulletsPlayer2[i].body.position.x = -500;
                     this.bulletsPlayer2[i].body.setVelocityX(0);
                     this.bulletsPlayer2[i].body.setVelocityY(0);
                     this.bulletsPlayer2[i].setVisible(false);
@@ -593,7 +599,7 @@ class ScenePlayONLINE extends Phaser.Scene {
             });*/
         }
 
-        console.log("My life: " + this.player1.getLife());
+        //console.log("My life: " + this.player1.getLife());
 
         if(this.player1.getLife() <= 0){
             this.player1.alive = false;
@@ -786,7 +792,8 @@ function connect(){
 function disconnectOnError(){
 	scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
 			var disconnect = setInterval(function(){
-					clearInterval(scene.checkServer)
+					//clearInterval(scene.checkServer)
+					clearInterval(scene.scene.get("ScenePlay").checkServer)
 					clearInterval(disconnect);
 					scene.scene.get("Lobby").socketRef.close();
 					scene.scene.get("ScenePlay").socketRef.close();

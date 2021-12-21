@@ -1,0 +1,5 @@
+date|GANCHAT|GANCHAT: yy has entered the room
+date|GANCHAT|GANCHAT: yyyyy has entered the room
+date|yyyyy|tttt
+date|GANCHAT|P2 has left the room
+date|GANCHAT|P2 has left the room

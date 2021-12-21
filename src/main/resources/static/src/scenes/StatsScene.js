@@ -1,6 +1,8 @@
 import Player from '../gameObjects/Player.js';
 import Button from "../gameObjects/Button.js";
 
+var statRef;
+
 class StatsScene extends Phaser.Scene {
     constructor(){
         super("StatsScene");
@@ -9,7 +11,7 @@ class StatsScene extends Phaser.Scene {
     create(){
         this.cameras.main.fadeIn(2000, 0, 0, 0)
         this.text=this.add.text(640,80, "GAME RESULTS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
-
+		statRef = this.scene.get("StatsScene")
         this.add.image(640, 360, "ingamemenu").setScale(0.4,0.4);
         
         this.player1info = this.registry.get("player1");
@@ -19,13 +21,7 @@ class StatsScene extends Phaser.Scene {
 		}
         this.scene.get("ScenePlay").socketRef.send(JSON.stringify(msg));    
 		this.scene.get("Lobby").socketRef.send(JSON.stringify(msg));
-		this.checkServer = setInterval(function(){
-			
-		if( this.scene.get("ScenePlay").socketRef.readyState == this.scene.get("ScenePlay").socketRef.CLOSED){
-				clearInterval(this.checkServer)
-				this.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
-			}
-		},2000)
+		//this.checkServer = setInterval(this.disconnectOnError,2000)
         
         console.log(this.player1info.name);
         this.pointsPlayer1 = Math.ceil(this.player1info.getCountKills()*55) + Math.ceil(this.player1info.getCountShields()*15) + Math.ceil(this.player1info.getCountHearts()*15) + Math.ceil(this.player1info.getCountAmmos()*15);
@@ -94,10 +90,20 @@ class StatsScene extends Phaser.Scene {
         },"lobby").setScale(0.7,0.7);
         exit_button.on('pointerup',this.goBack,this)
     }
+    disconnectOnError(){
+	if( statRef.scene.get("ScenePlay").socketRef.readyState == statRef.scene.get("ScenePlay").socketRef.CLOSED){
+				clearInterval(statRef.checkServer)
+				statRef.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
+				statRef.scene.stop("StatsScene")
+			}
+	
+}
+    
     goBack(){
         //this.scene.start("MainMenuBackground");
-        
+        clearInterval(this.scene.get("ScenePlay").checkServer)
         this.scene.get("ScenePlay").socketRef.close();
+        
         this.scene.wake("Lobby")
         this.scene.remove("ScenePlay")
         this.scene.stop("StatsScene")

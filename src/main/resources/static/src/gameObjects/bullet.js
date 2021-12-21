@@ -3,7 +3,7 @@ class Bullet extends Phaser.GameObjects.Image{
         super(scene, xPos, yPos, type);
 
         scene.physics.world.enable(this);
-        this.body.setCollideWorldBounds(true);
+        this.body.setCollideWorldBounds(false);
         this.body.allowGravity = false;
         this.scene.add.existing(this);
 

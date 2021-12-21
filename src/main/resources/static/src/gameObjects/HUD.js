@@ -1,11 +1,11 @@
 class PlayerHUD{
     constructor(scene, player){
         scene.add.existing(this);
-        this.name = scene.add.text(0,0, player.name,{font: '20px Arial', fontSize: "20px"}).setOrigin(0.5,0.5)
-        this.lifeBar = scene.add.image(0, 0, "bar").setOrigin(0,0.5)
-        this.life = scene.add.image(0, 0, "life").setOrigin(0,0.5)
-        this.shieldBar = scene.add.image(0, 0, "bar").setOrigin(0,0.5)
-        this.shield = scene.add.image(0, 0, "shield").setOrigin(0,0.5)
+        this.name = scene.add.text(-100,-100, player.name,{font: '20px Arial', fontSize: "20px"}).setOrigin(0.5,0.5)
+        this.lifeBar = scene.add.image(-100, -100, "bar").setOrigin(0,0.5)
+        this.life = scene.add.image(-100, -100, "life").setOrigin(0,0.5)
+        this.shieldBar = scene.add.image(-100, -100, "bar").setOrigin(0,0.5)
+        this.shield = scene.add.image(-100, -100, "shield").setOrigin(0,0.5)
         //this.life = scene.add.image(player.x+5, player.y-60, "lifeBar").setScale(0.9,0.9)
         this.shieldOn = false;
 
