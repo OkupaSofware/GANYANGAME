@@ -52,7 +52,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 
 
     create() {
-        //timer        
+        //timer    
+        this.timerPause = false;    
         this.timeText = this.add.text(640, 30, "35", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.gap = 0;
         this.tcount = 0;
@@ -474,6 +475,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 //#endregion
     
     cronoFunc(time){
+	if(this.timerPause == false){
         // Time counter
         if (this.tcount == 0) {
             this.gap = Math.round(time * 0.001);
@@ -518,6 +520,7 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.scene.pause("ScenePlay");
             this.scene.stop("InGameMenu");
         }
+	}
     }
     
     boostConsumed(player1, boostArray){
@@ -791,6 +794,7 @@ function connect(){
 }
 function disconnectOnError(){
 	scene.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
+	scene.timerPause = true;
 			var disconnect = setInterval(function(){
 					//clearInterval(scene.checkServer)
 					clearInterval(scene.scene.get("ScenePlay").checkServer)

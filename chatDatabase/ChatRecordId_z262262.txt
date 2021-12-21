@@ -1,0 +1,4 @@
+date|GANCHAT|GANCHAT: asd has entered the room
+date|GANCHAT|GANCHAT: elchurumbe has entered the room
+date|GANCHAT|GANCHAT: asd has left the room
+date|GANCHAT|GANCHAT: elchurumbe has left the room

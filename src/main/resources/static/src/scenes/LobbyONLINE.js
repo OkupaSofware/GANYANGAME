@@ -52,7 +52,7 @@ class LobbyONLINE extends Phaser.Scene {
             'down':2,
             'x': 1010,
             'y': 186
-        },"disconnect").setScale(0.7,0.7);
+        },"log out").setScale(0.7,0.7);
         //exit_button.content.setText("disconnect")  text,{fontFamily: 'army_font', fontSize:'45px'  }).setOrigin(0.5,0.5).setTint(0x250303 ).setAlpha(0.8)
         exit_button.on('pointerup',this.goBack,this);
         var offlineButton = new Button({
@@ -71,8 +71,8 @@ class LobbyONLINE extends Phaser.Scene {
         usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);  
         usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);
 		
-		this.readyText1 =this.add.text(420, 450, 'READY', {fontFamily: 'army_font', color: 'red', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
-		this.readyText2 =this.add.text(840, 450, 'READY', {fontFamily: 'army_font', color: 'red', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
+		this.readyText1 =this.add.text(420, 450, 'READY', {fontFamily: 'army_font', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0).setTint(0x00ff00);
+		this.readyText2 =this.add.text(840, 450, 'READY', {fontFamily: 'army_font', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0).setTint(0x00ff00);
 		
 		this.ready = false;
         //GANCHAT

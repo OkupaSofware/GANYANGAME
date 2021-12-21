@@ -69,7 +69,7 @@ this.input.on('pointerdown', function (pointer) {
         
         var bulletMenuSound = this.sound.add('shot');
         bulletMenuSound.play({volume: this.registry.get('effectsVolumeFromMenu')});
-        this.trigger = this.add.image(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
+        //this.trigger = this.add.image(pointer.x, pointer.y, "bulletMenu").setScale(0.3);
     }
 }, this);
 

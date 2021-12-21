@@ -1,0 +1,4 @@
+date|GANCHAT|GANCHAT: a has entered the room
+date|GANCHAT|GANCHAT: dsd has entered the room
+date|GANCHAT|GANCHAT: dsd has left the room
+date|GANCHAT|GANCHAT: a has left the room
