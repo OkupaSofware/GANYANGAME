@@ -229,7 +229,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         }, this);
         this.input.on('pointerup', function (pointer) {
             p1_click = 0;
-            console.log("solto el boton");
+            //console.log("solto el boton");
         }, this);
         
         //Physics player 1
@@ -748,7 +748,7 @@ function connect(){
 
     //Desconnections
     connection.onclose = function() {
-		console.log("Closing socket");
+		console.log("Closing game socket");
 	}
 
     // On messages

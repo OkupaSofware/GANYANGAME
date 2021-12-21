@@ -29,11 +29,12 @@ create(){
     resume_button.on('pointerup',this.resume,this)
 }
 goBack(){
-	
+	if(this.registry.get('mode')==true){
 	this.scene.get("Lobby").socketRef.close();
 	this.scene.get("ScenePlay").socketRef.close();
 	clearInterval(this.scene.get("ScenePlay").checkServer)
 	this.scene.get("Lobby").reset();
+	}
     this.scene.start("MainMenuBackground");
     this.scene.remove("Lobby")
     this.scene.remove("ScenePlay")

@@ -53,6 +53,7 @@ goBack(){
 playOffline(){
         //this.scene.start("GameMode");
         //this.scene.add("ScenePlay",ScenePlayOFFLINE,true);
+        this.registry.set('mode',false)
         this.scene.add("Lobby",LobbyOFFLINE,true);
         this.scene.stop("GameMode")
         //this.scene.stop("MainMenuBackground");
@@ -60,6 +61,7 @@ playOffline(){
     }
 playOnline(){
         //this.scene.start("GameMode");
+        this.registry.set('mode',true)
         this.scene.add("Lobby", LobbyONLINE,true);
         this.scene.stop("GameMode")
         //this.scene.stop("MainMenuBackground");

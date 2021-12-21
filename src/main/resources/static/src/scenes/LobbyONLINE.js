@@ -164,7 +164,28 @@ class LobbyONLINE extends Phaser.Scene {
                     alert("Player 1, please enter a username and connect");
                 }
         });
-    
+     this.input.keyboard.on('keydown-' + 'ENTER', function(){
+           if(online==true){
+	 
+                sendText = elementHTML2.getChildByName('sendMessage');
+                if (sendText.value !== ''){
+                    
+	 			 var textMessage = sendText.value;
+           var msg = {
+			type: "chat",
+			name: userId,
+            message: textMessage
+		}
+                    sendText.value = "";
+					chatSocket.send(JSON.stringify(msg));
+					
+                }
+            
+	  } else
+                {
+                    alert("Player 1, please enter a username and connect");
+                }
+        }, this);
         
     }
     
@@ -373,7 +394,7 @@ function connect(){
 		//player2Status = message.name
 	}
 	chatSocket.onclose = function() {
-		console.log("Closing socket");
+		console.log("Closing chat socket");
 		
 	}
 	chatSocket.binaryType;

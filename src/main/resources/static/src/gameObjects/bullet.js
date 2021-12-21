@@ -30,7 +30,7 @@ Bullet.prototype.shot = function(target, player){
     this.changeToPlayerRelativePosition(player);
     this.calculateAngle(target, player);
     this.calculateBulletSpeed(target, player);
-    console.log("shot");
+   // console.log("shot");
 };
 
 Bullet.prototype.changeToPlayerRelativePosition = function(player){

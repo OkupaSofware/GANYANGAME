@@ -16,13 +16,24 @@ class StatsScene extends Phaser.Scene {
         
         this.player1info = this.registry.get("player1");
         this.player2info = this.registry.get("player2");
+        if(this.registry.get('mode')==true){
         var msg = {
 					type: "return",
 		}
         this.scene.get("ScenePlay").socketRef.send(JSON.stringify(msg));    
 		this.scene.get("Lobby").socketRef.send(JSON.stringify(msg));
-		//this.checkServer = setInterval(this.disconnectOnError,2000)
-        
+		this.checkServer = setInterval(function(){
+			if( statRef.scene.get("ScenePlay").socketRef.readyState == statRef.scene.get("ScenePlay").socketRef.CLOSED){
+		
+				clearInterval(statRef.scene.get("StatsScene").checkServer)
+				statRef.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
+				//statRef.scene.remove("ScenePlay")
+				statRef.scene.stop("StatsScene")
+			}
+			
+			
+		},6000)
+        }
         console.log(this.player1info.name);
         this.pointsPlayer1 = Math.ceil(this.player1info.getCountKills()*55) + Math.ceil(this.player1info.getCountShields()*15) + Math.ceil(this.player1info.getCountHearts()*15) + Math.ceil(this.player1info.getCountAmmos()*15);
         this.textName1=this.add.text(420,380, this.player1info.name,{font: 'bold 28px Arial', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xE2AD43)
@@ -90,19 +101,13 @@ class StatsScene extends Phaser.Scene {
         },"lobby").setScale(0.7,0.7);
         exit_button.on('pointerup',this.goBack,this)
     }
-    disconnectOnError(){
-	if( statRef.scene.get("ScenePlay").socketRef.readyState == statRef.scene.get("ScenePlay").socketRef.CLOSED){
-				clearInterval(statRef.checkServer)
-				statRef.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
-				statRef.scene.stop("StatsScene")
-			}
-	
-}
     
     goBack(){
         //this.scene.start("MainMenuBackground");
+        if(this.registry.get('mode')==true){
         clearInterval(this.scene.get("ScenePlay").checkServer)
         this.scene.get("ScenePlay").socketRef.close();
+        }
         
         this.scene.wake("Lobby")
         this.scene.remove("ScenePlay")
