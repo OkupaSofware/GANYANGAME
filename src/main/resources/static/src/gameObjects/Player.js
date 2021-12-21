@@ -127,7 +127,7 @@ Player.prototype.die = function(){
     this.alive = false;
     this.body.setSize(5,5,1,1).setOffset(86,120)
     this.life = 1;
-    this.increaseCountDeaths();
+    //this.increaseCountDeaths();
     this.on('animationcomplete',() => {
     //this.setVisible(false);
     //this.setActive(false);
@@ -150,6 +150,7 @@ Player.prototype.respawn = function(x,y){
     
 //Stats setters
 Player.prototype.increaseCountDeaths = function(){this.countDeaths++;}
+Player.prototype.setCountDeaths = function(ownDeaths){this.countDeaths = ownDeaths;}
 Player.prototype.setCountKills = function(enemyDeaths){this.countKills = enemyDeaths;}
 Player.prototype.increaseCountShields = function(){this.countShields++;}
 Player.prototype.increaseCountHearts = function(){this.countHearts++;}

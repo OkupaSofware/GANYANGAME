@@ -36,6 +36,8 @@ var scene;
 
 var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
 
+var countRivalDeaths = 0;
+
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
         super({ key: "ScenePlay" });
@@ -469,7 +471,9 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
         else  {
             this.timeText.setText("END");
-            this.player1.setCountKills(this.enemyPlayer.getCountDeaths());
+            //this.player1.setCountKills(this.enemyPlayer.getCountDeaths());
+            this.player1.setCountKills(countRivalDeaths);
+            this.enemyPlayer.setCountDeaths(countRivalDeaths);
             this.enemyPlayer.setCountKills(this.player1.getCountDeaths());
             this.registry.set("player1", this.player1);
             this.registry.set("player2", this.enemyPlayer);
@@ -557,7 +561,10 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.killText.setPosition(640,200);
             this.enemyPlayer.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.enemyPlayer.dieTimer = 200;
-        }
+            
+        }else if(this.enemyPlayer.alive == false && this.enemyPlayer.dieTimer == 199){
+			//this.enemyPlayer.increaseCountDeaths();
+		}
 
         // Client Player
         if (this.player1.alive == false) {
@@ -567,6 +574,11 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.deadText.setAlpha(1);
             this.deadText.setPosition(this.deadText.x,this.deadText.y+5);
             this.player1.dieTimer--;
+            if(this.player1.dieTimer == 199){
+				console.log("Contabilizando muerte");
+				this.player1.increaseCountDeaths();
+				sendDeaths();
+			}
         }
         if (this.player1.alive == false && this.player1.dieTimer == 0) {
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0);
@@ -633,6 +645,14 @@ function sendBoost(messageBoost){
 connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
 }
 
+function sendDeaths(){
+    var msg = {
+        type: "deaths",
+    }
+
+connection.send(JSON.stringify(msg)); //convierto el msg en formato json y la envio por el socket conecction
+}
+
 //send data de recuerdo por todo lo bonito que nos ha aportado
 function sendData(){
         var msg = {
@@ -691,6 +711,9 @@ function connect(){
         }
         if(message.type == "boost"){
 			randBoost.push(message.indexBoost);
+		}
+		if(message.type == "deaths"){
+			countRivalDeaths++;
 		}
 		if(message.type == "disconnection"){
 			disconnectOnError();
