@@ -136,7 +136,7 @@ Player.prototype.die = function(){
     
 }
 Player.prototype.respawn = function(x,y){
-    this.body.setSize(50,116,1,1).setOffset(15,12)
+    this.body.setSize(50,116,1,1).setOffset(15,12);
     this.anims.play('idle', true)
     this.alive = true;
     this.setVisible(true);
@@ -146,7 +146,7 @@ Player.prototype.respawn = function(x,y){
     this.setLife(100);
     this.setCurrentAmmo(20);
     this.setPosition(x,y)
-    }
+}
     
 //Stats setters
 Player.prototype.increaseCountDeaths = function(){this.countDeaths++;}
@@ -224,13 +224,6 @@ Player.prototype.update = function(time,delta){
             this.setShield(false);
         }
         
-        if(this.life<=0){
-           this.die();
-           this.body.setVelocityX(0)
-            
-        }
-       
-
     }
 
 export default Player;

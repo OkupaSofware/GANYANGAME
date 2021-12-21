@@ -311,15 +311,10 @@ class ScenePlayONLINE extends Phaser.Scene {
                     if(this.enemyPlayer.getLife() > 0){
                         this.enemyPlayer.body.position.x = p2_xPos;
                         this.enemyPlayer.body.position.y = p2_yPos;
-                    }else{
-                        this.enemyPlayer.body.position.x = -100;
-                        this.enemyPlayer.body.position.y = 0;
                     }
-                    
                 }
             }
-            
-}
+        }
        
         //#endregion
         
@@ -339,8 +334,12 @@ class ScenePlayONLINE extends Phaser.Scene {
         //#endregion
         
         // Player 2 weapon positioning and rotation
-        this.enemyWeapon.setPosition(this.enemyPlayer.x, this.enemyPlayer.y + 2);
-        this.enemyWeapon.rotation = Math.atan((p2_mousey-this.enemyWeapon.y) / (p2_mousex-this.enemyWeapon.x));
+        if(this.enemyPlayer.alive == true){
+            this.enemyWeapon.setPosition(this.enemyPlayer.x, this.enemyPlayer.y + 2);
+            this.enemyWeapon.rotation = Math.atan((p2_mousey-this.enemyWeapon.y) / (p2_mousex-this.enemyWeapon.x));
+        } else {
+            this.enemyWeapon.setPosition(-100, -100);
+        }
 
         // Bullets position out of bounds. Need to be modularized.
         for(var i = 0; i < this.player1.getTotalAmmo() ;i++){
@@ -400,7 +399,6 @@ class ScenePlayONLINE extends Phaser.Scene {
             }
         }
 
-        // TIENEN QUE MOVERSE A UN SITIO MÁS ADECUADO Y QUE NO ESTÉN EN EL UPDATE
         // Life update
        
         this.player1.setLife(p1_life);
@@ -412,7 +410,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.enemyPlayer.setShield(p2_shield);
         if( this.enemyPlayer.shield<=0){
 			this.enemyPlayer.setShield(false)
-}
+    }
 
 }
     }
@@ -574,48 +572,79 @@ class ScenePlayONLINE extends Phaser.Scene {
         }
     }
     checkRespawn(){
+
+        if(this.enemyPlayer.getLife() <= 0){
+            this.enemyPlayer.alive = false;
+            this.enemyPlayer.weapon.x = -100;
+            this.enemyPlayer.setVisible(false);
+            this.enemyPlayer.body.setVelocityX(0);
+            this.enemyPlayer.anims.play('die', true);
+            this.enemyPlayer.hud.setVisible(false)
+            this.enemyPlayer.cry.play();
+            this.enemyPlayer.body.setSize(5,5,1,1).setOffset(86,120);
+            
+            /*this.enemyPlayer.on('animationcomplete',() => {
+                this.enemyPlayer.setVisible(false);
+                console.log("ANIMACION COMPLETADA enemy");
+            });*/
+        }
+
+        console.log("My life: " + this.player1.getLife());
+
+        if(this.player1.getLife() <= 0){
+            this.player1.alive = false;
+            this.player1.weapon.setVisible(false);
+            this.player1.setVisible(false);
+            this.player1.body.setVelocityX(0);
+            this.player1.anims.play('die', true);
+            this.player1.hud.setVisible(false)
+            this.player1.cry.play();
+            this.player1.body.setSize(5,5,1,1).setOffset(86,120);
+
+            /*this.player1.on('animationcomplete',() => {
+                this.player1.setVisible(false);
+                console.log("ANIMACION COMPLETADA client");
+            });*/
+        }
+
         // Enemy player
         if (this.enemyPlayer.alive == false) {
-            //this.enemyPlayer.body.position.x = -100;
-            //this.enemyPlayer.body.position.y = 0;
             this.funnyPlayer.play();
             this.killText.setAlpha(1);
-            this.killText.setPosition(this.killText.x,this.killText.y+5)
+            this.killText.setPosition(this.killText.x,this.killText.y+5);
             this.enemyPlayer.dieTimer--;
         }
         if (this.enemyPlayer.alive == false && this.enemyPlayer.dieTimer == 0) {
+            console.log("ENTRA enemy");
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0)
             this.killText.setAlpha(0);
             this.killText.setPosition(640,200);
             this.enemyPlayer.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.enemyPlayer.dieTimer = 200;
-            
-        }else if(this.enemyPlayer.alive == false && this.enemyPlayer.dieTimer == 199){
-			//this.enemyPlayer.increaseCountDeaths();
-		}
+            this.enemyPlayer.setVisible(true);
+            this.enemyPlayer.weapon.setVisible(true);
+        }
 
         // Client Player
         if (this.player1.alive == false) {
-           // this.player1.body.position.x = -100;
-           // this.player1.body.position.y = 0;
             this.funnyPlayer.play();
             this.deadText.setAlpha(1);
             this.deadText.setPosition(this.deadText.x,this.deadText.y+5);
             this.player1.dieTimer--;
             if(this.player1.dieTimer == 199){
-				console.log("Contabilizando muerte");
 				this.player1.increaseCountDeaths();
 				sendDeaths();
 			}
         }
         if (this.player1.alive == false && this.player1.dieTimer == 0) {
+            console.log("ENTRA player");
             var idx = Math.floor(Math.random() * (3 - 0 + 1) + 0);
             this.deadText.setAlpha(0);
             this.deadText.setPosition(640,200);
             this.player1.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.player1.dieTimer = 200;
-            //this.player1.setLife(100);
-            //this.player1.setShield(0);
+            this.player1.setVisible(true);
+            this.player1.weapon.setVisible(true);
         }
     }
     
