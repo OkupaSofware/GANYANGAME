@@ -174,6 +174,10 @@ class ScenePlayONLINE extends Phaser.Scene {
         //Cambio de controles para local
         this.enemyWeapon = this.add.image(this.enemyPlayer.x, this.enemyPlayer.y+2, "rifle").setOrigin(0.1, 0).setScale(0.2, 0.2).setDepth(1);
 
+        p1_xPos = this.player1.body.position.x;
+        p1_yPos = this.player1.body.position.y;
+        p2_xPos = this.enemyPlayer.body.position.x;
+        p2_yPos = this.enemyPlayer.body.position.x;
         // Bullets player 2
         this.bulletsPlayer2 = new Array();
         for(var i = 0; i < this.enemyPlayer.getTotalAmmo(); i++){
