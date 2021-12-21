@@ -21,7 +21,7 @@ class StatsScene extends Phaser.Scene {
 		this.scene.get("Lobby").socketRef.send(JSON.stringify(msg));
 		this.checkServer = setInterval(function(){
 			
-			if( this.scene.get("ScenePlay").socketRef.readyState == connection.CLOSED){
+		if( this.scene.get("ScenePlay").socketRef.readyState == this.scene.get("ScenePlay").socketRef.CLOSED){
 				clearInterval(this.checkServer)
 				this.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
 			}

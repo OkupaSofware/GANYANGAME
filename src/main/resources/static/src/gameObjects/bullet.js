@@ -7,7 +7,7 @@ class Bullet extends Phaser.GameObjects.Image{
         this.body.allowGravity = false;
         this.scene.add.existing(this);
 
-        this.sizeX = 20;
+        this.sizeX = 40;
         this.sizeY = 10;
         this.body.setSize(this.sizeX, this.sizeY, 0.5, 0.5);
 

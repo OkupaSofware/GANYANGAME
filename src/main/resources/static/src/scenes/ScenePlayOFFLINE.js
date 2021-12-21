@@ -22,11 +22,11 @@ class ScenePlayOFFLINE extends Phaser.Scene {
         this.tcount = 0;
         
         this.cameras.main.fadeIn(500, 0, 0, 0);
-        this.killText = this.add.text(640, 200, "+1 KILL", { font: 'Bold 50px Arial' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
+        this.killText = this.add.text(640, 200, "+1 KILL", {fontFamily: 'army_font', color: 'yellow', fontSize: '50px ' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
         // Add background
         this.background = this.add.image(640, 360, "background_2");
         //Options button
-        this.add.text(15, 15, "Press ESC to open in game menu", { font: '24px Arial' }).setDepth(10)
+        this.add.text(15, 15, "Press ESC to open in game menu",  {fontFamily: 'army_font', color: 'white', fontSize: '24px ' } ).setDepth(10)
 
         //________________________________________________________
 

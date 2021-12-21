@@ -36,8 +36,8 @@ class LobbyOFFLINE extends Phaser.Scene {
         offlineButton.on('pointerup',this.playOffline,this)
 
         //Display text for player name
-        usernameText1 = this.add.text(420, 400, '', {font: 'bold 32px Arial', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);  
-        usernameText2 = this.add.text(840, 400, '', {font: 'bold 32px Arial', color: 'white', fontSize: '30px '}).setOrigin(0.5,0.5);
+        usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px ' }).setOrigin(0.5,0.5);  
+        usernameText2 = this.add.text(840, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px ' }).setOrigin(0.5,0.5);
 
         //Input text for player name
         var element1 = this.add.dom(420,425).createFromCache('nameform');

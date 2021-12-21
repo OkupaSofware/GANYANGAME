@@ -71,8 +71,8 @@ class LobbyONLINE extends Phaser.Scene {
         usernameText1 = this.add.text(420, 400, '', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);  
         usernameText2 = this.add.text(840, 400, player2Status, {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5);
 		
-		this.readyText1 =this.add.text(420, 450, 'READY', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
-		this.readyText2 =this.add.text(840, 450, 'READY', {fontFamily: 'army_font', color: 'black', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
+		this.readyText1 =this.add.text(420, 450, 'READY', {fontFamily: 'army_font', color: 'red', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
+		this.readyText2 =this.add.text(840, 450, 'READY', {fontFamily: 'army_font', color: 'red', fontSize: '30px '}).setOrigin(0.5,0.5).setAlpha(0);
 		
 		this.ready = false;
         //GANCHAT

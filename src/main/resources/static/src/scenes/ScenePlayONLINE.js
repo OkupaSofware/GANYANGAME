@@ -14,7 +14,7 @@ var p1_W = 0;
 var p1_mousex;
 var p1_mousey;
 var p1_click = 0;
-var p1_life;
+var p1_life = 100;
 var p1_shield;
 var p1_xPos = 0;
 var p1_yPos = 0;
@@ -26,7 +26,7 @@ var p2_W;
 var p2_mousex;
 var p2_mousey;
 var p2_click;
-var p2_life;
+var p2_life = 100;
 var p2_shield;
 var p2_xPos = 0;
 var p2_yPos = 0;
@@ -53,11 +53,12 @@ class ScenePlayONLINE extends Phaser.Scene {
 
     create() {
         //timer        
-        this.timeText = this.add.text(640, 30, "T", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
+        this.timeText = this.add.text(640, 30, "35", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.gap = 0;
         this.tcount = 0;
         scene = this.scene.get("ScenePlay")
         this.socketRef;
+        this.fight = false;
         connect()
         this.cameras.main.fadeIn(500, 0, 0, 0);
         this.killText = this.add.text(640, 200, "+1 KILL", {fontFamily: 'army_font', color: 'white', fontSize: '50px ' }).setOrigin(0.5).setDepth(10).setTint(0xffdf00).setAlpha(0); //Elapsed Time Text
@@ -66,6 +67,24 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.background = this.add.image(640, 360, "background_2");
         //Options button
         this.add.text(15, 15, "Press ESC to open in game menu", {fontFamily: 'army_font', color: 'white', fontSize: '24px '}).setDepth(10)
+        //countdown
+        this.countDownText = 3;
+        this.countDown = this.add.text(640, 250, this.countDownText, {fontFamily: 'army_font', color: 'WHITE', fontSize: '80px '}).setOrigin(0.5)
+        
+        this.countDownInterval = setInterval(function(){
+			if(scene.countDownText==0){
+				scene.countDown.setAlpha(0);
+				scene.fight = true;
+				
+				clearInterval(scene.countDownInterval)
+			}else{
+			scene.countDownText--;
+			scene.countDown.setText(scene.countDownText)
+			
+			
+			}
+		},1000)
+		
 		
 		//CHEQUEO DE CONEXION DEL SERVIDOR CADA 2 SEGUNDOS
 		this.checkServer = setInterval(function(){
@@ -74,6 +93,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 				disconnectOnError();
 			}
 		},2000)
+		
+		
 		
 		timerPos = 0;
         gameTime = 35;
@@ -146,10 +167,10 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // Creación de personajes. Es importante que estén aqui encima ya que en las balas se utilizan referencias entre ellos y tienen que estar ya creados ambos.
         //PLAYER 1
-        this.player1 = new Player(this, this.registry.get('position1'), 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1"));
+        this.player1 = new Player(this, this.registry.get('position1'), 650, "idle", this.registry.get("username1"),this.add.image(this.x, this.y+2, "rifle")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color1")).setAlpha(0);
         //PLAYER 2
         //En este caso uno mas 
-        this.enemyPlayer = new Player(this, this.registry.get('position2'), 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color2"));
+        this.enemyPlayer = new Player(this, this.registry.get('position2'), 650, "idle",this.registry.get("username2"),this.add.image(this.x, this.y+2, "shotgun")).setScale(0.5, 0.5).setOrigin(0.5, 0.8).setInteractive({ cursor: 'url(assets/player/weapon/mirillaRed.png), pointer' }).setTint(this.registry.get("color2")).setAlpha(0);
         //Cambio de controles para local
         this.enemyWeapon = this.add.image(this.enemyPlayer.x, this.enemyPlayer.y+2, "rifle").setOrigin(0.1, 0).setScale(0.2, 0.2).setDepth(1);
 
@@ -174,7 +195,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // player 1 shooting
         this.input.on('pointerdown', function (pointer) {
-            if ((this.menuOn == false) && (p1_click == 0) && (this.player1.alive == true)) {
+            if ((this.menuOn == false) && (p1_click == 0) && (this.player1.alive == true) && (this.fight==true)) {
                 if (this.player1.getCurrentAmmo() > 0) {
                     let foundBullet = false;
                     for(var i = 0; i < this.bulletsPlayer1.length ;i++){
@@ -223,6 +244,9 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
 
     update(time, delta) {
+	if(this.fight==true){
+		this.player1.setAlpha(1)
+		this.enemyPlayer.setAlpha(1)
         timerPos++;
 
         //almaceno los valores del p1 para enviarselo al player 2
@@ -236,7 +260,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.cronoFunc(time);
         
         //#region Players movement
-        if (this.menuOn == false) {
+        
 
             if (p2_D == 1) {
                 this.enemyPlayer.body.setVelocityX(400)
@@ -296,15 +320,13 @@ class ScenePlayONLINE extends Phaser.Scene {
             }
             
 }
-        }else{
-            this.player1.body.setVelocityX(0);
-            this.enemyPlayer.body.setVelocityX(0);
-        }
+       
         //#endregion
         
 
 
         //#region Player flip horizontal
+        
         if(p2_mousex > this.enemyPlayer.x){
             this.enemyPlayer.flipX = true;
             this.enemyWeapon.setOrigin(0.1, 0);
@@ -327,8 +349,8 @@ class ScenePlayONLINE extends Phaser.Scene {
                 //this.bulletsPlayer1[i].checkOutOfBounds(1280, 720);
 
                 //Code that works by now
-                if(this.bulletsPlayer1[i].x >= 1275 ||
-                   this.bulletsPlayer1[i].x <= 5    ||
+                if(this.bulletsPlayer1[i].x >= 1270 ||
+                   this.bulletsPlayer1[i].x <= 10    ||
                    this.bulletsPlayer1[i].y <= 5    ||
                    this.bulletsPlayer1[i].y >= 715)
                 {
@@ -364,8 +386,8 @@ class ScenePlayONLINE extends Phaser.Scene {
         // Player 2 bullets out of bounds
         for(var i = 0; i < this.enemyPlayer.getTotalAmmo() ;i++){
             if(this.bulletsPlayer2[i].active){
-                if(this.bulletsPlayer2[i].x >= 1275 ||
-                   this.bulletsPlayer2[i].x <= 5    ||
+                if(this.bulletsPlayer2[i].x >= 1270 ||
+                   this.bulletsPlayer2[i].x <= 10    ||
                    this.bulletsPlayer2[i].y <= 5    ||
                    this.bulletsPlayer2[i].y >= 715)
                 {
@@ -380,8 +402,10 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // TIENEN QUE MOVERSE A UN SITIO MÁS ADECUADO Y QUE NO ESTÉN EN EL UPDATE
         // Life update
+       
         this.player1.setLife(p1_life);
         p2_life = this.enemyPlayer.getLife();
+        
         // Shield update
         p1_shield = this.player1.getShield();
         
@@ -390,6 +414,7 @@ class ScenePlayONLINE extends Phaser.Scene {
 			this.enemyPlayer.setShield(false)
 }
 
+}
     }
     
     launchMenu() {
@@ -449,7 +474,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         var seconds = (time * 0.001); //Converted to Seconds
         var timer = gameTime - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-        if (timer < (gameTime - 5)){
+        if (timer < (gameTime - 3)){
             if(this.player1.alive == true){
                 sendStatus();
                 sendMouse();
@@ -551,8 +576,8 @@ class ScenePlayONLINE extends Phaser.Scene {
     checkRespawn(){
         // Enemy player
         if (this.enemyPlayer.alive == false) {
-            this.enemyPlayer.body.position.x = -100;
-            this.enemyPlayer.body.position.y = 0;
+            //this.enemyPlayer.body.position.x = -100;
+            //this.enemyPlayer.body.position.y = 0;
             this.funnyPlayer.play();
             this.killText.setAlpha(1);
             this.killText.setPosition(this.killText.x,this.killText.y+5)
@@ -571,8 +596,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 
         // Client Player
         if (this.player1.alive == false) {
-            this.player1.body.position.x = -100;
-            this.player1.body.position.y = 0;
+           // this.player1.body.position.x = -100;
+           // this.player1.body.position.y = 0;
             this.funnyPlayer.play();
             this.deadText.setAlpha(1);
             this.deadText.setPosition(this.deadText.x,this.deadText.y+5);
@@ -589,8 +614,8 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.deadText.setPosition(640,200);
             this.player1.respawn(this.respawnPlaces[idx][0], this.respawnPlaces[idx][1]);
             this.player1.dieTimer = 200;
-            this.player1.setLife(100);
-            this.player1.setShield(0);
+            //this.player1.setLife(100);
+            //this.player1.setShield(0);
         }
     }
     
@@ -736,8 +761,7 @@ function disconnectOnError(){
     				scene.scene.start("MainMenuBackground");
     				scene.scene.remove("Lobby")
    				 	scene.scene.remove("ScenePlay")
-				
-				
+   				 	//scene.scene.sendToBack("InGameMenu")
 				
 			},5000)
 	
