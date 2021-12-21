@@ -209,7 +209,10 @@ class LobbyONLINE extends Phaser.Scene {
     playOnline(){
         
         if(player2Status!="Waiting for player 2..."){
-        
+         ready2 = false;
+        counter=5;
+        this.ready = false;
+        this.readyText1.setAlpha(0)
         this.registry.set('username1', inputText1);
          this.registry.set('username2', player2Status);
          this.registry.set('color1', player1Color);
@@ -279,6 +282,8 @@ if(player2Status!="Waiting for player 2..."){
        if(counter<=4 && counter>=0){
 	 this.countDownText.setAlpha(1);
 	 this.countDownText.setText(counter)
+}else{
+	 this.countDownText.setAlpha(0);
 }
        
        if(counter ==0){

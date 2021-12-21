@@ -31,12 +31,12 @@ var p2_shield;
 var p2_xPos = 0;
 var p2_yPos = 0;
 
-//Referencia a la clase escena
+//Referencia externa a la clase escena
 var scene;
 
 var randBoost = []; // = Math.floor(Math.random() * 3) + 1;
 
-var countRivalDeaths = 0;
+
 
 class ScenePlayONLINE extends Phaser.Scene {
     constructor() {
@@ -47,7 +47,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.timeText;
         this.gap = 0;
         this.tcount = 0;
-        
+        this.countRivalDeaths = 0;
     }
 
 
@@ -75,7 +75,8 @@ class ScenePlayONLINE extends Phaser.Scene {
 			}
 		},2000)
 		
-		
+		timerPos = 0;
+        gameTime = 35;
         //________________________________________________________
 
         //Sound effects
@@ -277,6 +278,7 @@ class ScenePlayONLINE extends Phaser.Scene {
             this.player1.aim(this.input.activePointer.x, this.input.activePointer.y);
 
             // Position send data
+            if(connection.readyState == connection.OPEN){
             if(timerPos%2 == 0){
                 if(this.player1.alive == true){
                     p1_xPos = this.player1.body.position.x;
@@ -293,7 +295,7 @@ class ScenePlayONLINE extends Phaser.Scene {
                 }
             }
             
-
+}
         }else{
             this.player1.body.setVelocityX(0);
             this.enemyPlayer.body.setVelocityX(0);
@@ -472,8 +474,9 @@ class ScenePlayONLINE extends Phaser.Scene {
         else  {
             this.timeText.setText("END");
             //this.player1.setCountKills(this.enemyPlayer.getCountDeaths());
-            this.player1.setCountKills(countRivalDeaths);
-            this.enemyPlayer.setCountDeaths(countRivalDeaths);
+            this.player1.setCountKills(this.countRivalDeaths);
+            this.enemyPlayer.setCountDeaths(this.countRivalDeaths);
+            
             this.enemyPlayer.setCountKills(this.player1.getCountDeaths());
             this.registry.set("player1", this.player1);
             this.registry.set("player2", this.enemyPlayer);
@@ -713,7 +716,7 @@ function connect(){
 			randBoost.push(message.indexBoost);
 		}
 		if(message.type == "deaths"){
-			countRivalDeaths++;
+			scene.countRivalDeaths++;
 		}
 		if(message.type == "disconnection"){
 			disconnectOnError();

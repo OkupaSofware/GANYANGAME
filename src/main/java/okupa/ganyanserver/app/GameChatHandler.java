@@ -165,7 +165,12 @@ public class GameChatHandler extends TextWebSocketHandler {
 			
 			
 		}
-
+		//Si acaba la partida, y quieren volver a jugar, se restablece el estado del jugador
+		if(node.get("type").asText().contentEquals("return")) {
+			manager.getPlayerBySessionId(session.getId()).setReady(false);
+			
+			
+		}
 		
 	}
 

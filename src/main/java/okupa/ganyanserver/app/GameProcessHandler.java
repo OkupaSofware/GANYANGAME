@@ -43,22 +43,18 @@ public class GameProcessHandler extends TextWebSocketHandler {
 		Player player = manager.getPlayerBySessionId(session.getId());
 		int roomIdx = manager.getPlayerRoomIdx(session.getId());
 		
+		if(player.isReady()==false) {
+		
 		ObjectNode newNode = mapper.createObjectNode();
 		newNode.put("type", "disconnection");
 		
-		/*	
-		for(WebSocketSession participant : sessions.values()) {
-			if(!participant.getId().equals(session.getId())) {
-				participant.sendMessage(new TextMessage(newNode.toString()));
-			}
-		}
-		*/
+		
 		for(Player p: manager.getRooms().get(roomIdx).getPlayers()) {
 			if(!p.equals(player)) {
 			sessions.get(p.getSessionID()).sendMessage(new TextMessage(newNode.toString()));
 			}
 		}
-		
+		}
 		//Se elimina
 		sessions.remove(session.getId());
 		manager.removePlayer(session.getId());
@@ -108,6 +104,9 @@ private void sendToLobbyParticipants(Room room, JsonNode node, WebSocketSession 
 			System.out.println("Message sent: " + node.get("boost").asText());
 			//session.sendMessage(new TextMessage(newNode.toString()));
 			break;
+		case "return":
+			player.setReady(true);
+			break;
 	}
 
 		for(Player p: room.getPlayers()) {
@@ -118,6 +117,8 @@ private void sendToLobbyParticipants(Room room, JsonNode node, WebSocketSession 
 		
 	}
 
+
+//DEPRECATED
 private void sendOtherPlayers(WebSocketSession session, JsonNode node) throws IOException {
 	
 	

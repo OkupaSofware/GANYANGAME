@@ -14,7 +14,18 @@ class StatsScene extends Phaser.Scene {
         
         this.player1info = this.registry.get("player1");
         this.player2info = this.registry.get("player2");
-        
+        var msg = {
+					type: "return",
+		}
+        this.scene.get("ScenePlay").socketRef.send(JSON.stringify(msg));    
+		this.scene.get("Lobby").socketRef.send(JSON.stringify(msg));
+		this.checkServer = setInterval(function(){
+			
+			if( this.scene.get("ScenePlay").socketRef.readyState == connection.CLOSED){
+				clearInterval(this.checkServer)
+				this.add.text(640, 300, "CONNECTION LOST. RETURNING TO MAIN MENU", {fontFamily: 'army_font', color: 'RED', fontSize: '60px '}).setOrigin(0.5)
+			}
+		},2000)
         
         console.log(this.player1info.name);
         this.pointsPlayer1 = Math.ceil(this.player1info.getCountKills()*55) + Math.ceil(this.player1info.getCountShields()*15) + Math.ceil(this.player1info.getCountHearts()*15) + Math.ceil(this.player1info.getCountAmmos()*15);
@@ -68,9 +79,9 @@ class StatsScene extends Phaser.Scene {
             this.draw2=this.add.text(840,180, "DRAW",{fontFamily: 'army_font', color: 'white', fontSize: '38px '}).setOrigin(0.5,0.5).setTint(0xE2AD43)
         }
         
-        this.idle1 = this.add.image(420, 285, "idle").setTint(0xCC6666);
+        this.idle1 = this.add.image(420, 285, "idle").setTint(this.registry.get("color1"));
         this.idle1.flipX=true;
-        this.idle2 = this.add.image(840, 285, "idle").setTint(0x92C5FC);
+        this.idle2 = this.add.image(840, 285, "idle").setTint(this.registry.get("color2"));
         
         var exit_button = new Button({
             'scene': this,
@@ -80,11 +91,12 @@ class StatsScene extends Phaser.Scene {
             'down':2,
             'x': 1010,
             'y': 200
-        },"back").setScale(0.7,0.7);
+        },"lobby").setScale(0.7,0.7);
         exit_button.on('pointerup',this.goBack,this)
     }
     goBack(){
         //this.scene.start("MainMenuBackground");
+        
         this.scene.get("ScenePlay").socketRef.close();
         this.scene.wake("Lobby")
         this.scene.remove("ScenePlay")
