@@ -1,7 +1,0 @@
-date|GANCHAT|GANCHAT: jj has entered the room
-date|GANCHAT|GANCHAT: paco has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|GANCHAT: bromas has entered the room
-date|bromas|buen prti
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

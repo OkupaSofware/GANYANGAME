@@ -482,7 +482,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         var seconds = (time * 0.001); //Converted to Seconds
         var timer = gameTime - Math.round(seconds) + this.gap;
         var ttext = timer.toString();
-        if (timer < (gameTime - 3)){
+        if (timer < (gameTime)){
             if(this.player1.alive == true){
                 sendStatus();
                 sendMouse();
@@ -521,7 +521,7 @@ class ScenePlayONLINE extends Phaser.Scene {
     }
     
     boostConsumed(player1, boostArray){
-		console.log("Boost consumido");
+		//console.log("Boost consumido");
 		boostArray.efect(player1, boostArray);
 		var messageBoost = Math.floor(Math.random() * 3) + 1;
 		randBoost.push(messageBoost);

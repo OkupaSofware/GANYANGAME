@@ -1,6 +1,0 @@
-date|GANCHAT|GANCHAT: l has entered the room
-date|GANCHAT|GANCHAT: ñ has entered the room
-date|l|huy
-date|ñ|great
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

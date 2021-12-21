@@ -1,4 +1,0 @@
-date|GANCHAT|GANCHAT: O has entered the room
-date|GANCHAT|GANCHAT: OO has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

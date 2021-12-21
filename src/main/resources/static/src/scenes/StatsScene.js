@@ -106,6 +106,7 @@ class StatsScene extends Phaser.Scene {
         //this.scene.start("MainMenuBackground");
         if(this.registry.get('mode')==true){
         clearInterval(this.scene.get("ScenePlay").checkServer)
+        clearInterval(this.scene.get("StatsScene").checkServer)
         this.scene.get("ScenePlay").socketRef.close();
         }
         

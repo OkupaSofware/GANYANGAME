@@ -1,8 +1,0 @@
-date|GANCHAT|GANCHAT: j has entered the room
-date|GANCHAT|GANCHAT: jjj has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|GANCHAT: o has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|GANCHAT: ñ has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

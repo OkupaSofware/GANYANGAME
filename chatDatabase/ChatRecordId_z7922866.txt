@@ -1,6 +1,0 @@
-date|GANCHAT|GANCHAT: izqui has entered the room
-date|GANCHAT|GANCHAT: dere has entered the room
-date|dere|hey
-date|izqui|hehehehe
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

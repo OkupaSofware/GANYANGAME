@@ -1,7 +1,0 @@
-date|GANCHAT|GANCHAT: YEAH has entered the room
-date|GANCHAT|GANCHAT: CHAMACO has entered the room
-date|YEAH|QUE PASA CHAMACO
-date|GANCHAT|P2 has left the room
-date|GANCHAT|GANCHAT: - has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

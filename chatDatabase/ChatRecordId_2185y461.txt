@@ -1,6 +1,0 @@
-date|GANCHAT|GANCHAT: uu has entered the room
-date|GANCHAT|GANCHAT: yyuu has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|GANCHAT: u has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

@@ -1,6 +1,0 @@
-date|GANCHAT|GANCHAT: PAQUITO has entered the room
-date|GANCHAT|GANCHAT: edu has entered the room
-date|PAQUITO|que pasa edu?
-date|edu|naa aqui estamos
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room

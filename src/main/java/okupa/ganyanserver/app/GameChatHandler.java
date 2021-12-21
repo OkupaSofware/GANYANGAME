@@ -41,7 +41,7 @@ public class GameChatHandler extends TextWebSocketHandler {
 		//Se encuentra al jugador en el managter
 		int roomIdx = manager.getPlayerRoomIdx(session.getId());
 		Player p = manager.getPlayerBySessionId(session.getId());
-		Message msg = new Message("date", "GANCHAT", "P2 has left the room");
+		Message msg = new Message("date", "GANCHAT", "GANCHAT: "+p.getName()+" has left the room");
 		roomIdx = manager.getPlayerRoomIdx(session.getId());
 		manager.getRooms().get(roomIdx).getDatabase().setMessage(msg);
 		
@@ -131,7 +131,7 @@ public class GameChatHandler extends TextWebSocketHandler {
 			sendToLobbyParticipants(manager.getRooms().get(roomIdx), node);
 		}
 		
-		//Si el mensage es de tipo ready, comprueba si el otro jugador de la sala esta redy, y si lo está, envia un mensaje para comenzar la partida
+		//Si el mensage es de tipo ready, comprueba si el otro jugador de la sala esta redy, y si lo está, envia un mensaje para comenzar la partida a la vez
 		if(node.get("type").asText().contentEquals("ready")) {
 			
 			//roomIdx = manager.getPlayerRoomIdx(session.getId());

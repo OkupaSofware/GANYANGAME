@@ -1,4 +1,0 @@
-date|GANCHAT|GANCHAT: der has entered the room
-date|GANCHAT|GANCHAT: iz has entered the room
-date|GANCHAT|P2 has left the room
-date|GANCHAT|P2 has left the room
