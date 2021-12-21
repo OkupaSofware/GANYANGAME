@@ -82,7 +82,7 @@ class LobbyONLINE extends Phaser.Scene {
         //Input text for player name
         var elementHTML1 = this.add.dom(420, 425).createFromCache('connection');
         var elementHTML2 = this.add.dom(220, 705).createFromCache('sendMessage');
-        var elementHTML3 = this.add.dom(150, 622).createFromCache('chat');
+        var elementHTML3 = this.add.dom(166, 622).createFromCache('chat');
         var elementHTML4 = this.add.dom(420, 285).createFromCache('color');
         
         this.changeColor = this.add.text(420, 200, 'click on avatar to change color', {fontFamily: 'army_font', color: 'black', fontSize: '25px '}).setOrigin(0.5,0.5);

@@ -1,0 +1,9 @@
+date|GANCHAT|GANCHAT: izquierda has entered the room
+date|GANCHAT|GANCHAT: derecha has entered the room
+date|izquierda|hola
+date|izquierda|que al tioç
+date|derecha|eyy
+date|derecha|como va eso maquinon
+date|derecha|aqui estamos probando unas ultimas cositas
+date|GANCHAT|GANCHAT: izquierda has left the room
+date|GANCHAT|GANCHAT: derecha has left the room
