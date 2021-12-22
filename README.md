@@ -4,23 +4,40 @@
   <img src="https://user-images.githubusercontent.com/91082053/136620736-d97a34ce-4869-40c9-9c0e-c1fc8e1b4e8d.png">
 </p>
 
+[![CLICK PARA VER EL VIDEO](https://user-images.githubusercontent.com/91082053/147083776-4ca8dd8e-a0e1-4d21-9f97-683e007843e7.png)](https://www.youtube.com/watch?v=CHjF7CSkGzs&ab_channel=javiserrano)
+
 <H2>BIENVENIDOS A GAN-YAN</H2>
+
+
+
 
 Si lo quieres es matarte a tiros en un mundo sin eje Z con tus compañeros de clase, empresa, amigos y/o desconocidos,¡ESTE ES TU JUEGO!
 
 Gan Yan ofrece un escenario dinamico de plataformas donde poder disparar contra tus enemigos ¡Y con distintos tipos de armas y mejoras!
 
+
 <p align="center"> 
+
 
   <img src="https://user-images.githubusercontent.com/91082053/136620835-a46912da-abf4-4e0d-8a26-b5b70adde92b.png">
 </p>
 <H2>DIAGRAMA DE CLASES BACK-END</H2>
 
 
+
 <p align="center"> 
 
-  <img src="https://user-images.githubusercontent.com/91082053/143792535-a4f5a095-0ac1-4ba1-b628-032fefb802ba.jpeg">
+  <img src="https://user-images.githubusercontent.com/91082053/147084035-7800ef28-54fa-4afa-b313-6f8ae1ae9ae9.jpeg">
 </p>
+<H2>USOS DE PROTOCOLOS DE COMUNICACIÓN WEB</H2>
+
+En esta ultima versión se ha descartado toda la infraestructura REST que se creó para la fase anterior y se ha sustituido por una infraestructura que hace uso del protocolo   Websockets.
+Esto quiere decir que con este protocolo se está gestionando toda comunicación web en el juego, desde el envio de chats a la gestión de lobbies, por supuesto pasando por la gestión y envio de datos del propio gameplay.
+  
+ Si desea más información acerca del protocolo usado, puede consultar la documentación aquî: 
+ https://datatracker.ietf.org/doc/html/rfc6455
+  
+
 <H2>INSTRUCCIONES DE USO</H2>
 
 
