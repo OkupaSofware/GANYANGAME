@@ -11,7 +11,7 @@ class StatsScene extends Phaser.Scene {
     create(){
         this.cameras.main.fadeIn(2000, 0, 0, 0)
         this.text=this.add.text(640,80, "GAME RESULTS",{font: 'bold 32px Arial', fontSize: "36px"}).setOrigin(0.5,0.5)
-		statRef = this.scene.get("StatsScene")
+		statRef = this
         this.add.image(640, 360, "ingamemenu").setScale(0.4,0.4);
         
         this.player1info = this.registry.get("player1");

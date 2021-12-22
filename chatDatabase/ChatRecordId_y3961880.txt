@@ -1,4 +1,0 @@
-date|GANCHAT|GANCHAT: hol has entered the room
-date|GANCHAT|GANCHAT: zxc has entered the room
-date|GANCHAT|GANCHAT: hol has left the room
-date|GANCHAT|GANCHAT: zxc has left the room

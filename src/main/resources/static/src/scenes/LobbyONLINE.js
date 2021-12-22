@@ -31,7 +31,7 @@ class LobbyONLINE extends Phaser.Scene {
         this.text=this.add.text(640,80, "LOBBY",{fontFamily: 'army_font', fontSize:'50px' }).setOrigin(0.5,0.5)
     	//setCheck();
         this.add.image(640, 320, "gamemode").setScale(0.4,0.4)
-		scene = this.scene.get("Lobby")
+		scene = this;
         this.socketRef;
         this.serverStatus = this.add.text(640,160, "Disconnected",{fontFamily: 'army_font', fontSize: "36px"}).setOrigin(0.5,0.5).setTint(0xff0000)
         // Comprueba si el servidor está conectado de primeras

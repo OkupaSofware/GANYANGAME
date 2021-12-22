@@ -57,7 +57,7 @@ class ScenePlayONLINE extends Phaser.Scene {
         this.timeText = this.add.text(640, 30, "35", { font: 'Bold 32px Arial' }).setOrigin(0.5).setDepth(10) //Elapsed Time Text
         this.gap = 0;
         this.tcount = 0;
-        scene = this.scene.get("ScenePlay")
+        scene = this
         this.socketRef;
         this.fight = false;
         connect()
@@ -797,10 +797,11 @@ function disconnectOnError(){
 	scene.timerPause = true;
 			var disconnect = setInterval(function(){
 					//clearInterval(scene.checkServer)
-					clearInterval(scene.scene.get("ScenePlay").checkServer)
+					clearInterval(scene.checkServer)
 					clearInterval(disconnect);
+					
 					scene.scene.get("Lobby").socketRef.close();
-					scene.scene.get("ScenePlay").socketRef.close();
+					scene.socketRef.close();
 					scene.scene.get("Lobby").reset();
     				scene.scene.start("MainMenuBackground");
     				scene.scene.remove("Lobby")
