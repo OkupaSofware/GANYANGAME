@@ -88,7 +88,7 @@ El programa NO esta preparado para gestionar el servidor en la escena de partida
 <p>Diseño grafico https://www.flaticon.com/free-icon/bullet_224679?term=bullet&page=1&position=5&page=1&position=5&related_id=224679&origin=search</p>
 
 <H4>EFECTOS DE SONIDO</H4>
-<P>Grito de Goofy - Walt Disney </P>
+<P>Grito de Goofy - Walt Disney Studios </P>
 <P>Efecto escudo - https://www.youtube.com/watch?v=Kd10K-v5LCQ&ab_channel=SoundLibrary </P>
 <p>Efecto vida - NINTENDO</P>
 <P>Efecto recarga - https://www.youtube.com/watch?v=gfLDZba1Hag&ab_channel=FullSoundEffects </p>
